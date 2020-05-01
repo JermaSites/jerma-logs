@@ -5,6 +5,9 @@ import store from './store'
 import Buefy from 'buefy'
 import 'buefy/dist/buefy.css'
 import { firestorePlugin } from 'vuefire'
+import linkify from 'vue-linkify'
+
+Vue.directive('linkified', linkify)
 
 Vue.use(firestorePlugin)
 
