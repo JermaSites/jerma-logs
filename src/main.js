@@ -3,9 +3,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import Buefy from 'buefy'
-import 'buefy/dist/buefy.css'
+// import 'buefy/dist/buefy.css'
 import { firestorePlugin } from 'vuefire'
 import linkify from 'vue-linkify'
+import VueMoment from 'vue-moment'
+
+Vue.use(VueMoment)
 
 Vue.directive('linkified', linkify)
 
