@@ -9,7 +9,7 @@
               <span class="date">{{ formatDate(msg.sentAt) }}: </span>
             </div>
             <div class="column">
-              <span class="msg">{{ msg.message }}</span>
+              <span class="msg" v-linkified>{{ msg.message }}</span>
             </div>
           </div>
         </div>
