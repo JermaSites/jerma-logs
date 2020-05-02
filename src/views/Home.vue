@@ -14,8 +14,8 @@
                 v-linkified:options="{
                   attributes: { rel: 'noopener noreferrer nofollow' }
                 }"
-                v-html="msg.message"
               >
+                {{ msg.message }}
               </span>
             </div>
           </div>
