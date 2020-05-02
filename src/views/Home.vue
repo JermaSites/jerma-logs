@@ -9,7 +9,14 @@
               <span class="date">{{ formatDate(msg.sentAt) }}: </span>
             </div>
             <div class="column">
-              <span class="msg" v-linkified>{{ msg.message }}</span>
+              <span
+                class="msg"
+                v-linkified:options="{
+                  attributes: { rel: 'noopener noreferrer nofollow' }
+                }"
+                v-html="msg.message"
+              >
+              </span>
             </div>
           </div>
         </div>
@@ -55,12 +62,17 @@ export default {
   background-color: #3a3f44;
 }
 
-/* .column {
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
-} */
-
 .msg {
   color: white;
+}
+</style>
+
+<style>
+a:link.linkified, a:visited.linkified {
+  color: #0fabe8;
+}
+
+a:hover.linkified, a:active.linkified {
+  text-decoration: underline;
 }
 </style>
