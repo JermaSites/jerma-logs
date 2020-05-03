@@ -3,7 +3,16 @@
     <div class="container is-fluid">
       <div class="columns is-centered">
         <div class="column is-three-fifths-fullhd is-three-quarters-desktop is-full">
-          <span class="site-name">Jerma Logs</span>
+          <div class="columns is-vcentered">
+            <div class="column is-narrow">
+              <figure class="image is-96x96">
+                <img src="@/assets/logo.png">
+              </figure>
+            </div>
+            <div class="column">
+              <span class="site-name">Jerma Logs</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
