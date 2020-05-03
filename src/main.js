@@ -2,11 +2,11 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import Buefy from 'buefy'
-// import 'buefy/dist/buefy.css'
+import { Loading } from 'buefy'
 import { firestorePlugin } from 'vuefire'
 import linkify from 'vue-linkify'
 import VueMoment from 'vue-moment'
+// import 'buefy/dist/buefy.css'
 
 Vue.use(VueMoment)
 
@@ -14,7 +14,7 @@ Vue.directive('linkified', linkify)
 
 Vue.use(firestorePlugin)
 
-Vue.use(Buefy)
+Vue.use(Loading)
 
 Vue.config.productionTip = false
 

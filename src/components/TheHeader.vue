@@ -16,17 +16,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 header {
   display: flex;
   align-items: center;
-  height: 80px;
-  color: white;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid #aaa;
+  padding: 1rem 0;
+  margin-bottom: 2rem;
+  background-color: $primary;
 }
 
 .site-name {
-  font-size: 2.5rem;
+  font-size: 3rem
 }
 </style>
