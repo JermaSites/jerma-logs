@@ -6,7 +6,7 @@
           <div class="columns is-vcentered">
             <div class="column is-narrow">
               <figure class="image is-96x96">
-                <img src="@/assets/logo.png">
+                <img src="@/assets/logo.png" alt="Jerma Joy">
               </figure>
             </div>
             <div class="column">
