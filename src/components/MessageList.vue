@@ -27,13 +27,13 @@ export default {
   data () {
     return {
       messages: [],
-      loading: true
+      loading: true,
+      tz: this.$moment.tz.guess()
     }
   },
   methods: {
     formatDate (date) {
-      const tz = this.$moment.tz.guess()
-      return this.$moment.tz(+date, tz).format('YYYY-MM-DD hh:mm:ss A z')
+      return this.$moment.tz(+date, this.tz).format('YYYY-MM-DD hh:mm:ss A z')
     }
   },
   async created () {
