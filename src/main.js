@@ -5,10 +5,9 @@ import store from './store'
 import { Loading } from 'buefy'
 import { firestorePlugin } from 'vuefire'
 import linkify from 'vue-linkify'
-import VueMoment from 'vue-moment'
-// import 'buefy/dist/buefy.css'
+import moment from 'moment-timezone'
 
-Vue.use(VueMoment)
+Vue.prototype.$moment = moment
 
 Vue.directive('linkified', linkify)
 

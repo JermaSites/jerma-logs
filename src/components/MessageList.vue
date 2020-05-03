@@ -32,7 +32,8 @@ export default {
   },
   methods: {
     formatDate (date) {
-      return this.$moment(+date).format('YYYY-MM-DD hh:mm:ss A')
+      const tz = this.$moment.tz.guess()
+      return this.$moment.tz(+date, tz).format('YYYY-MM-DD hh:mm:ss A z')
     }
   },
   async created () {
