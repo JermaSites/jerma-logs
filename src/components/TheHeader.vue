@@ -1,19 +1,12 @@
 <template>
   <header>
-    <div class="container is-fluid">
-      <div class="columns is-centered">
-        <div class="column is-three-fifths-fullhd is-three-quarters-desktop is-full">
-          <div class="columns is-vcentered">
-            <div class="column is-narrow">
-              <figure class="image is-96x96">
-                <img src="@/assets/logo.png" alt="Jerma Joy">
-              </figure>
-            </div>
-            <div class="column">
-              <span class="site-name">Jerma Logs</span>
-            </div>
-          </div>
-        </div>
+    <div class="container">
+      <div class="section">
+        <figure class="image is-96x96">
+          <img src="@/assets/logo.png" alt="Jerma Joy">
+        </figure>
+
+        <h1>Jerma Logs</h1>
       </div>
     </div>
   </header>
@@ -27,14 +20,16 @@ export default {
 
 <style lang="scss" scoped>
 header {
-  display: flex;
-  align-items: center;
-  padding: 1rem 0;
-  margin-bottom: 2rem;
   background-color: $primary;
 }
 
-.site-name {
-  font-size: 3rem
+h1 {
+  font-size: 3rem;
+  margin-left: 1rem;
+}
+
+.section {
+  display: flex;
+  align-items: center;
 }
 </style>

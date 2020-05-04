@@ -1,9 +1,9 @@
 <template>
-  <section>
+  <div class="section">
     <b-loading :is-full-page="true" :active.sync="loading"></b-loading>
-    <div v-for="msg in messages" :key="msg.id" class="columns is-variable is-1 is-mobile">
+    <div v-for="msg in messages" :key="msg.id" class="columns">
       <div class="column is-narrow is-primary">
-        <span class="has-text-grey-light">{{ formatDate(msg.sentAt) }}: </span>
+        <span class="has-text-grey-light">{{ formatDate(msg.sentAt) }}</span>
       </div>
       <div class="column">
         <span
@@ -16,7 +16,7 @@
         </span>
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -55,5 +55,8 @@ export default {
 <style lang="scss" scoped>
 .columns:nth-child(even) {
   background-color: $accent;
+}
+.columns:nth-child(odd) {
+  background-color: $primary;
 }
 </style>
