@@ -1,7 +1,17 @@
 <template>
   <div class="section">
-    <b-loading :is-full-page="true" :active.sync="loading"></b-loading>
-    <div v-for="msg in messages" :key="msg.id" class="columns">
+    <div v-if="loading">
+      <div v-for="i in 6" :key="i" class="columns">
+        <div class="column is-narrow is-primary">
+          <b-skeleton width="200" />
+        </div>
+        <div class="column">
+          <b-skeleton />
+        </div>
+      </div>
+    </div>
+
+    <div v-else v-for="msg in messages" :key="msg.id" class="columns">
       <div class="column is-narrow is-primary">
         <span class="has-text-grey-light">{{ formatDate(msg.sentAt) }}</span>
       </div>
