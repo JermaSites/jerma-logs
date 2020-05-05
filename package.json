@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "preinstall": "npx npm-force-resolutions",
     "serve": "vue-cli-service serve",
     "test": "vue-cli-service serve --mode production",
     "build": "vue-cli-service build",
@@ -39,8 +38,5 @@
     "node-sass": "^4.14.1",
     "sass-loader": "^8.0.2",
     "vue-template-compiler": "^2.6.11"
-  },
-  "resolutions": {
-    "moment": "2.24.0"
   }
 }
