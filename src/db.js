@@ -6,6 +6,9 @@ export const db = firebase
   .initializeApp({ projectId: 'jerma-logs' })
   .firestore()
 
+// Enable cache
+firebase.firestore().enablePersistence()
+
 // Export types that exists in Firestore
 // This is not always necessary, but it's used in other examples
 const { Timestamp, GeoPoint } = firebase.firestore
