@@ -38,7 +38,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.breadcrumbs {
+.breadcrumb {
   margin-bottom: 3rem;
 }
 </style>
