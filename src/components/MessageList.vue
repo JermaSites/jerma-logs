@@ -10,8 +10,7 @@
         </div>
       </div>
     </div>
-
-    <div v-else v-for="msg in messages" :key="msg.id" class="columns">
+    <div v-else v-for="msg in msgGroupedByDate" :key="msg.id" class="columns" :class="{ 'new-day': msg.newDay }">
       <div class="column is-narrow is-primary">
         <span class="has-text-grey-light">{{ formatDate(msg.sentAt) }}</span>
       </div>
@@ -41,6 +40,22 @@ export default {
       tz: this.$moment.tz.guess()
     }
   },
+  computed: {
+    msgGroupedByDate () {
+      const msgs = [...this.messages]
+      for (let i = 0; i < msgs.length - 2; i++) {
+        const prev = msgs[i]
+        const next = msgs[i + 1]
+        const prevDay = this.$moment.tz(+prev.sentAt, this.tz).startOf('day').format()
+        const nextDay = this.$moment.tz(+next.sentAt, this.tz).startOf('day').format()
+        if (prevDay !== nextDay) {
+          msgs[i].newDay = true
+        }
+      }
+
+      return msgs
+    }
+  },
   methods: {
     formatDate (date) {
       return this.$moment.tz(+date, this.tz).format('YYYY-MM-DD hh:mm:ss A z')
@@ -68,5 +83,9 @@ export default {
 }
 .columns:nth-child(odd) {
   background-color: $primary;
+}
+
+.new-day {
+  border-bottom: 3px solid $jerma-pink;
 }
 </style>
