@@ -1,5 +1,5 @@
 <template>
-  <div class="section">
+  <div >
     <div v-if="loading">
       <div v-for="i in 6" :key="i" class="columns">
         <div class="column is-narrow is-primary">

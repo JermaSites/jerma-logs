@@ -13,8 +13,8 @@
           <li class="is-active"><a href="#" aria-current="page">{{ month }} {{ year }}</a></li>
         </ul>
       </nav>
+      <MessageList :year="year" :month="month" />
     </div>
-    <MessageList :year="year" :month="month" />
   </div>
 </template>
 
@@ -36,3 +36,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.breadcrumbs {
+  margin-bottom: 3rem;
+}
+</style>
