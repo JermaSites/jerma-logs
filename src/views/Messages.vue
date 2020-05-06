@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="section">
-      <nav class="breadcrumb" aria-label="breadcrumbs">
+      <nav class="breadcrumb" style="margin-bottom: 3rem" aria-label="breadcrumbs">
         <ul>
           <li>
             <router-link
@@ -36,9 +36,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss" scoped>
-.breadcrumb {
-  margin-bottom: 3rem;
-}
-</style>
