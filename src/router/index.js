@@ -8,6 +8,12 @@ const routes = [
     path: '/',
     name: 'Home',
     component: () => import(/* webpackChunkName: "home" */ '@/views/Home')
+  },
+  {
+    path: '/:year/:month',
+    name: 'Messages',
+    component: () => import(/* webpackChunkName: "messages" */ '@/views/Messages'),
+    props: true
   }
 ]
 

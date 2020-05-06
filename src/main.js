@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-import { Skeleton } from 'buefy'
+import { Button, Skeleton } from 'buefy'
 import { firestorePlugin } from 'vuefire'
 import linkify from 'vue-linkify'
 import moment from 'moment-timezone'
@@ -16,6 +16,7 @@ Vue.use(Meta)
 
 Vue.use(firestorePlugin)
 
+Vue.use(Button)
 Vue.use(Skeleton)
 
 Vue.config.productionTip = false

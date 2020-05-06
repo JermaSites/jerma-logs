@@ -33,6 +33,16 @@ import { db } from '@/db'
 
 export default {
   name: 'MessageList',
+  props: {
+    year: {
+      type: String,
+      required: true
+    },
+    month: {
+      type: String,
+      required: true
+    }
+  },
   data () {
     return {
       messages: [],
@@ -64,9 +74,25 @@ export default {
   async created () {
     try {
       this.loading = true
+
+      const startDate = this.$moment(`${this.year}-${this.month}`, 'YYYY-MMMM')
+        .tz(this.tz)
+        .startOf('month')
+        .valueOf()
+        .toString()
+
+      const endDate = this.$moment(`${this.year}-${this.month}`, 'YYYY-MMMM')
+        .tz(this.tz)
+        .endOf('month')
+        .valueOf()
+        .toString()
+
       const query = db.collection('messages')
         .where('username', '==', process.env.VUE_APP_USERNAME)
+        .where('sentAt', '>=', startDate)
+        .where('sentAt', '<=', endDate)
         .orderBy('sentAt', 'desc')
+
       await this.$bind('messages', query)
     } catch (error) {
       console.error(error)
