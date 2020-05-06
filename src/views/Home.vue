@@ -21,11 +21,9 @@
 <script>
 export default {
   name: 'Home',
-  components: {
-  },
   computed: {
     dates () {
-      const startDate = this.$moment('2019-05')
+      const startDate = this.$moment('2020-05')
       const endDate = this.$moment()
       const interim = startDate.clone()
       const timeValues = []
