@@ -68,8 +68,6 @@ export default {
 
       msgsByDay.push(msgs.slice(slicePoint))
 
-      // msgsByDay.map(day => day.reverse()).flat()
-
       return msgsByDay.map(day => {
         day.reverse()
         day[0].newDay = true
