@@ -53,17 +53,28 @@ export default {
   computed: {
     msgGroupedByDate () {
       const msgs = [...this.messages]
-      for (let i = 0; i < msgs.length - 2; i++) {
+      const msgsByDay = []
+      let slicePoint = 0
+      for (let i = 0; i < msgs.length - 1; i++) {
         const prev = msgs[i]
         const next = msgs[i + 1]
         const prevDay = this.$moment.tz(+prev.sentAt, this.tz).startOf('day').format()
         const nextDay = this.$moment.tz(+next.sentAt, this.tz).startOf('day').format()
         if (prevDay !== nextDay) {
-          msgs[i].newDay = true
+          msgsByDay.push(msgs.slice(slicePoint, i + 1))
+          slicePoint = i + 1
         }
       }
 
-      return msgs
+      msgsByDay.push(msgs.slice(slicePoint))
+
+      // msgsByDay.map(day => day.reverse()).flat()
+
+      return msgsByDay.map(day => {
+        day.reverse()
+        day[0].newDay = true
+        return day
+      }).flat()
     }
   },
   methods: {
@@ -112,6 +123,6 @@ export default {
 }
 
 .new-day {
-  border-bottom: 3px solid $jerma-pink;
+  border-top: 3px solid $jerma-pink;
 }
 </style>
