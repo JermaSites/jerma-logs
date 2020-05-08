@@ -10,20 +10,8 @@
         </div>
       </div>
     </div>
-    <div v-else v-for="msg in msgGroupedByDate" :key="msg.id" class="columns" :class="{ 'new-day': msg.newDay }">
-      <div class="column is-narrow is-primary">
-        <span class="has-text-grey-light">{{ formatDate(msg.sentAt) }}</span>
-      </div>
-      <div class="column">
-        <span
-          class="has-text-light"
-          v-linkified:options="{
-            attributes: { rel: 'noopener noreferrer nofollow' }
-          }"
-        >
-          {{ msg.message }}
-        </span>
-      </div>
+    <div v-else>
+      <MessageListSimple :messages="dateFormattedMessages" />
     </div>
   </div>
 </template>
@@ -42,6 +30,9 @@ export default {
       type: String,
       required: true
     }
+  },
+  components: {
+    MessageListSimple: () => import('@/components/MessageList/MessageListSimple')
   },
   data () {
     return {
@@ -73,11 +64,12 @@ export default {
         day[0].newDay = true
         return day
       }).flat()
-    }
-  },
-  methods: {
-    formatDate (date) {
-      return this.$moment.tz(+date, this.tz).format('YYYY-MM-DD hh:mm:ss A z')
+    },
+    dateFormattedMessages () {
+      return this.messages.map(msg => {
+        msg.sentAt = this.$moment.tz(+msg.sentAt, this.tz).format('YYYY-MM-DD hh:mm:ss A z')
+        return msg
+      })
     }
   },
   async created () {

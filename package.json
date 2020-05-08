@@ -9,6 +9,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@mdi/font": "^5.1.45",
     "buefy": "^0.8.17",
     "core-js": "^3.6.4",
     "firebase": "^7.14.2",
