@@ -41,7 +41,8 @@ export default {
   },
   components: {
     MessageListSimple: () => import('@/components/MessageList/MessageListSimple'),
-    SeperatedDaySimple: () => import('@/components/MessageList/SeperatedDaySimple')
+    SeperatedDaySimple: () => import('@/components/MessageList/SeperatedDaySimple'),
+    SeperatedDayChrono: () => import('@/components/MessageList/SeperatedDayChrono')
   },
   data () {
     return {
@@ -56,12 +57,38 @@ export default {
         case 'MessageListSimple':
           return this.sortedMessages
         case 'SeperatedDaySimple':
-          return this.msgGroupedByDate
+          return this.msgsByDay
+        case 'SeperatedDayChrono':
+          return this.msgsByDayChrono
         default:
           return this.sortedMessages
       }
     },
-    msgGroupedByDate () {
+    msgsByDay () {
+      const msgs = this.sortedMessages
+      for (let i = 0; i < msgs.length - 1; i++) {
+        const prev = msgs[i]
+        const next = msgs[i + 1]
+
+        const prevDay = this.$moment(prev.sentAt, 'YYYY-MM-DD hh:mm:ss A z')
+          .tz(this.tz)
+          .startOf('day')
+          .format()
+
+        const nextDay = this.$moment(next.sentAt, 'YYYY-MM-DD hh:mm:ss A z')
+          .tz(this.tz)
+          .startOf('day')
+          .format()
+
+        next.newDay = false
+        if (prevDay !== nextDay) {
+          next.newDay = true
+        }
+      }
+
+      return msgs
+    },
+    msgsByDayChrono () {
       const msgs = this.sortedMessages
       const msgsByDay = []
       let slicePoint = 0

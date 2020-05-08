@@ -13,6 +13,26 @@
           <li class="is-active"><a href="#" aria-current="page">{{ month }} {{ year }}</a></li>
         </ul>
         <div class="level-right">
+        <b-dropdown aria-role="list" v-model="layout">
+            <button class="button" slot="trigger">
+                <b-icon icon="view-dashboard"></b-icon>
+            </button>
+
+            <b-dropdown-item
+              v-for="(layout, i) in layouts"
+              :key="i"
+              :value="layout.value"
+              aria-role="listitem"
+            >
+              <div class="media">
+                <b-icon class="media-left" icon="earth"></b-icon>
+                <div class="media-content">
+                  <h3>{{ layout.name }}</h3>
+                  <small>{{ layout.desc }}</small>
+                </div>
+              </div>
+            </b-dropdown-item>
+        </b-dropdown>
           <b-button
             type="is-light"
             icon-left="sort-variant"
@@ -34,7 +54,7 @@
 
 <script>
 export default {
-  name: 'Home',
+  name: 'Messages',
   props: {
     year: {
       type: String,
@@ -51,6 +71,23 @@ export default {
   data () {
     return {
       layout: 'SeperatedDaySimple',
+      layouts: [
+        {
+          name: 'Simple',
+          desc: 'Simple layout',
+          value: 'MessageListSimple'
+        },
+        {
+          name: 'Seperated',
+          desc: 'Messages are seperated by day',
+          value: 'SeperatedDaySimple'
+        },
+        {
+          name: 'Seperated & Chronological',
+          desc: 'Messages are seperated by day and sorted by chronological order',
+          value: 'SeperatedDayChrono'
+        }
+      ],
       sort: 'desc'
     }
   },

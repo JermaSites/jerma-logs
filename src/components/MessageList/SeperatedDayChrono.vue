@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  name: 'SeperatedDaySimple',
+  name: 'SeperatedDayChrono',
   props: {
     messages: {
       type: Array,
@@ -42,9 +42,6 @@ export default {
   border-top: 3px solid $jerma-pink;
 }
 
-.columns:first-child {
-  border-top: 3px solid $jerma-pink;
-}
 .columns:last-child {
   border-bottom: 3px solid $jerma-pink;
 }
