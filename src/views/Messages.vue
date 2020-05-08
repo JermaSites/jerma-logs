@@ -13,14 +13,21 @@
           <li class="is-active"><a href="#" aria-current="page">{{ month }} {{ year }}</a></li>
         </ul>
         <div class="level-right">
-          <b-icon
-          type="is-info"
-            icon="account"
-            size="is-small">
-          </b-icon>
+          <b-button
+            type="is-light"
+            icon-left="sort-variant"
+            outlined
+            @click="toggleSort"
+          >
+          </b-button>
         </div>
       </nav>
-      <MessageList :year="year" :month="month" />
+      <MessageList
+        :year="year"
+        :month="month"
+        :layout="layout"
+        :sort="sort"
+      />
     </div>
   </div>
 </template>
@@ -40,6 +47,17 @@ export default {
   },
   components: {
     MessageList: () => import('@/components/MessageList')
+  },
+  data () {
+    return {
+      layout: 'SeperatedDaySimple',
+      sort: 'desc'
+    }
+  },
+  methods: {
+    toggleSort () {
+      this.sort = this.sort === 'desc' ? 'asc' : 'desc'
+    }
   }
 }
 </script>

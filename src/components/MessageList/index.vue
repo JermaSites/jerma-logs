@@ -11,7 +11,7 @@
       </div>
     </div>
     <div v-else>
-      <MessageListSimple :messages="dateFormattedMessages" />
+      <component :is="layout" :messages="formattedMessages" />
     </div>
   </div>
 </template>
@@ -29,10 +29,19 @@ export default {
     month: {
       type: String,
       required: true
+    },
+    layout: {
+      type: String,
+      default: 'MessageListSimple'
+    },
+    sort: {
+      type: String,
+      default: 'desc'
     }
   },
   components: {
-    MessageListSimple: () => import('@/components/MessageList/MessageListSimple')
+    MessageListSimple: () => import('@/components/MessageList/MessageListSimple'),
+    SeperatedDaySimple: () => import('@/components/MessageList/SeperatedDaySimple')
   },
   data () {
     return {
@@ -42,15 +51,34 @@ export default {
     }
   },
   computed: {
+    formattedMessages () {
+      switch (this.layout) {
+        case 'MessageListSimple':
+          return this.sortedMessages
+        case 'SeperatedDaySimple':
+          return this.msgGroupedByDate
+        default:
+          return this.sortedMessages
+      }
+    },
     msgGroupedByDate () {
-      const msgs = [...this.messages]
+      const msgs = this.sortedMessages
       const msgsByDay = []
       let slicePoint = 0
       for (let i = 0; i < msgs.length - 1; i++) {
         const prev = msgs[i]
         const next = msgs[i + 1]
-        const prevDay = this.$moment.tz(+prev.sentAt, this.tz).startOf('day').format()
-        const nextDay = this.$moment.tz(+next.sentAt, this.tz).startOf('day').format()
+
+        const prevDay = this.$moment(prev.sentAt, 'YYYY-MM-DD hh:mm:ss A z')
+          .tz(this.tz)
+          .startOf('day')
+          .format()
+
+        const nextDay = this.$moment(next.sentAt, 'YYYY-MM-DD hh:mm:ss A z')
+          .tz(this.tz)
+          .startOf('day')
+          .format()
+
         if (prevDay !== nextDay) {
           msgsByDay.push(msgs.slice(slicePoint, i + 1))
           slicePoint = i + 1
@@ -61,6 +89,10 @@ export default {
 
       return msgsByDay.map(day => {
         day.reverse()
+        day.map(d => {
+          d.newDay = false
+          return d
+        })
         day[0].newDay = true
         return day
       }).flat()
@@ -70,6 +102,9 @@ export default {
         msg.sentAt = this.$moment.tz(+msg.sentAt, this.tz).format('YYYY-MM-DD hh:mm:ss A z')
         return msg
       })
+    },
+    sortedMessages () {
+      return this.sort === 'desc' ? this.dateFormattedMessages : this.dateFormattedMessages.slice().reverse()
     }
   },
   async created () {
@@ -110,9 +145,5 @@ export default {
 }
 .columns:nth-child(odd) {
   background-color: $primary;
-}
-
-.new-day {
-  border-top: 3px solid $jerma-pink;
 }
 </style>
