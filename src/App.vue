@@ -46,6 +46,5 @@ export default {
 <style lang="scss">
 body {
   min-height: 100vh;
-  background-color: $secondary
 }
 </style>

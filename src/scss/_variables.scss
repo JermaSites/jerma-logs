@@ -9,9 +9,18 @@ $secondary-invert: findColorInvert($secondary);
 $accent: #2F3136;
 $accent-invert: findColorInvert($accent);
 
+$scheme-main: $secondary;
+$body-background-color: $secondary;
+
+$modal-card-head-background-color: $primary;
+$modal-card-body-background-color: $secondary;
+
 $breadcrumb-item-active-color: $white;
 
 $jerma-pink: #EC407A;
+$jerma-pink-invert: findColorInvert($jerma-pink);
+
+$border: $jerma-pink;
 
 // Links
 $link: #0fabe8;
@@ -30,6 +39,8 @@ $colors: (
   "dark": ($dark, $dark-invert),
   "primary": ($primary, $primary-invert),
   "secondary": ($secondary, $secondary-invert),
+  "accent": ($accent, $accent-invert),
+  "jerma-pink": ($jerma-pink, $jerma-pink-invert),
   "info": ($info, $info-invert),
   "success": ($success, $success-invert),
   "warning": ($warning, $warning-invert),
