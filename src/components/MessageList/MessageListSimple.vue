@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import emoteParser from '@/mixins/emoteParser'
 export default {
   name: 'MessageListSimple',
   props: {
@@ -28,6 +29,7 @@ export default {
       required: true
     }
   },
+  mixins: [emoteParser],
   computed: {
     formattedMessages () {
       const msgs = JSON.parse(JSON.stringify(this.messages))
@@ -37,28 +39,6 @@ export default {
       })
 
       return msgs
-    }
-  },
-  methods: {
-    parseEmotes (msg) {
-      const message = msg.message
-      const url = 'https://static-cdn.jtvnw.net/emoticons/v1'
-      const emotes = msg.emotesRaw ? msg.emotesRaw.split('/') : []
-      for (let i = 0; i < emotes.length; i++) {
-        const emote = emotes[i]
-        const emoteID = emote.split(':')[0]
-        const emoteLocations = emote.split(':')[1]
-        const firstLocation = emoteLocations.split(',')[0]
-        const firstLocationStart = +firstLocation.split('-')[0]
-        const firstLocationEnd = +firstLocation.split('-')[1] + 1
-
-        const emoteURL = `${url}/${emoteID}/1.0`
-        const img = `<img src="${emoteURL}" style="vertical-align: text-bottom">`
-
-        const emoteName = message.substring(firstLocationStart, firstLocationEnd)
-        msg.message = msg.message.split(emoteName).join(img)
-      }
-      return msg.message
     }
   }
 }

@@ -1,0 +1,102 @@
+{
+  "urlTemplate": "//cdn.betterttv.net/emote/{{id}}/{{image}}",
+  "bots": [],
+  "emotes": [
+    {
+      "id": "5a6edb51f730010d194bdd46",
+      "channel": "wipz",
+      "code": "PepoDance",
+      "imageType": "gif"
+    },
+    {
+      "id": "583089f4737a8e61abb0186b",
+      "channel": "worthlessvoid",
+      "code": "OMEGALUL",
+      "imageType": "png"
+    },
+    {
+      "id": "59f27b3f4ebd8047f54dee29",
+      "channel": "p3ntaz",
+      "code": "PepeHands",
+      "imageType": "png"
+    },
+    {
+      "id": "554da1a289d53f2d12781907",
+      "channel": "nightdev",
+      "code": "(ditto)",
+      "imageType": "gif"
+    },
+    {
+      "id": "55b6f480e66682f576dd94f5",
+      "channel": "turtlemaw",
+      "code": "Clap",
+      "imageType": "gif"
+    },
+    {
+      "id": "5b1740221c5a6065a7bad4b5",
+      "channel": "garych",
+      "code": "pepeD",
+      "imageType": "gif"
+    },
+    {
+      "id": "59b73909b27c823d5b1f6052",
+      "channel": "potehtoo",
+      "code": "pepeLaugh",
+      "imageType": "png"
+    },
+    {
+      "id": "5980af4e3a1ac5330e89dc76",
+      "channel": "to_ot",
+      "code": "HYPERS",
+      "imageType": "png"
+    },
+    {
+      "id": "5a16ee718c22a247ead62d4a",
+      "channel": "seremendal",
+      "code": "peepoHappy",
+      "imageType": "png"
+    },
+    {
+      "id": "5dddca0ae579cd5efad79698",
+      "channel": "opsternarwhallover",
+      "code": "jermaGrin",
+      "imageType": "png"
+    },
+    {
+      "id": "5c5629bc5e0cb51b417ffd1b",
+      "channel": "toe_naii",
+      "code": "jermaSheeto",
+      "imageType": "png"
+    },
+    {
+      "id": "5c0235787991032d519f513c",
+      "channel": "cyanjunkie",
+      "code": "YOUDIED",
+      "imageType": "png"
+    },
+    {
+      "id": "5df95b63c6f4490d9f858bee",
+      "channel": "opsternarwhallover",
+      "code": "jermaSuperFrog",
+      "imageType": "png"
+    },
+    {
+      "id": "5d55d80364ae370ac8080707",
+      "channel": "yenwenlen",
+      "code": "jermaVroom2",
+      "imageType": "png"
+    },
+    {
+      "id": "5dfd48788608fb0da4120ec6",
+      "channel": "opsternarwhallover",
+      "code": "jermaWalk",
+      "imageType": "gif"
+    },
+    {
+      "id": "5e20fcb288e62a5f14dca2be",
+      "channel": "opsternarwhallover",
+      "code": "jermaOtto",
+      "imageType": "png"
+    }
+  ]
+}
