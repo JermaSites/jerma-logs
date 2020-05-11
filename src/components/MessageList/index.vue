@@ -53,7 +53,8 @@ export default {
   },
   computed: {
     sortedMessages () {
-      return this.sort === 'desc' ? this.messages : JSON.parse(JSON.stringify(this.messages)).reverse()
+      const msgs = JSON.parse(JSON.stringify(this.messages))
+      return this.sort === 'desc' ? msgs : msgs.reverse()
     }
   },
   async created () {

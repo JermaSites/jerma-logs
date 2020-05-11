@@ -62,9 +62,8 @@ export default {
 
       return msgsByDay.map(day => {
         day.reverse()
-        day.map(d => {
+        day.forEach(d => {
           d.newDay = false
-          return d
         })
         day[0].newDay = true
         return day
