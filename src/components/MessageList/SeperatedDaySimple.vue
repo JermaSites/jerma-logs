@@ -2,7 +2,7 @@
   <div>
     <div v-for="msg in formattedMessages" :key="msg.id" class="columns" :class="{ 'new-day': msg.newDay }">
       <div class="column is-narrow is-primary">
-        <span class="has-text-grey-light">{{ msg.sentAt }}</span>
+        <span class="has-text-grey-light">[{{ msg.sentAt }}] {{ msg.displayName }}</span>
       </div>
       <div class="column">
         <span
