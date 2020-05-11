@@ -4,8 +4,7 @@ import bttvGlobal from '@/assets/BTTV-global-emotes.json'
 export default {
   methods: {
     parseEmotes (msg) {
-      return this.parseTwitchEmotes(msg)
-      // return this.parseBTTVEmotes(this.parseTwitchEmotes(msg))
+      return this.parseBTTVEmotes(this.parseTwitchEmotes(msg))
     },
     parseTwitchEmotes (msg) {
       const message = msg.message
@@ -26,7 +25,7 @@ export default {
         const emoteName = message.substring(firstLocationStart, firstLocationEnd)
         msg.message = msg.message.split(emoteName).join(img)
       }
-      return msg.message
+      return msg
     },
     parseBTTVEmotes (msg) {
       const { urlTemplate } = bttvGlobal
@@ -36,7 +35,7 @@ export default {
       emotes.forEach(emote => {
         const emoteURL = urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '1x')
         const img = `<img src="${emoteURL}" style="vertical-align: text-bottom">`
-        msg = msg.split(emote.code).join(img)
+        msg.message = msg.message.split(emote.code).join(img)
       })
       return msg
     }
