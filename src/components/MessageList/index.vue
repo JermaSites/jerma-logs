@@ -65,7 +65,7 @@ export default {
       }
     },
     msgsByDay () {
-      const msgs = this.sortedMessages
+      const msgs = JSON.parse(JSON.stringify(this.sortedMessages))
       for (let i = 0; i < msgs.length - 1; i++) {
         const prev = msgs[i]
         const next = msgs[i + 1]
@@ -89,7 +89,7 @@ export default {
       return msgs
     },
     msgsByDayChrono () {
-      const msgs = this.sortedMessages
+      const msgs = JSON.parse(JSON.stringify(this.sortedMessages))
       const msgsByDay = []
       let slicePoint = 0
       for (let i = 0; i < msgs.length - 1; i++) {
@@ -125,13 +125,14 @@ export default {
       }).flat()
     },
     dateFormattedMessages () {
-      return this.messages.map(msg => {
+      const messagesClone = JSON.parse(JSON.stringify(this.messages))
+      return messagesClone.map(msg => {
         msg.sentAt = this.$moment.tz(+msg.sentAt, this.tz).format('YYYY-MM-DD hh:mm:ss A z')
         return msg
       })
     },
     sortedMessages () {
-      return this.sort === 'desc' ? this.dateFormattedMessages : this.dateFormattedMessages.slice().reverse()
+      return this.sort === 'desc' ? this.dateFormattedMessages : JSON.parse(JSON.stringify(this.dateFormattedMessages)).reverse()
     }
   },
   async created () {
