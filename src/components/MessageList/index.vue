@@ -11,7 +11,7 @@
       </div>
     </div>
     <div v-else>
-      <component :is="layout" :messages="formattedMessages" />
+      <component :is="layout" :messages="sortedMessages" />
     </div>
   </div>
 </template>
@@ -52,87 +52,8 @@ export default {
     }
   },
   computed: {
-    formattedMessages () {
-      switch (this.layout) {
-        case 'MessageListSimple':
-          return this.sortedMessages
-        case 'SeperatedDaySimple':
-          return this.msgsByDay
-        case 'SeperatedDayChrono':
-          return this.msgsByDayChrono
-        default:
-          return this.sortedMessages
-      }
-    },
-    msgsByDay () {
-      const msgs = JSON.parse(JSON.stringify(this.sortedMessages))
-      for (let i = 0; i < msgs.length - 1; i++) {
-        const prev = msgs[i]
-        const next = msgs[i + 1]
-
-        const prevDay = this.$moment(prev.sentAt, 'YYYY-MM-DD hh:mm:ss A z')
-          .tz(this.tz)
-          .startOf('day')
-          .format()
-
-        const nextDay = this.$moment(next.sentAt, 'YYYY-MM-DD hh:mm:ss A z')
-          .tz(this.tz)
-          .startOf('day')
-          .format()
-
-        next.newDay = false
-        if (prevDay !== nextDay) {
-          next.newDay = true
-        }
-      }
-
-      return msgs
-    },
-    msgsByDayChrono () {
-      const msgs = JSON.parse(JSON.stringify(this.sortedMessages))
-      const msgsByDay = []
-      let slicePoint = 0
-      for (let i = 0; i < msgs.length - 1; i++) {
-        const prev = msgs[i]
-        const next = msgs[i + 1]
-
-        const prevDay = this.$moment(prev.sentAt, 'YYYY-MM-DD hh:mm:ss A z')
-          .tz(this.tz)
-          .startOf('day')
-          .format()
-
-        const nextDay = this.$moment(next.sentAt, 'YYYY-MM-DD hh:mm:ss A z')
-          .tz(this.tz)
-          .startOf('day')
-          .format()
-
-        if (prevDay !== nextDay) {
-          msgsByDay.push(msgs.slice(slicePoint, i + 1))
-          slicePoint = i + 1
-        }
-      }
-
-      msgsByDay.push(msgs.slice(slicePoint))
-
-      return msgsByDay.map(day => {
-        day.reverse()
-        day.map(d => {
-          d.newDay = false
-          return d
-        })
-        day[0].newDay = true
-        return day
-      }).flat()
-    },
-    dateFormattedMessages () {
-      const messagesClone = JSON.parse(JSON.stringify(this.messages))
-      return messagesClone.map(msg => {
-        msg.sentAt = this.$moment.tz(+msg.sentAt, this.tz).format('YYYY-MM-DD hh:mm:ss A z')
-        return msg
-      })
-    },
     sortedMessages () {
-      return this.sort === 'desc' ? this.dateFormattedMessages : JSON.parse(JSON.stringify(this.dateFormattedMessages)).reverse()
+      return this.sort === 'desc' ? this.messages : JSON.parse(JSON.stringify(this.messages)).reverse()
     }
   },
   async created () {

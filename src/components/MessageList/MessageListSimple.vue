@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="msg in messages" :key="msg.id" class="columns">
+    <div v-for="msg in formattedMessages" :key="msg.id" class="columns">
       <div class="column is-narrow is-primary">
         <span class="has-text-grey-light">{{ msg.sentAt }}</span>
       </div>
@@ -25,6 +25,17 @@ export default {
     messages: {
       type: Array,
       required: true
+    }
+  },
+  computed: {
+    formattedMessages () {
+      const msgs = JSON.parse(JSON.stringify(this.messages))
+
+      msgs.forEach(msg => {
+        msg.sentAt = this.$moment.tz(+msg.sentAt, this.$moment.tz.guess()).format('YYYY-MM-DD hh:mm:ss A z')
+      })
+
+      return msgs
     }
   }
 }

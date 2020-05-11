@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="msg in messages" :key="msg.id" class="columns" :class="{ 'new-day': msg.newDay }">
+    <div v-for="msg in formattedMessages" :key="msg.id" class="columns" :class="{ 'new-day': msg.newDay }">
       <div class="column is-narrow is-primary">
         <span class="has-text-grey-light">{{ msg.sentAt }}</span>
       </div>
@@ -25,6 +25,38 @@ export default {
     messages: {
       type: Array,
       required: true
+    }
+  },
+  computed: {
+    formattedMessages () {
+      const msgs = JSON.parse(JSON.stringify(this.messages))
+      const tz = this.$moment.tz.guess()
+
+      msgs.forEach(msg => {
+        msg.sentAt = this.$moment.tz(+msg.sentAt, this.$moment.tz.guess()).format('YYYY-MM-DD hh:mm:ss A z')
+      })
+
+      for (let i = 0; i < msgs.length - 1; i++) {
+        const prev = msgs[i]
+        const next = msgs[i + 1]
+
+        const prevDay = this.$moment(prev.sentAt, 'YYYY-MM-DD hh:mm:ss A z')
+          .tz(tz)
+          .startOf('day')
+          .format()
+
+        const nextDay = this.$moment(next.sentAt, 'YYYY-MM-DD hh:mm:ss A z')
+          .tz(tz)
+          .startOf('day')
+          .format()
+
+        next.newDay = false
+        if (prevDay !== nextDay) {
+          next.newDay = true
+        }
+      }
+
+      return msgs
     }
   }
 }
