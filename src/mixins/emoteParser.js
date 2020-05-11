@@ -4,7 +4,8 @@ import bttvGlobal from '@/assets/BTTV-global-emotes.json'
 export default {
   methods: {
     parseEmotes (msg) {
-      return this.parseBTTVEmotes(this.parseTwitchEmotes(msg))
+      return this.parseTwitchEmotes(msg)
+      // return this.parseBTTVEmotes(this.parseTwitchEmotes(msg))
     },
     parseTwitchEmotes (msg) {
       const message = msg.message

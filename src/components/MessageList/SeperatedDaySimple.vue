@@ -10,8 +10,10 @@
           v-linkified:options="{
             attributes: { rel: 'noopener noreferrer nofollow' }
           }"
-          v-html="parseEmotes(msg)"
+          v-for="(text, i) in msg.message" :key="i"
         >
+          <span v-if="text.startsWith('<img')" v-html="text"></span>
+          <span v-else>{{ text }}</span>
         </span>
       </div>
     </div>
@@ -36,6 +38,9 @@ export default {
 
       msgs.forEach(msg => {
         msg.sentAt = this.$moment.tz(+msg.sentAt, this.$moment.tz.guess()).format('YYYY-MM-DD hh:mm:ss A z')
+        this.parseEmotes(msg)
+
+        msg.message = msg.message.split(/(<img .+>)/)
       })
 
       for (let i = 0; i < msgs.length - 1; i++) {
