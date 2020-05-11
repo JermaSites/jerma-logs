@@ -12,7 +12,6 @@
           }"
           v-html="parseEmotes(msg)"
         >
-          <!-- {{ parseEmotes(msg) }} -->
         </span>
       </div>
     </div>

@@ -10,8 +10,8 @@
           v-linkified:options="{
             attributes: { rel: 'noopener noreferrer nofollow' }
           }"
+          v-html="parseEmotes(msg)"
         >
-          {{ msg.message }}
         </span>
       </div>
     </div>
@@ -19,6 +19,7 @@
 </template>
 
 <script>
+import emoteParser from '@/mixins/emoteParser'
 export default {
   name: 'SeperatedDaySimple',
   props: {
@@ -27,6 +28,7 @@ export default {
       required: true
     }
   },
+  mixins: [emoteParser],
   computed: {
     formattedMessages () {
       const msgs = JSON.parse(JSON.stringify(this.messages))
