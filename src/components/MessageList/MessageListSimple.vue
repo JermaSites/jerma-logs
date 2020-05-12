@@ -2,7 +2,11 @@
   <div>
     <div v-for="msg in formattedMessages" :key="msg.id" class="columns">
       <div class="column is-narrow is-primary">
-        <span class="has-text-grey-light">[{{ msg.sentAt }}] {{ msg.displayName }}</span>
+        <span class="has-text-grey-light">[{{ msg.sentAt }}] </span>
+        <img class="badge" src="@/assets/badge-1.png">
+        <img class="badge" src="@/assets/badge-2.png">
+        <img class="badge" src="@/assets/badge-3.png">
+        <span :style="usernameClass"> {{ msg.displayName }}:</span>
       </div>
       <div class="column">
         <span
@@ -43,6 +47,12 @@ export default {
       })
 
       return msgs
+    },
+    usernameClass () {
+      return {
+        color: this.messages[0].color || '',
+        'font-weight': 'bold'
+      }
     }
   }
 }
@@ -54,5 +64,10 @@ export default {
 }
 .columns:nth-child(odd) {
   background-color: $primary;
+}
+
+.badge {
+  padding: 0 1px;
+  vertical-align: text-bottom;
 }
 </style>
