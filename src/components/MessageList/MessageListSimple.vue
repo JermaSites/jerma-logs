@@ -12,7 +12,7 @@
           }"
           v-for="(text, i) in msg.message" :key="i"
         >
-          <span v-if="text.startsWith('<img')" v-html="text"></span>
+          <span v-if="isEmote(text)" v-html="text"></span>
           <span v-else>{{ text }}</span>
         </span>
       </div>
@@ -39,7 +39,7 @@ export default {
         msg.sentAt = this.$moment.tz(+msg.sentAt, this.$moment.tz.guess()).format('YYYY-MM-DD hh:mm:ss A z')
         this.parseEmotes(msg)
 
-        msg.message = msg.message.split(/(<img .+>)/)
+        msg.message = msg.message.split(/(?=<img .+>)/)
       })
 
       return msgs
