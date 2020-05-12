@@ -53,7 +53,7 @@ export default {
   },
   computed: {
     sortedMessages () {
-      const msgs = JSON.parse(JSON.stringify(this.messages))
+      const msgs = JSON.parse(JSON.stringify(this.messages.messages))
       return this.sort === 'desc' ? msgs : msgs.reverse()
     }
   },
@@ -61,23 +61,7 @@ export default {
     try {
       this.loading = true
 
-      const startDate = this.$moment(`${this.year}-${this.month}`, 'YYYY-MMMM')
-        .tz(this.tz)
-        .startOf('month')
-        .valueOf()
-        .toString()
-
-      const endDate = this.$moment(`${this.year}-${this.month}`, 'YYYY-MMMM')
-        .tz(this.tz)
-        .endOf('month')
-        .valueOf()
-        .toString()
-
-      const query = db.collection('messages')
-        .where('username', '==', process.env.VUE_APP_USERNAME)
-        .where('sentAt', '>=', startDate)
-        .where('sentAt', '<=', endDate)
-        .orderBy('sentAt', 'desc')
+      const query = db.collection('messagesByMonth').doc(`${this.month}-${this.year}`)
 
       await this.$bind('messages', query)
     } catch (error) {
