@@ -12,7 +12,7 @@
           }"
           v-for="(text, i) in msg.message" :key="i"
         >
-          <span v-if="text.startsWith('<img')" v-html="text"></span>
+          <span v-if="isEmote(text)" v-html="text"></span>
           <span v-else>{{ text }}</span>
         </span>
       </div>
