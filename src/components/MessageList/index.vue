@@ -53,7 +53,10 @@ export default {
   },
   computed: {
     sortedMessages () {
-      const msgs = JSON.parse(JSON.stringify(this.messages.messages))
+      let msgs = JSON.parse(JSON.stringify(this.messages.messages))
+      msgs = msgs
+        .filter(msg => msg.username === process.env.VUE_APP_USERNAME)
+        .sort((a, b) => +a.sentAt - +b.sentAt)
       return this.sort === 'desc' ? msgs : msgs.reverse()
     }
   },
