@@ -56,7 +56,7 @@ export default {
       let msgs = JSON.parse(JSON.stringify(this.messages.messages))
       msgs = msgs
         .filter(msg => msg.username === process.env.VUE_APP_USERNAME)
-        .sort((a, b) => +a.sentAt - +b.sentAt)
+        .sort((a, b) => +b.sentAt - +a.sentAt)
       return this.sort === 'desc' ? msgs : msgs.reverse()
     }
   },
