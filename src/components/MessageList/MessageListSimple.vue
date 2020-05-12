@@ -6,7 +6,7 @@
         <img class="badge" src="@/assets/badge-1.png">
         <img class="badge" src="@/assets/badge-2.png">
         <img class="badge" src="@/assets/badge-3.png">
-        <span :style="usernameClass"> {{ msg.displayName }}:</span>
+        <span class="username"> {{ msg.displayName }}:</span>
       </div>
       <div class="column">
         <span
@@ -47,12 +47,6 @@ export default {
       })
 
       return msgs
-    },
-    usernameClass () {
-      return {
-        color: this.messages[0].color || '',
-        'font-weight': 'bold'
-      }
     }
   }
 }
@@ -64,6 +58,11 @@ export default {
 }
 .columns:nth-child(odd) {
   background-color: $primary;
+}
+
+.username {
+  color: #00FF7F;
+  font-weight: bold;
 }
 
 .badge {
