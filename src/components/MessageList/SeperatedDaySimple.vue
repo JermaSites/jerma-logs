@@ -1,10 +1,20 @@
 <template>
   <div>
-    <div v-for="msg in formattedMessages" :key="msg.id" class="columns" :class="{ 'new-day': msg.newDay }">
-      <div class="column is-narrow is-primary">
-        <span class="has-text-grey-light">[{{ msg.sentAt }}] {{ msg.displayName }}</span>
+    <div v-for="msg in formattedMessages" :key="msg.id" class="columns">
+      <div class="column is-narrow is-primary info">
+        <div class="info-content">
+          <div>
+            <span class="has-text-grey-light">[{{ msg.sentAt }}]</span>
+          </div>
+          <div>
+            <img class="badge" src="@/assets/badge-1.png">
+            <img class="badge" src="@/assets/badge-2.png">
+            <img class="badge" src="@/assets/badge-3.png">
+            <span class="username">{{ msg.displayName }}:</span>
+          </div>
+        </div>
       </div>
-      <div class="column">
+      <div class="column msg">
         <span
           class="has-text-light"
           v-linkified:options="{
@@ -86,5 +96,34 @@ export default {
 }
 .columns:last-child {
   border-bottom: 3px solid $jerma-pink;
+}
+
+.column {
+  &.info {
+    padding-right: 2px;
+  }
+
+  &.msg {
+    padding-left: 2px;
+  }
+}
+
+.info-content {
+  display: flex;
+  flex-wrap: wrap;
+
+  div:not(:last-child) {
+    margin-right: 5px;
+  }
+}
+
+.username {
+  color: #00FF7F;
+  font-weight: bold;
+}
+
+.badge {
+  padding: 0 2px;
+  vertical-align: text-bottom;
 }
 </style>
