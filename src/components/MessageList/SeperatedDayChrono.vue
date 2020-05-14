@@ -114,7 +114,7 @@ export default {
   &.msg {
     padding-left: 2px;
 
-    @media only screen and (max-width: 768px) {
+    @media only screen and (max-width: $tablet) {
       padding-left: 12px;
     }
   }
