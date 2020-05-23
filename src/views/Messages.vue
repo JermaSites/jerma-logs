@@ -1,44 +1,44 @@
 <template>
   <div class="container">
-    <div class="section">
-      <nav class="breadcrumb level" style="margin-bottom: 3rem" aria-label="breadcrumbs">
-        <ul class="level-left">
-          <li>
-            <router-link
-              :to="{ name: 'Home' }"
-            >
-              Home
-            </router-link>
-          </li>
-          <li class="is-active"><a href="#" aria-current="page">{{ month }} {{ year }}</a></li>
-        </ul>
-        <div class="level-right">
-          <b-button
-            type="is-light"
-            icon-left="sort-variant"
-            outlined
-            @click="toggleSort"
-          ></b-button>
-
-          <b-button
-            type="is-light"
-            icon-left="cog"
-            outlined
-            @click="show = true"
-          ></b-button>
-
-          <b-modal
-            :active.sync="show"
-            has-modal-card
-            trap-focus
-            :destroy-on-hide="false"
-            aria-role="dialog"
-            aria-modal
+    <nav class="breadcrumb level settings" style="margin: 0;" aria-label="breadcrumbs">
+      <ul class="level-left">
+        <li>
+          <router-link
+            :to="{ name: 'Home' }"
           >
-            <SettingsModal @saved="layout = $event" />
-          </b-modal>
-        </div>
-      </nav>
+            Home
+          </router-link>
+        </li>
+        <li class="is-active"><a href="#" aria-current="page">{{ month }} {{ year }}</a></li>
+      </ul>
+      <div class="level-right">
+        <b-button
+          type="is-light"
+          icon-left="sort-variant"
+          outlined
+          @click="toggleSort"
+        ></b-button>
+
+        <b-button
+          type="is-light"
+          icon-left="cog"
+          outlined
+          @click="show = true"
+        ></b-button>
+
+        <b-modal
+          :active.sync="show"
+          has-modal-card
+          trap-focus
+          :destroy-on-hide="false"
+          aria-role="dialog"
+          aria-modal
+        >
+          <SettingsModal @saved="layout = $event" />
+        </b-modal>
+      </div>
+    </nav>
+    <div class="section" style="padding-top: 15px">
       <MessageList
         :year="year"
         :month="month"
@@ -92,3 +92,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.settings {
+  position: sticky;
+  padding: 1rem;
+  top: 0;
+  background: $secondary
+}
+</style>
