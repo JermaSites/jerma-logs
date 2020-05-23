@@ -76,6 +76,10 @@ export default {
   methods: {
     toggleSort () {
       this.sort = this.sort === 'desc' ? 'asc' : 'desc'
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      })
     }
   },
   watch: {
