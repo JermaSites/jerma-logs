@@ -13,7 +13,7 @@
     "axios": "^0.19.2",
     "buefy": "^0.8.20",
     "core-js": "^3.6.4",
-    "firebase": "^7.14.6",
+    "firebase": "^7.15.0",
     "moment": "^2.26.0",
     "moment-timezone": "^0.5.31",
     "vue": "^2.6.11",
