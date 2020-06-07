@@ -30,7 +30,7 @@ export default {
 
       // eslint-disable-next-line no-unmodified-loop-condition
       while (endDate > interim || interim.format('M') === endDate.format('M')) {
-        timeValues.push({
+        timeValues.unshift({
           year: interim.format('YYYY'),
           month: interim.format('MMMM')
         })
