@@ -37,7 +37,7 @@ export default {
         const firstLocationEnd = +firstLocation.split('-')[1] + 1
 
         const emoteURL = `${url}/${emoteID}/1.0`
-        const img = `<img src="${emoteURL}" style="vertical-align: text-bottom" data-secret="${this.secret}">`
+        const img = `<img src="${emoteURL}" style="vertical-align: middle" data-secret="${this.secret}">`
 
         const emoteName = message.substring(firstLocationStart, firstLocationEnd)
         msg.message = msg.message.split(emoteName).join(img)
@@ -51,7 +51,7 @@ export default {
       const emotes = [...globalEmotes, ...channelEmotes]
       emotes.forEach(emote => {
         const emoteURL = urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '1x')
-        const img = `<img src="${emoteURL}" style="vertical-align: text-bottom" data-secret="${this.secret}">`
+        const img = `<img src="${emoteURL}" style="vertical-align: middle" data-secret="${this.secret}">`
         msg.message = msg.message.split(emote.code).join(img)
       })
       return msg
