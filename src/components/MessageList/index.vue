@@ -10,6 +10,9 @@
         </div>
       </div>
     </div>
+    <div v-else-if="!messages">
+      <h1 class="title is-1 has-text-white">No Messages Yet!</h1>
+    </div>
     <div v-else>
       <component :is="layout" :messages="sortedMessages" />
     </div>
@@ -53,6 +56,7 @@ export default {
   },
   computed: {
     sortedMessages () {
+      if (!this.messages) return []
       let msgs = JSON.parse(JSON.stringify(this.messages.messages))
       msgs = msgs
         .filter(msg => msg.username === process.env.VUE_APP_USERNAME)
