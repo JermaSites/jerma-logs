@@ -13,15 +13,15 @@
     "axios": "^0.19.2",
     "buefy": "^0.8.20",
     "core-js": "^3.6.4",
-    "firebase": "^7.15.0",
-    "moment": "^2.26.0",
+    "firebase": "^7.15.5",
+    "moment": "^2.27.0",
     "moment-timezone": "^0.5.31",
     "vue": "^2.6.11",
     "vue-linkify": "^1.0.1",
     "vue-meta": "^2.4.0",
-    "vue-router": "^3.3.2",
+    "vue-router": "^3.3.4",
     "vuefire": "^2.2.2",
-    "vuex": "^3.4.0"
+    "vuex": "^3.5.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",
@@ -32,7 +32,7 @@
     "@vue/eslint-config-standard": "^5.1.2",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
-    "eslint-plugin-import": "^2.21.2",
+    "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
