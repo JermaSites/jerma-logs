@@ -10,7 +10,7 @@
         </div>
       </div>
     </div>
-    <div v-else-if="!messages">
+    <div v-else-if="sortedMessages.length <= 0">
       <h1 class="title is-1 has-text-white">No Messages Yet!</h1>
     </div>
     <div v-else>
@@ -21,6 +21,9 @@
 
 <script>
 import { db } from '@/db'
+const sleep = (milliseconds) => {
+  return new Promise(resolve => setTimeout(resolve, milliseconds))
+}
 
 export default {
   name: 'MessageList',
@@ -71,6 +74,7 @@ export default {
       const query = db.collection('messagesByMonth').doc(`${this.month}-${this.year}`)
 
       await this.$bind('messages', query)
+      await sleep(300)
     } catch (error) {
       console.error(error)
     } finally {
