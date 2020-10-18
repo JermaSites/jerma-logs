@@ -12,30 +12,32 @@
         <li class="is-active"><a href="#" aria-current="page">{{ month }} {{ year }}</a></li>
       </ul>
       <div class="level-right">
-        <b-button
-          type="is-light"
-          icon-left="sort-variant"
-          outlined
-          @click="toggleSort"
-        ></b-button>
+        <div class="buttons has-addons">
+          <b-button
+            type="is-light"
+            icon-left="sort-variant"
+            outlined
+            @click="toggleSort"
+          ></b-button>
 
-        <b-button
-          type="is-light"
-          icon-left="cog"
-          outlined
-          @click="show = true"
-        ></b-button>
+          <b-button
+            type="is-light"
+            icon-left="cog"
+            outlined
+            @click="show = true"
+          ></b-button>
 
-        <b-modal
-          :active.sync="show"
-          has-modal-card
-          trap-focus
-          :destroy-on-hide="false"
-          aria-role="dialog"
-          aria-modal
-        >
-          <SettingsModal @saved="layout = $event" />
-        </b-modal>
+          <b-modal
+            :active.sync="show"
+            has-modal-card
+            trap-focus
+            :destroy-on-hide="false"
+            aria-role="dialog"
+            aria-modal
+          >
+            <SettingsModal @saved="layout = $event" />
+          </b-modal>
+        </div>
       </div>
     </nav>
     <div class="section" style="padding-top: 15px">
