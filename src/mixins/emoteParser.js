@@ -52,7 +52,8 @@ export default {
       emotes.forEach(emote => {
         const emoteURL = urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '1x')
         const img = `<img src="${emoteURL}" style="vertical-align: middle" data-secret="${this.secret}">`
-        msg.message = msg.message.split(emote.code).join(img)
+        const regex = new RegExp(`(?<=^|\\s)${emote.code}(?=$|\\s)`, 'g')
+        msg.message = msg.message.split(regex).join(img)
       })
       return msg
     }

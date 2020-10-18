@@ -157,17 +157,6 @@
       }
     },
     {
-      "id": "5e20fcb288e62a5f14dca2be",
-      "code": "jermaOtto",
-      "imageType": "png",
-      "user": {
-        "id": "5c61f9cf1cbe1220311798ef",
-        "name": "opsternarwhallover",
-        "displayName": "OpsterNarwhalLover",
-        "providerId": "67912480"
-      }
-    },
-    {
       "id": "5ec1e876ec17d81685a542d8",
       "code": "jermaPls",
       "imageType": "gif",
@@ -236,6 +225,17 @@
     {
       "id": "5f5272e768d9d86c020dd15f",
       "code": "jermaSlugPog",
+      "imageType": "png",
+      "user": {
+        "id": "5c61f9cf1cbe1220311798ef",
+        "name": "opsternarwhallover",
+        "displayName": "OpsterNarwhalLover",
+        "providerId": "67912480"
+      }
+    },
+    {
+      "id": "5e20fcb288e62a5f14dca2be",
+      "code": "jermaOtto",
       "imageType": "png",
       "user": {
         "id": "5c61f9cf1cbe1220311798ef",
