@@ -70,15 +70,11 @@ export default {
   async created () {
     try {
       this.loading = true
-
-      const query = db.collection('messagesByMonth').doc(`${this.month}-${this.year}`)
-
-      await this.$bind('messages', query)
+      await this.$bind('messages', db.collection('messagesByMonth').doc(`${this.month}-${this.year}`))
       await sleep(300)
+      this.loading = false
     } catch (error) {
       console.error(error)
-    } finally {
-      this.loading = false
     }
   }
 }
