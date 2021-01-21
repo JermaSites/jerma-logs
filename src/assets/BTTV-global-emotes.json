@@ -224,6 +224,12 @@
       "imageType": "gif"
     },
     {
+      "id": "566decae65dbbdab32ec0699",
+      "channel": "nightdev",
+      "code": "FeelsSnowyMan",
+      "imageType": "png"
+    },
+    {
       "id": "567b00c61ddbe1786688a633",
       "channel": "polecat",
       "code": "LuL",
@@ -311,6 +317,12 @@
       "id": "5e76d399d6581c3724c0f0b8",
       "channel": "night",
       "code": "cvMask",
+      "imageType": "png"
+    },
+    {
+      "id": "5ffdf28dc96152314ad63960",
+      "channel": "sauce",
+      "code": "DogChamp",
       "imageType": "png"
     }
   ]
