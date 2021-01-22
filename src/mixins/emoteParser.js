@@ -1,9 +1,9 @@
-import bttvChannel from '@/assets/BTTV-channel-emotes.json'
-import bttvGlobal from '@/assets/BTTV-global-emotes.json'
 import { randomBytes } from 'crypto'
+import { mapState } from 'vuex'
 
 export default {
   computed: {
+    ...mapState(['globalEmotes', 'channelEmotes']),
     secret () {
       return randomBytes(48).toString('hex')
     }
@@ -45,12 +45,10 @@ export default {
       return msg
     },
     parseBTTVEmotes (msg) {
-      const { urlTemplate } = bttvGlobal
-      const globalEmotes = bttvGlobal.emotes
-      const channelEmotes = bttvChannel.emotes
-      const emotes = [...globalEmotes, ...channelEmotes]
+      const urlTemplate = '//cdn.betterttv.net/emote/{{id}}/1x'
+      const emotes = [...this.globalEmotes, ...this.channelEmotes]
       emotes.forEach(emote => {
-        const emoteURL = urlTemplate.replace('{{id}}', emote.id).replace('{{image}}', '1x')
+        const emoteURL = urlTemplate.replace('{{id}}', emote.id)
         const img = `<img src="${emoteURL}" style="vertical-align: middle" data-secret="${this.secret}">`
         const regex = new RegExp(`(?<=^|\\s)${emote.code}(?=$|\\s)`, 'g')
         msg.message = msg.message.split(regex).join(img)

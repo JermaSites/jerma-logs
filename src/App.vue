@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   components: {
     TheHeader: () => import('@/components/TheHeader')
@@ -39,6 +41,12 @@ export default {
         { itemprop: 'image', content: this.image }
       ]
     }
+  },
+  created () {
+    this.fetchEmotes().catch(console.error)
+  },
+  methods: {
+    ...mapActions(['fetchEmotes'])
   }
 }
 </script>
