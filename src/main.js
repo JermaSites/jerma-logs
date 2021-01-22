@@ -9,6 +9,7 @@ import linkify from 'vue-linkify'
 import moment from 'moment-timezone'
 import Meta from 'vue-meta'
 import axios from 'axios'
+import './registerServiceWorker'
 
 Vue.prototype.$axios = axios
 Vue.prototype.$moment = moment
