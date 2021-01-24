@@ -5,7 +5,6 @@ admin.initializeApp()
 
 exports.sendNotification = functions.firestore.document('/messages/{documentId}')
   .onCreate(async (snap, context) => {
-    if (context.username !== 'jerma985') return null
     const querySnapshot = await admin.firestore().collection('subscribers').get()
     const messageDoc = await admin.firestore().collection('messages').doc(context.params.documentId).get()
     const messsageData = messageDoc.data()
