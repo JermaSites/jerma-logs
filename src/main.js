@@ -3,14 +3,13 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import '@mdi/font/css/materialdesignicons.css'
-import { Button, Dropdown, Field, Icon, Modal, Select, Skeleton } from 'buefy'
+import { Button, Dropdown, Field, Icon, Modal, Select, Skeleton, Switch } from 'buefy'
 import { firestorePlugin } from 'vuefire'
 import linkify from 'vue-linkify'
 import moment from 'moment-timezone'
 import Meta from 'vue-meta'
 import axios from 'axios'
 import './registerServiceWorker'
-import './db'
 
 Vue.prototype.$axios = axios
 Vue.prototype.$moment = moment
@@ -28,6 +27,7 @@ Vue.use(Icon)
 Vue.use(Modal)
 Vue.use(Select)
 Vue.use(Skeleton)
+Vue.use(Switch)
 
 Vue.config.productionTip = false
 

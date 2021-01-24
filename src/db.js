@@ -25,24 +25,7 @@ firebase.firestore().enablePersistence()
     }
   })
 
-const messaging = firebase.messaging()
-
-messaging.getToken({ vapidKey: 'BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8' })
-  .then(currentToken => {
-    if (currentToken) {
-      console.log('token found', currentToken)
-      db.collection('subscribers').doc(currentToken).set({ token: currentToken })
-    } else {
-      console.log('No registration token available. Request permission to generate one.')
-    }
-  }).catch(error => {
-    console.error('An error occurred while retrieving token. ', error)
-  })
-
-messaging.onMessage((payload) => {
-  console.log('Message received. ', payload)
-  // ...
-})
+export const messaging = firebase.messaging()
 
 // Export types that exists in Firestore
 // This is not always necessary, but it's used in other examples

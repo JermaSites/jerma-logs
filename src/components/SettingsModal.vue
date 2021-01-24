@@ -16,6 +16,9 @@
           </option>
         </b-select>
       </b-field>
+      <b-field>
+        <b-switch v-model="notifications">Notifications</b-switch>
+      </b-field>
     </section>
     <footer class="modal-card-foot">
       <button class="button is-secondary" @click="saveChanges">Save changes</button>
@@ -25,10 +28,13 @@
 </template>
 
 <script>
+import { db, messaging } from '@/db'
+
 export default {
   name: 'SettingsModal',
   data () {
     return {
+      notifications: false,
       layout: 'MessageListSimple',
       layouts: [
         {
@@ -59,6 +65,32 @@ export default {
   created () {
     if (localStorage.layout) {
       this.layout = localStorage.layout
+    }
+
+    switch (Notification.permission) {
+      case 'default':
+      case 'denied':
+        this.notifications = false
+        break
+      case 'granted':
+        this.notifications = true
+    }
+  },
+  watch: {
+    notifications (value) {
+      if (value) {
+        messaging.getToken({ vapidKey: 'BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8' })
+          .then(token => {
+            console.log('token', token)
+            db.collection('subscribers').doc(token).set({ token })
+          })
+          .catch(err => {
+            console.error('Unable to get permission to notify', err)
+            this.notifications = false
+          })
+      } else {
+        // unsub from notifications
+      }
     }
   }
 }
