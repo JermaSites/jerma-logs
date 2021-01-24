@@ -31,6 +31,7 @@ messaging.getToken({ vapidKey: 'BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslr
   .then(currentToken => {
     if (currentToken) {
       console.log('token found', currentToken)
+      db.collection('subscribers').doc(currentToken).set({ token: currentToken })
     } else {
       console.log('No registration token available. Request permission to generate one.')
     }

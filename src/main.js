@@ -10,6 +10,7 @@ import moment from 'moment-timezone'
 import Meta from 'vue-meta'
 import axios from 'axios'
 import './registerServiceWorker'
+import './db'
 
 Vue.prototype.$axios = axios
 Vue.prototype.$moment = moment

@@ -1,0 +1,78 @@
+[debug] [2021-01-24T03:49:37.988Z] ----------------------------------------------------------------------
+[debug] [2021-01-24T03:49:37.990Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\ijhhu\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions:sendNotification
+[debug] [2021-01-24T03:49:37.990Z] CLI Version:   9.2.2
+[debug] [2021-01-24T03:49:37.990Z] Platform:      win32
+[debug] [2021-01-24T03:49:37.990Z] Node Version:  v14.15.1
+[debug] [2021-01-24T03:49:37.991Z] Time:          Sat Jan 23 2021 22:49:37 GMT-0500 (Eastern Standard Time)
+[debug] [2021-01-24T03:49:37.991Z] ----------------------------------------------------------------------
+[debug] [2021-01-24T03:49:37.991Z] 
+[debug] [2021-01-24T03:49:37.998Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2021-01-24T03:49:37.998Z] > authorizing via signed-in user
+[debug] [2021-01-24T03:49:37.998Z] [iam] checking project jerma-logs for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2021-01-24T03:49:38.001Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/jerma-logs:testIamPermissions  
+ {"permissions":["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]}
+[debug] [2021-01-24T03:49:38.314Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 24 Jan 2021 03:49:38 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=197","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-01-24T03:49:38.315Z] >>> HTTP REQUEST POST https://iam.googleapis.com/v1/projects/jerma-logs/serviceAccounts/jerma-logs@appspot.gserviceaccount.com:testIamPermissions  
+ {"permissions":["iam.serviceAccounts.actAs"]}
+[debug] [2021-01-24T03:49:38.507Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 24 Jan 2021 03:49:38 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] 
+[info] === Deploying to 'jerma-logs'...
+[info] 
+[info] i  deploying functions 
+[debug] [2021-01-24T03:49:40.828Z] > [functions] package.json contents: {
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
+  "scripts": {
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "engines": {
+    "node": "12"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^9.2.0",
+    "firebase-functions": "^3.11.0"
+  },
+  "devDependencies": {
+    "firebase-functions-test": "^0.2.0"
+  },
+  "private": true
+}
+[info] i  functions: ensuring required API cloudfunctions.googleapis.com is enabled... 
+[info] i  functions: ensuring required API cloudbuild.googleapis.com is enabled... 
+[debug] [2021-01-24T03:49:42.036Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/jerma-logs/services/cloudfunctions.googleapis.com  
+ 
+[debug] [2021-01-24T03:49:42.036Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/jerma-logs/services/runtimeconfig.googleapis.com  
+ 
+[debug] [2021-01-24T03:49:42.036Z] >>> HTTP REQUEST GET https://serviceusage.googleapis.com/v1/projects/jerma-logs/services/cloudbuild.googleapis.com  
+ 
+[debug] [2021-01-24T03:49:42.437Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 24 Jan 2021 03:49:42 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-01-24T03:49:42.453Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 24 Jan 2021 03:49:42 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] +  functions: required API cloudbuild.googleapis.com is enabled 
+[debug] [2021-01-24T03:49:42.462Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 24 Jan 2021 03:49:42 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] +  functions: required API cloudfunctions.googleapis.com is enabled 
+[debug] [2021-01-24T03:49:42.464Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/jerma-logs/adminSdkConfig  
+ 
+[debug] [2021-01-24T03:49:42.695Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 24 Jan 2021 03:49:42 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] i  functions: preparing functions directory for uploading... 
+[debug] [2021-01-24T03:49:42.696Z] >>> HTTP REQUEST GET https://runtimeconfig.googleapis.com/v1beta1/projects/jerma-logs/configs  
+ 
+[debug] [2021-01-24T03:50:03.725Z] FirebaseError: Server Error. connect ETIMEDOUT 142.250.64.170:443
+[info] i  functions: packaged functions (21.15 KB) for uploading 
+[debug] [2021-01-24T03:50:03.864Z] >>> HTTP REQUEST GET https://cloudfunctions.googleapis.com/v1/projects/jerma-logs/locations/-/functions  
+ 
+[debug] [2021-01-24T03:50:04.485Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 24 Jan 2021 03:50:04 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-01-24T03:50:04.487Z] >>> HTTP REQUEST POST https://cloudfunctions.googleapis.com/v1/projects/jerma-logs/locations/us-central1/functions:generateUploadUrl  
+ 
+[debug] [2021-01-24T03:50:04.869Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Sun, 24 Jan 2021 03:50:04 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-T051=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2021-01-24T03:50:04.870Z] >>> HTTP REQUEST PUT https://storage.googleapis.com/gcf-upload-us-central1-dc1618f8-d3a6-487b-b3b6-898e63739b90/f05820d2-a87b-43e2-a007-9ab96c796c2e.zip?GoogleAccessId=service-123570718331@gcf-admin-robot.iam.gserviceaccount.com&Expires=1611462004&Signature=fydwV9dzuVWnfVtHnTjLBgrJ7j7re0vJh1AuF%2FyEAnTst95bmNOGXgDquBhPX7xmq5PAT5XKAKD41Xvzx2PWhXlMXGXkmcakvqPxUI5h5FI7yj2ryuSTB4se9EtbW9QOwcfGkiSgj10fSWVqGiBlCOA1WILQVpBMevgKfgt7rc9ZTyeJAFJZ1mMwfBgpH5MiXhprxdDxI4YF7PeHAV0Q8lrktytq5VmiO5D5DZLD43m1i062qMMit%2F7gYWL7%2BTjedsgBXDFCjKQSEZ3BoEZj8OcihlGtuItpnlnWHvjMAdiRKbSpRGGuflXrAvfic6JVUBjblKz3MGthsT%2FICOUTJA%3D%3D  
+ <request body omitted>
+[warn] !  functions: Upload Error: Server Error. connect ETIMEDOUT 142.250.64.144:443 
+[debug] [2021-01-24T03:50:26.012Z] Error: connect ETIMEDOUT 142.250.64.144:443
+    at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1146:16)
+[error] 
+[error] Error: Server Error. connect ETIMEDOUT 142.250.64.144:443
