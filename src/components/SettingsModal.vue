@@ -17,7 +17,7 @@
         </b-select>
       </b-field>
       <b-field>
-        <b-switch v-model="notifications">Notifications</b-switch>
+        <b-switch v-model="notifications" @input="notificationSettings" :disabled="isNotificationPermissionDenied">Notifications</b-switch>
       </b-field>
     </section>
     <footer class="modal-card-foot">
@@ -34,6 +34,7 @@ export default {
   name: 'SettingsModal',
   data () {
     return {
+      notificationPermission: null,
       notifications: false,
       layout: 'MessageListSimple',
       layouts: [
@@ -55,43 +56,54 @@ export default {
       ]
     }
   },
+  computed: {
+    isNotificationPermissionDenied () {
+      return this.notificationPermission === 'denied'
+    },
+    hasNotificationPermission () {
+      const permission = this.notificationPermission
+      if (permission === 'default' || permission === 'denied') return false
+
+      return true
+    }
+  },
   methods: {
     saveChanges () {
       localStorage.layout = this.layout
       this.$emit('saved', this.layout)
       this.$parent.close()
-    }
-  },
-  created () {
-    if (localStorage.layout) {
-      this.layout = localStorage.layout
-    }
-
-    switch (Notification.permission) {
-      case 'default':
-      case 'denied':
-        this.notifications = false
-        break
-      case 'granted':
-        this.notifications = true
-    }
-  },
-  watch: {
-    notifications (value) {
+    },
+    notificationSettings (value) {
       if (value) {
         messaging.getToken({ vapidKey: 'BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8' })
           .then(token => {
             console.log('token', token)
             db.collection('subscribers').doc(token).set({ token })
+            this.notificationPermission = 'granted'
           })
           .catch(err => {
             console.error('Unable to get permission to notify', err)
             this.notifications = false
+            this.notificationPermission = 'denied'
           })
       } else {
-        // unsub from notifications
+        messaging.deleteToken()
+          .then(() => {
+            console.log('Token deleted')
+          })
+          .catch(err => {
+            console.error('Unable to delete token', err)
+          })
       }
     }
+  },
+  async created () {
+    if (localStorage.layout) {
+      this.layout = localStorage.layout
+    }
+
+    this.notificationPermission = Notification.permission
+    this.notifications = this.hasNotificationPermission
   }
 }
 </script>

@@ -1,6 +1,6 @@
-// // Give the service worker access to Firebase Messaging.
-// // Note that you can only use Firebase Messaging here. Other Firebase libraries
-// // are not available in the service worker.
+// Give the service worker access to Firebase Messaging.
+// Note that you can only use Firebase Messaging here. Other Firebase libraries
+// are not available in the service worker.
 importScripts('https://www.gstatic.com/firebasejs/8.2.4/firebase-app.js')
 importScripts('https://www.gstatic.com/firebasejs/8.2.4/firebase-messaging.js')
 
@@ -22,26 +22,26 @@ firebase.initializeApp(firebaseConfig)
 // messages.
 const messaging = firebase.messaging()
 
-workbox.core.setCacheNameDetails({ prefix: 'jerma-logs' })
-
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting()
-  }
-})
-
 // messaging.onBackgroundMessage((payload) => {
 //   console.log('[firebase-messaging-sw.js] Received background message ', payload)
 //   // Customize notification here
 //   const notificationTitle = 'Background Message Title'
 //   const notificationOptions = {
-//     body: 'Background Message body.',
-//     icon: '/firebase-logo.png'
+//     body: 'Background Message body.'
 //   }
 
 //   self.registration.showNotification(notificationTitle,
 //     notificationOptions)
 // })
+
+workbox.core.setCacheNameDetails({ prefix: 'jerma-logs' })
+
+self.addEventListener('message', (event) => {
+  console.log('self message event (I don\'t know what this is?')
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting()
+  }
+})
 
 /**
  * The workboxSW.precacheAndRoute() method efficiently caches and responds to
