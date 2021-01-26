@@ -17,7 +17,20 @@
         </b-select>
       </b-field>
       <b-field>
-        <b-switch v-model="notifications" @input="notificationSettings" :disabled="isNotificationPermissionDenied">Notifications</b-switch>
+        <b-tooltip
+          type="is-danger"
+          multilined
+          :label="notificationTooltipText"
+          position="is-right"
+        >
+          <b-switch
+            v-model="notifications"
+            @input="notificationSettings"
+            :disabled="isNotificationPermissionDenied"
+          >
+            Notifications
+          </b-switch>
+        </b-tooltip>
       </b-field>
     </section>
     <footer class="modal-card-foot">
@@ -57,6 +70,12 @@ export default {
     }
   },
   computed: {
+    notificationTooltipText () {
+      if (this.isNotificationPermissionDenied) {
+        return 'You must allow notifications for this page before enabling'
+      }
+      return 'Get a notification when Jerma sends a message in twitch chat'
+    },
     isNotificationPermissionDenied () {
       return this.notificationPermission === 'denied'
     },
@@ -80,6 +99,7 @@ export default {
             console.log('token', token)
             db.collection('subscribers').doc(token).set({ token })
             this.notificationPermission = 'granted'
+            localStorage.token = token
           })
           .catch(err => {
             console.error('Unable to get permission to notify', err)
@@ -87,6 +107,8 @@ export default {
             this.notificationPermission = 'denied'
           })
       } else {
+        localStorage.removeItem('token')
+        if (this.isNotificationPermissionDenied) return
         messaging.deleteToken()
           .then(() => {
             console.log('Token deleted')
@@ -97,13 +119,14 @@ export default {
       }
     }
   },
-  async created () {
+  created () {
     if (localStorage.layout) {
       this.layout = localStorage.layout
     }
 
     this.notificationPermission = Notification.permission
-    this.notifications = this.hasNotificationPermission
+    this.notifications = this.hasNotificationPermission && !!localStorage.token
+    if (!this.hasNotificationPermission) localStorage.removeItem('token')
   }
 }
 </script>

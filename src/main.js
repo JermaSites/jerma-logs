@@ -3,7 +3,17 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import '@mdi/font/css/materialdesignicons.css'
-import { Button, Dropdown, Field, Icon, Modal, Select, Skeleton, Switch } from 'buefy'
+import {
+  Button,
+  Dropdown,
+  Field,
+  Icon,
+  Modal,
+  Select,
+  Skeleton,
+  Switch,
+  Tooltip
+} from 'buefy'
 import { firestorePlugin } from 'vuefire'
 import linkify from 'vue-linkify'
 import moment from 'moment-timezone'
@@ -28,6 +38,7 @@ Vue.use(Modal)
 Vue.use(Select)
 Vue.use(Skeleton)
 Vue.use(Switch)
+Vue.use(Tooltip)
 
 Vue.config.productionTip = false
 
