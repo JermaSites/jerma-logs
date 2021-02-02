@@ -6,8 +6,8 @@ admin.initializeApp()
 exports.sendNotification = functions.firestore.document('/messages/{documentId}')
   .onCreate(async (snap, context) => {
     const querySnapshot = await admin.firestore().collection('subscribers').get()
-    const messageDoc = await admin.firestore().collection('messages').doc(context.params.documentId).get()
-    const messsageData = messageDoc.data()
+    // const messageDoc = await admin.firestore().collection('messages').doc(context.params.documentId).get()
+    const messsageData = snap.data()
 
     // const messagesSnap = await admin.firestore().collection('messages').orderBy('sentAt', 'desc').limit(2).get()
     // const messages = []
