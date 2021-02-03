@@ -20,19 +20,21 @@ firebase.initializeApp(firebaseConfig)
 
 // Retrieve an instance of Firebase Messaging so that it can handle background
 // messages.
-const messaging = firebase.messaging()
+if (firebase.messaging.isSupported()) {
+  const messaging = firebase.messaging()
 
-// messaging.onBackgroundMessage((payload) => {
-//   console.log('[firebase-messaging-sw.js] Received background message ', payload)
-//   // Customize notification here
-//   const notificationTitle = 'Background Message Title'
-//   const notificationOptions = {
-//     body: 'Background Message body.'
-//   }
+  // messaging.onBackgroundMessage((payload) => {
+  //   console.log('[firebase-messaging-sw.js] Received background message ', payload)
+  //   // Customize notification here
+  //   const notificationTitle = 'Background Message Title'
+  //   const notificationOptions = {
+  //     body: 'Background Message body.'
+  //   }
 
-//   self.registration.showNotification(notificationTitle,
-//     notificationOptions)
-// })
+  //   self.registration.showNotification(notificationTitle,
+  //     notificationOptions)
+  // })
+}
 
 workbox.core.setCacheNameDetails({ prefix: 'jerma-logs' })
 

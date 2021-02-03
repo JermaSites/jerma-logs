@@ -16,7 +16,7 @@
           </option>
         </b-select>
       </b-field>
-      <b-field>
+      <b-field v-if="isMessagingSupported">
         <b-tooltip
           type="is-danger"
           multilined
@@ -70,6 +70,9 @@ export default {
     }
   },
   computed: {
+    isMessagingSupported () {
+      return !!messaging
+    },
     notificationTooltipText () {
       if (this.isNotificationPermissionDenied) {
         return 'You must allow notifications for this page before enabling'
@@ -124,9 +127,11 @@ export default {
       this.layout = localStorage.layout
     }
 
-    this.notificationPermission = Notification.permission
-    this.notifications = this.hasNotificationPermission && !!localStorage.token
-    if (!this.hasNotificationPermission) localStorage.removeItem('token')
+    if (this.isMessagingSupported) {
+      this.notificationPermission = Notification.permission
+      this.notifications = this.hasNotificationPermission && !!localStorage.token
+      if (!this.hasNotificationPermission) localStorage.removeItem('token')
+    }
   }
 }
 </script>

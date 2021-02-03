@@ -25,12 +25,17 @@ firebase.firestore().enablePersistence()
     }
   })
 
-export const messaging = firebase.messaging()
+let messaging
+if (firebase.messaging.isSupported()) {
+  messaging = firebase.messaging()
 
-messaging.onMessage((payload) => {
-  console.log('Message received. ', payload)
-  // ...
-})
+  messaging.onMessage((payload) => {
+    console.log('Message received. ', payload)
+    // ...
+  })
+}
+
+export { messaging }
 
 // Export types that exists in Firestore
 // This is not always necessary, but it's used in other examples
