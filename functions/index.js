@@ -31,9 +31,10 @@ exports.sendNotification = functions.firestore.document('/messages/{documentId}'
     // Notification details.
     const payload = {
       notification: {
-        title: 'Jerma is in Twitch chat now!',
+        title: 'Jerma in Twitch chat',
         body: messsageData.message,
-        tag: 'jerma'
+        icon: 'https://logs.jerma.io/logo.png',
+        badge: 'https://logs.jerma.io/logo.png'
       }
     }
 
