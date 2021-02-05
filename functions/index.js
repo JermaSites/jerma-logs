@@ -34,7 +34,8 @@ exports.sendNotification = functions.firestore.document('/messages/{documentId}'
         title: 'Jerma in Twitch chat',
         body: messsageData.message,
         icon: 'https://logs.jerma.io/logo.png',
-        badge: 'https://logs.jerma.io/logo.png'
+        badge: 'https://logs.jerma.io/logo.png',
+        silent: true
       }
     }
 
