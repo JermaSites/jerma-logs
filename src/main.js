@@ -1,3 +1,8 @@
+// Transpiler for older browsers
+import 'core-js/stable'
+// optional but required for transforming generator fns.
+import 'regenerator-runtime/runtime'
+
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
