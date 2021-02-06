@@ -1,4 +1,5 @@
 module.exports = {
+  useBuiltIns: 'entry',
   pwa: {
     name: 'Jerma Logs',
     themeColor: '#0afc9e',
