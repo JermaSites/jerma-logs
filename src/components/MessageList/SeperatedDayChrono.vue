@@ -7,9 +7,7 @@
             <span class="has-text-grey-light">[{{ msg.sentAt }}]</span>
           </div>
           <div>
-            <img class="badge" src="@/assets/badge-1.png">
-            <img class="badge" src="@/assets/badge-2.png">
-            <img class="badge" src="@/assets/badge-3.png">
+            <img v-for="badge in msg.badgeURLs" :key="badge" class="badge" :src="badge">
             <span class="username">{{ msg.displayName }}:</span>
           </div>
         </div>
