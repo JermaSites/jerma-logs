@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import { db } from '@/db'
 const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -58,12 +59,17 @@ export default {
     }
   },
   computed: {
+    ...mapState(['allBadges']),
     sortedMessages () {
       if (!this.messages) return []
       let msgs = JSON.parse(JSON.stringify(this.messages.messages))
       msgs = msgs
         .filter(msg => msg.username === process.env.VUE_APP_USERNAME)
         .sort((a, b) => +b.sentAt - +a.sentAt)
+        .map(msg => {
+          msg.badgeURLs = this.getBadgesForMessage(msg)
+          return msg
+        })
       return this.sort === 'desc' ? msgs : msgs.reverse()
     }
   },
@@ -75,6 +81,19 @@ export default {
       this.loading = false
     } catch (error) {
       console.error(error)
+    }
+  },
+  methods: {
+    getBadgesForMessage (message) {
+      const sortedKeys = Object.keys(message.badges).sort().reduce((prev, next) => {
+        prev[next] = message.badges[next]
+        return prev
+      }, {})
+      const badges = Object.entries(sortedKeys)
+      return badges.map(badge => {
+        const badgeURL = this.allBadges.badge_sets[badge[0]].versions[badge[1]].image_url_1x
+        return badgeURL
+      })
     }
   }
 }
