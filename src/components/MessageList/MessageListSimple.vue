@@ -7,9 +7,10 @@
             <span class="has-text-grey-light">[{{ msg.sentAt }}]</span>
           </div>
           <div>
-            <img class="badge" src="@/assets/badge-1.png">
+            <img v-for="badge in msg.badgeURLs" :key="badge" class="badge" :src="badge">
+            <!-- <img class="badge" src="@/assets/badge-1.png">
             <img class="badge" src="@/assets/badge-2.png">
-            <img class="badge" src="@/assets/badge-3.png">
+            <img class="badge" src="@/assets/badge-3.png"> -->
             <span class="username">{{ msg.displayName }}:</span>
           </div>
         </div>
@@ -31,6 +32,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import emoteParser from '@/mixins/emoteParser'
 export default {
   name: 'MessageListSimple',
@@ -42,17 +44,32 @@ export default {
   },
   mixins: [emoteParser],
   computed: {
+    ...mapState(['allBadges']),
     formattedMessages () {
       const msgs = JSON.parse(JSON.stringify(this.messages))
 
       msgs.forEach(msg => {
         msg.sentAt = this.$moment.tz(+msg.sentAt, this.$moment.tz.guess()).format('YYYY-MM-DD hh:mm:ss A z')
         this.parseEmotes(msg)
+        msg.badgeURLs = this.getBadgesForMessage(msg)
 
         msg.message = msg.message.split(/(?=<img .+>)/)
       })
 
       return msgs
+    }
+  },
+  methods: {
+    getBadgesForMessage (message) {
+      const sortedKeys = Object.keys(message.badges).sort().reduce((prev, next) => {
+        prev[next] = message.badges[next]
+        return prev
+      }, {})
+      const badges = Object.entries(sortedKeys)
+      return badges.map(badge => {
+        const badgeURL = this.allBadges.badge_sets[badge[0]].versions[badge[1]].image_url_1x
+        return badgeURL
+      })
     }
   }
 }

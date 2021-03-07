@@ -44,9 +44,10 @@ export default {
   },
   created () {
     this.fetchEmotes().catch(console.error)
+    this.fetchBadges().catch(console.error)
   },
   methods: {
-    ...mapActions(['fetchEmotes'])
+    ...mapActions(['fetchEmotes', 'fetchBadges'])
   }
 }
 </script>

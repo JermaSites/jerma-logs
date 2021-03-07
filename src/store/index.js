@@ -7,7 +7,10 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     globalEmotes: null,
-    channelEmotes: null
+    channelEmotes: null,
+    globalBadges: null,
+    channelBadges: null,
+    allBadges: null
   },
   mutations: {
     setGlobalEmotes (state, payload) {
@@ -15,6 +18,15 @@ export default new Vuex.Store({
     },
     setChannelEmotes (state, payload) {
       state.channelEmotes = payload
+    },
+    setGlobalBadges (state, payload) {
+      state.globalBadges = payload
+    },
+    setChannelBadges (state, payload) {
+      state.channelBadges = payload
+    },
+    setAllBadges (state, payload) {
+      state.allBadges = payload
     }
   },
   actions: {
@@ -24,6 +36,19 @@ export default new Vuex.Store({
 
       const { data: channelEmotes } = await axios.get('https://api.betterttv.net/3/cached/users/twitch/23936415')
       commit('setChannelEmotes', channelEmotes.sharedEmotes)
+    },
+    async fetchBadges ({ commit }) {
+      const { data: globalBadges } = await axios.get('https://badges.twitch.tv/v1/badges/global/display')
+      commit('setGlobalBadges', globalBadges)
+
+      const { data: channelBadges } = await axios.get('https://badges.twitch.tv/v1/badges/channels/23936415/display')
+      commit('setChannelBadges', channelBadges)
+
+      commit('setAllBadges', {
+        badge_sets: {
+          ...globalBadges.badge_sets, ...channelBadges.badge_sets
+        }
+      })
     }
   },
   modules: {
