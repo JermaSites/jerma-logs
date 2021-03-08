@@ -55,7 +55,7 @@ export default {
       this.code.push(e.key)
       this.code.splice(0, this.code.length - this.pass.length)
 
-      const enteredCode = this.code.join('').toString()
+      const enteredCode = this.code.join('').toString().toLowerCase()
 
       if (enteredCode.includes(this.pass)) {
         this.trotr = !this.trotr
