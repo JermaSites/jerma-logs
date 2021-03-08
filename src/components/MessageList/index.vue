@@ -85,6 +85,7 @@ export default {
   },
   methods: {
     getBadgesForMessage (message) {
+      if (!message.badges) return []
       const sortedKeys = Object.keys(message.badges).sort().reduce((prev, next) => {
         prev[next] = message.badges[next]
         return prev
