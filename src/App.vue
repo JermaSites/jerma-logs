@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{ trotr }">
     <TheHeader />
     <router-view/>
   </div>
@@ -14,6 +14,9 @@ export default {
   },
   data () {
     return {
+      pass: 'trotr',
+      code: [],
+      trotr: false,
       title: 'Jerma Logs',
       description: 'Jerma Twitch Chat Logs',
       url: 'https://jerma-logs.web.app',
@@ -46,6 +49,19 @@ export default {
     this.fetchEmotes().catch(console.error)
     this.fetchBadges().catch(console.error)
   },
+  mounted () {
+    window.addEventListener('keypress', (e) => {
+      e.preventDefault()
+      this.code.push(e.key)
+      this.code.splice(0, this.code.length - this.pass.length)
+
+      const enteredCode = this.code.join('').toString()
+
+      if (enteredCode.includes(this.pass)) {
+        this.trotr = !this.trotr
+      }
+    })
+  },
   methods: {
     ...mapActions(['fetchEmotes', 'fetchBadges'])
   }
@@ -55,5 +71,9 @@ export default {
 <style lang="scss">
 body {
   min-height: 100vh;
+}
+
+.trotr {
+  font-family: "Comic Sans MS", "Comic Sans", cursive;
 }
 </style>
