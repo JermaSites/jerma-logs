@@ -8,7 +8,7 @@
           </div>
           <div>
             <img v-for="badge in msg.badgeURLs" :key="badge" class="badge" :src="badge">
-            <span class="username">{{ msg.displayName }}:</span>
+            <span class="username" :style="{ color: msg.color }">{{ msg.displayName }}:</span>
           </div>
         </div>
       </div>
