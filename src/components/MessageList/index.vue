@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import { db } from '@/db'
 const sleep = (milliseconds) => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
@@ -76,6 +76,8 @@ export default {
   async created () {
     try {
       this.loading = true
+      await this.fetchEmotes()
+      await this.fetchBadges()
       await this.$bind('messages', db.collection('messagesByMonth').doc(`${this.month}-${this.year}`))
       await sleep(300)
       this.loading = false
@@ -84,6 +86,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['fetchEmotes', 'fetchBadges']),
     getBadgesForMessage (message) {
       if (!message.badges) return []
       const sortedKeys = Object.keys(message.badges).sort().reduce((prev, next) => {

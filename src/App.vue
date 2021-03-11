@@ -6,8 +6,6 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-
 export default {
   components: {
     TheHeader: () => import('@/components/TheHeader')
@@ -45,10 +43,6 @@ export default {
       ]
     }
   },
-  created () {
-    this.fetchEmotes().catch(console.error)
-    this.fetchBadges().catch(console.error)
-  },
   mounted () {
     window.addEventListener('keypress', (e) => {
       e.preventDefault()
@@ -61,9 +55,6 @@ export default {
         this.trotr = !this.trotr
       }
     })
-  },
-  methods: {
-    ...mapActions(['fetchEmotes', 'fetchBadges'])
   }
 }
 </script>
