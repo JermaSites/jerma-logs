@@ -89,11 +89,41 @@ export default {
     ...mapActions(['fetchEmotes', 'fetchBadges']),
     getBadgesForMessage (message) {
       if (!message.badges) return []
-      const sortedKeys = Object.keys(message.badges).sort().reduce((prev, next) => {
-        prev[next] = message.badges[next]
-        return prev
-      }, {})
+      const sortedKeys = Object.keys(message.badges)
+        .sort((a, b) => {
+          let aValue
+          let bValue
+          switch (a) {
+            case 'broadcaster':
+              aValue = 0
+              break
+            case 'subscriber':
+              aValue = 1
+              break
+            default:
+              aValue = 2
+              break
+          }
+          switch (b) {
+            case 'broadcaster':
+              bValue = 0
+              break
+            case 'subscriber':
+              bValue = 1
+              break
+            default:
+              bValue = 2
+              break
+          }
+          return aValue - bValue
+        })
+        .reduce((prev, next) => {
+          prev[next] = message.badges[next]
+          return prev
+        }, {})
+
       const badges = Object.entries(sortedKeys)
+
       return badges.map(badge => {
         const badgeURL = this.allBadges.badge_sets[badge[0]].versions[badge[1]].image_url_1x
         return badgeURL
