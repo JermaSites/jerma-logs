@@ -62,7 +62,6 @@ export default {
 <style lang="scss">
 body {
   min-height: 100vh;
-  font-family: "Comic Sans MS", "Comic Sans", cursive;
 }
 
 .trotr {
