@@ -6,25 +6,11 @@ admin.initializeApp()
 exports.sendNotification = functions.firestore.document('/messages/{documentId}')
   .onCreate(async (snap, context) => {
     const querySnapshot = await admin.firestore().collection('subscribers').get()
-    // const messageDoc = await admin.firestore().collection('messages').doc(context.params.documentId).get()
     const messsageData = snap.data()
-
-    // const messagesSnap = await admin.firestore().collection('messages').orderBy('sentAt', 'desc').limit(2).get()
-    // const messages = []
-    // messagesSnap.forEach(msg => {
-    //   messages.push(msg.data())
-    // })
-
-    // const timeSinceLastMessageMillis = parseInt(messages[0].sentAt) - parseInt(messages[1].sentAt)
-    // const timeSinceLastMessageSeconds = timeSinceLastMessageMillis / 1000
-    // const timeSinceLastMessageHours = timeSinceLastMessageSeconds / 3600
-
-    // if (timeSinceLastMessageHours < 1) return null
 
     const tokens = []
     querySnapshot.forEach(doc => {
       const { token } = doc.data()
-      console.log(token)
       tokens.push(token)
     })
 

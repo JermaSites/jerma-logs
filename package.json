@@ -12,10 +12,10 @@
   "dependencies": {
     "@mdi/font": "^5.9.55",
     "axios": "^0.21.1",
-    "buefy": "^0.9.5",
-    "core-js": "^3.10.0",
-    "eslint": "^7.23.0",
-    "firebase": "^8.3.2",
+    "buefy": "^0.9.7",
+    "core-js": "^3.12.0",
+    "eslint": "^7.25.0",
+    "firebase": "^8.5.0",
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.33",
     "register-service-worker": "^1.7.1",
@@ -40,7 +40,7 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-standard": "^4.1.0",
-    "eslint-plugin-vue": "^7.8.0",
+    "eslint-plugin-vue": "^7.9.0",
     "node-sass": "^5.0.0",
     "vue-template-compiler": "^2.6.12"
   }
