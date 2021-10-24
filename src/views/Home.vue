@@ -7,11 +7,12 @@
         class="columns"
       >
         <router-link
-          tag="div"
           :to="{ name: 'Messages', params: { year: date.year, month: date.month } }"
-          class="column"
+          custom v-slot="{ navigate }"
         >
-          {{ date.month }} {{ date.year }}
+          <div @click="navigate" @keypress.enter="navigate" role="link" class="column">
+            {{ date.month }} {{ date.year }}
+          </div>
         </router-link>
       </div>
     </div>
