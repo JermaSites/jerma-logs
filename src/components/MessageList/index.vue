@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
     <div v-if="loading">
       <div v-for="i in 6" :key="i" class="columns">
         <div class="column is-narrow is-primary">
@@ -22,7 +22,7 @@
 <script>
 import { mapState, mapActions } from 'vuex'
 import { db } from '@/db'
-const sleep = (milliseconds) => {
+const sleep = milliseconds => {
   return new Promise(resolve => setTimeout(resolve, milliseconds))
 }
 
@@ -47,9 +47,12 @@ export default {
     }
   },
   components: {
-    MessageListSimple: () => import('@/components/MessageList/MessageListSimple'),
-    SeperatedDaySimple: () => import('@/components/MessageList/SeperatedDaySimple'),
-    SeperatedDayChrono: () => import('@/components/MessageList/SeperatedDayChrono')
+    MessageListSimple: () =>
+      import('@/components/MessageList/MessageListSimple'),
+    SeperatedDaySimple: () =>
+      import('@/components/MessageList/SeperatedDaySimple'),
+    SeperatedDayChrono: () =>
+      import('@/components/MessageList/SeperatedDayChrono')
   },
   data () {
     return {
@@ -76,10 +79,21 @@ export default {
   async created () {
     try {
       this.loading = true
-      await this.fetchEmotes()
-      await this.fetchBadges()
-      await this.$bind('messages', db.collection('messagesByMonth').doc(`${this.month}-${this.year}`))
-      await sleep(300)
+
+      const emotesPromise = this.fetchEmotes()
+      const badgesPromise = this.fetchBadges()
+      const bindMessagesPromise = this.$bind(
+        'messages',
+        db.collection('messagesByMonth').doc(`${this.month}-${this.year}`)
+      )
+
+      await Promise.all([
+        emotesPromise,
+        badgesPromise,
+        bindMessagesPromise,
+        sleep(100)
+      ])
+
       this.loading = false
     } catch (error) {
       console.error(error)
@@ -125,7 +139,8 @@ export default {
       const badges = Object.entries(sortedKeys)
 
       return badges.map(badge => {
-        const badgeURL = this.allBadges.badge_sets[badge[0]].versions[badge[1]].image_url_1x
+        const badgeURL = this.allBadges.badge_sets[badge[0]].versions[badge[1]]
+          .image_url_1x
         return badgeURL
       })
     }

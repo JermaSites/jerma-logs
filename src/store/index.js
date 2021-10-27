@@ -33,24 +33,28 @@ export default new Vuex.Store({
     async fetchEmotes ({ commit, state }) {
       if (state.globalEmotes && state.channelEmotes) return
 
-      const { data: globalEmotes } = await axios.get('https://api.betterttv.net/3/cached/emotes/global')
-      commit('setGlobalEmotes', globalEmotes)
+      const globalEmotesPromise = axios.get('https://api.betterttv.net/3/cached/emotes/global')
+      const channelEmotesPromise = axios.get('https://api.betterttv.net/3/cached/users/twitch/23936415')
 
-      const { data: channelEmotes } = await axios.get('https://api.betterttv.net/3/cached/users/twitch/23936415')
-      commit('setChannelEmotes', channelEmotes.sharedEmotes)
+      const [globalEmotes, channelEmotes] = await Promise.all([globalEmotesPromise, channelEmotesPromise])
+
+      commit('setGlobalEmotes', globalEmotes.data)
+      commit('setChannelEmotes', channelEmotes.data.sharedEmotes)
     },
     async fetchBadges ({ commit, state }) {
       if (state.globalBadges && state.channelBadges && state.allBadges) return
 
-      const { data: globalBadges } = await axios.get('https://badges.twitch.tv/v1/badges/global/display')
-      commit('setGlobalBadges', globalBadges)
+      const globalBadgesPromise = axios.get('https://badges.twitch.tv/v1/badges/global/display')
+      const channelBadgesPromise = axios.get('https://badges.twitch.tv/v1/badges/channels/23936415/display')
 
-      const { data: channelBadges } = await axios.get('https://badges.twitch.tv/v1/badges/channels/23936415/display')
-      commit('setChannelBadges', channelBadges)
+      const [globalBadges, channelBadges] = await Promise.all([globalBadgesPromise, channelBadgesPromise])
+
+      commit('setGlobalBadges', globalBadges.data)
+      commit('setChannelBadges', channelBadges.data)
 
       commit('setAllBadges', {
         badge_sets: {
-          ...globalBadges.badge_sets, ...channelBadges.badge_sets
+          ...globalBadges.data.badge_sets, ...channelBadges.data.badge_sets
         }
       })
     }
