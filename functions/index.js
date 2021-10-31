@@ -8,6 +8,7 @@ exports.sendNotification = functions.firestore.document('/messages/{documentId}'
   .onCreate(async (snap, context) => {
     const querySnapshot = await admin.firestore().collection('subscribers').get()
     const messsageData = snap.data()
+    if (messsageData.username !== 'jerma985') return
     const month = moment(+messsageData.sentAt).format('MMMM')
     const year = moment(+messsageData.sentAt).format('YYYY')
 
@@ -34,6 +35,7 @@ exports.sendNotification = functions.firestore.document('/messages/{documentId}'
 exports.sendTestNotification = functions.firestore.document('/test/{documentId}')
   .onWrite(async (change, context) => {
     const messsageData = change.after.data()
+    if (messsageData.name !== 'test') return
     const month = moment(context.timestamp).format('MMMM')
     const year = moment(context.timestamp).format('YYYY')
     console.log(`https://logs.jerma.io/${year}/${month}`)
