@@ -78,7 +78,7 @@ export default {
       this.loading = true
       await this.fetchEmotes()
       await this.fetchBadges()
-      await this.$bind('messages', db.collection('messagesByMonth').doc(`${this.month}-${this.year}`))
+      await this.$bind('messages', db.collection('messagesByYear').doc(this.year).collection('messagesByMonth').doc(this.month))
       await sleep(300)
       this.loading = false
     } catch (error) {
