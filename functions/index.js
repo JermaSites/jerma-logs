@@ -8,8 +8,8 @@ exports.sendNotification = functions.firestore.document('/messages/{documentId}'
   .onCreate(async (snap, context) => {
     const querySnapshot = await admin.firestore().collection('subscribers').get()
     const messsageData = snap.data()
-    const month = moment(messsageData.sentAt).format('MMMM')
-    const year = moment(messsageData.sentAt).format('YYYY')
+    const month = moment(+messsageData.sentAt).format('MMMM')
+    const year = moment(+messsageData.sentAt).format('YYYY')
 
     const tokens = []
     querySnapshot.forEach(doc => {
