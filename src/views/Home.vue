@@ -48,7 +48,6 @@ export default {
   async mounted () {
     this.loading = true
     const querySnapshot = await db.collection('messagesByYear').get()
-    console.log(querySnapshot)
     querySnapshot.forEach((doc) => {
       this.years.push(doc.id)
     })
