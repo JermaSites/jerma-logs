@@ -16,6 +16,7 @@ const firebaseConfig = {
 
 // Get a Firestore instance
 export const db = firebase.initializeApp(firebaseConfig).firestore()
+firebase.analytics()
 
 // Enable cache
 firebase.firestore().enablePersistence()
