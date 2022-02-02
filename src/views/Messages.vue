@@ -9,7 +9,14 @@
             Home
           </router-link>
         </li>
-        <li class="is-active"><a href="#" aria-current="page">{{ month }} {{ year }}</a></li>
+        <li>
+          <router-link
+            :to="{ name: 'Months', params: { year } }"
+          >
+            {{ year }}
+          </router-link>
+        </li>
+        <li class="is-active"><a href="#" aria-current="page">{{ month }}</a></li>
       </ul>
       <div class="level-right">
         <div class="buttons has-addons">

@@ -1,7 +1,7 @@
 <template>
   <div id="app" :class="{ trotr }">
     <TheHeader />
-    <router-view/>
+    <router-view />
   </div>
 </template>
 

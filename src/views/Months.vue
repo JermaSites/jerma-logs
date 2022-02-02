@@ -1,5 +1,17 @@
 <template>
   <div class="container">
+    <nav class="breadcrumb level settings" style="margin: 0;" aria-label="breadcrumbs">
+      <ul class="level-left">
+        <li>
+          <router-link
+            :to="{ name: 'Home' }"
+          >
+            Home
+          </router-link>
+        </li>
+        <li class="is-active"><a href="#" aria-current="page">{{ $route.params.year }}</a></li>
+      </ul>
+    </nav>
     <div class="section">
       <div v-if="loading">
         <div v-for="i in 6" :key="i" class="columns">
@@ -11,9 +23,9 @@
           </div>
         </div>
       </div>
-      <div v-for="(year, i) in sortedYears" :key="i" class="columns">
+      <div v-for="(month, i) in sortedMonths" :key="i" class="columns">
         <router-link
-          :to="{ name: 'Months', params: { year } }"
+          :to="{ name: 'Messages', params: { year: $route.params.year, month } }"
           custom
           v-slot="{ navigate }"
         >
@@ -22,7 +34,7 @@
             @keypress.enter="navigate"
             role="link"
             class="column"
-          >{{ year }}</div>
+          >{{ month }}</div>
         </router-link>
       </div>
     </div>
@@ -33,23 +45,26 @@
 import { db } from '../db'
 
 export default {
-  name: 'Home',
+  name: 'Months',
   data () {
     return {
       loading: false,
-      years: []
+      months: []
     }
   },
   computed: {
-    sortedYears () {
-      return this.years.slice(0).reverse()
+    sortedMonths () {
+      const orderedMonths = ['January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December']
+
+      return this.months.slice(0).sort((a, b) => orderedMonths.indexOf(b) - orderedMonths.indexOf(a))
     }
   },
   async mounted () {
     this.loading = true
-    const querySnapshot = await db.collection('messagesByYear').get()
+    const querySnapshot = await db.collection('messagesByYear').doc(this.$route.params.year).collection('messagesByMonth').get()
     querySnapshot.forEach((doc) => {
-      this.years.push(doc.id)
+      this.months.push(doc.id)
     })
     this.loading = false
   }
@@ -67,5 +82,11 @@ export default {
 .column:hover {
   cursor: pointer;
   background-color: $jerma-pink;
+}
+.settings {
+  position: sticky;
+  padding: 1rem;
+  top: 0;
+  background: $secondary
 }
 </style>
