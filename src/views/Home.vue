@@ -26,6 +26,12 @@
         </router-link>
       </div>
     </div>
+
+    <div class="section">
+      <a href="https://ko-fi.com/moduspwnens" target="_blank" class="kofi-button">
+        <img src="@/assets/kofi_logo.png" alt="Ko-fi">
+      </a>
+    </div>
   </div>
 </template>
 
@@ -67,5 +73,15 @@ export default {
 .column:hover {
   cursor: pointer;
   background-color: $jerma-pink;
+}
+
+.kofi-button {
+  position: fixed;
+  right: 2rem;
+  bottom: 1.5rem;
+
+  img {
+    width: 50px;
+  }
 }
 </style>
