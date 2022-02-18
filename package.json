@@ -12,8 +12,8 @@
   "dependencies": {
     "@mdi/font": "^6.5.95",
     "axios": "^0.25.0",
-    "buefy": "^0.9.14",
-    "core-js": "^3.21.0",
+    "buefy": "^0.9.15",
+    "core-js": "^3.21.1",
     "eslint": "^7.32.0",
     "firebase": "^8.10.1",
     "moment": "^2.29.1",
