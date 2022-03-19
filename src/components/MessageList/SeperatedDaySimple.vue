@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="msg in formattedMessages" :key="msg.id" class="columns" :class="{ 'new-day': msg.newDay }">
+    <div v-for="msg in formattedMessages" :key="msg.id" title="Copy" class="columns message" :class="{ 'new-day': msg.newDay }" @click="copyMessageToClipboard(msg)">
       <div class="column is-narrow is-primary info">
         <div class="info-content">
           <div>
@@ -73,6 +73,22 @@ export default {
 
       return msgs
     }
+  },
+  methods: {
+    copyMessageToClipboard (msg) {
+      console.log(msg.message)
+      let message = ''
+      msg.message.forEach(msgFragment => {
+        if (this.isEmote(msgFragment)) {
+          message += msgFragment.match(/alt="(.+)"/)[1]
+        } else {
+          message += msgFragment
+        }
+      })
+      const formattedMessage = `[${msg.sentAt}] ${msg.displayName}: ${message}`
+      navigator.clipboard.writeText(formattedMessage)
+      console.log('copied message', formattedMessage)
+    }
   }
 }
 </script>
@@ -127,5 +143,25 @@ export default {
 .badge {
   padding: 0 2px;
   vertical-align: text-bottom;
+}
+
+.message {
+  cursor: pointer;
+
+  // &:hover::after {
+  //   content:url('../../assets/content-copy.svg');
+  //   font-family: "Roboto";
+  //   display:flex;
+  //   color: black;
+  //   flex-direction:row;
+  //   align-items: center;
+  //   justify-content: center;
+  //   position: relative;
+  //   background: $jerma-green;
+  //   vertical-align: middle;
+  //   padding-top: 5px;
+  //   right: 0px;
+  //   width: 50px;
+  // }
 }
 </style>

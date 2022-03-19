@@ -115,20 +115,20 @@ export default {
 .message {
   cursor: pointer;
 
-  &:hover::after {
-    content:url('../../assets/content-copy.svg');
-    font-family: "Roboto";
-    display:flex;
-    color: black;
-    flex-direction:row;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    background: $jerma-green;
-    vertical-align: middle;
-    padding-top: 5px;
-    right: 0px;
-    width: 50px;
-  }
+  // &:hover::after {
+  //   content:url('../../assets/content-copy.svg');
+  //   font-family: "Roboto";
+  //   display:flex;
+  //   color: black;
+  //   flex-direction:row;
+  //   align-items: center;
+  //   justify-content: center;
+  //   position: relative;
+  //   background: $jerma-green;
+  //   vertical-align: middle;
+  //   padding-top: 5px;
+  //   right: 0px;
+  //   width: 50px;
+  // }
 }
 </style>
