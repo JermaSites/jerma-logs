@@ -137,6 +137,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.modal-card * {
+  z-index: 100;
+}
+
+.modal-card {
+  z-index: 100;
+}
+
 .modal-card-body {
   min-height: 200px;
 }
