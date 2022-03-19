@@ -14,7 +14,7 @@
       <h1 class="title is-1 has-text-white">No Messages Yet!</h1>
     </div>
     <div v-else>
-      <component :is="layout" :messages="sortedMessages" />
+      <component :is="layout" :messages="sortedMessages" @copy="copyMessageToClipboard" />
     </div>
   </div>
 </template>
@@ -101,6 +101,9 @@ export default {
   },
   methods: {
     ...mapActions(['fetchEmotes', 'fetchBadges']),
+    copyMessageToClipboard (message) {
+      console.log('Message copied:', message)
+    },
     getBadgesForMessage (message) {
       if (!message.badges) return []
       const sortedKeys = Object.keys(message.badges)

@@ -35,11 +35,11 @@ export default {
         const firstLocation = emoteLocations.split(',')[0]
         const firstLocationStart = +firstLocation.split('-')[0]
         const firstLocationEnd = +firstLocation.split('-')[1] + 1
+        const emoteName = message.substring(firstLocationStart, firstLocationEnd)
 
         const emoteURL = `${url}/${emoteID}/1.0`
-        const img = `<img src="${emoteURL}" style="vertical-align: middle" data-secret="${this.secret}">`
+        const img = `<img src="${emoteURL}" style="vertical-align: middle" data-secret="${this.secret}" alt="${emoteName}">`
 
-        const emoteName = message.substring(firstLocationStart, firstLocationEnd)
         msg.message = msg.message.split(emoteName).join(img)
       }
       return msg

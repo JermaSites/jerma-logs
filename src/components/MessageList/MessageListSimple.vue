@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-for="msg in formattedMessages" :key="msg.id" class="columns">
+    <div v-for="msg in formattedMessages" :key="msg.id" class="columns" @click="$emit('copy', msg)">
       <div class="column is-narrow is-primary info">
         <div class="info-content">
           <div>
