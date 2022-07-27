@@ -12,11 +12,11 @@
   "dependencies": {
     "@mdi/font": "^7.0.96",
     "axios": "^0.27.2",
-    "buefy": "^0.9.19",
-    "core-js": "^3.21.1",
+    "buefy": "^0.9.21",
+    "core-js": "^3.24.0",
     "eslint": "^8.20.0",
     "firebase": "^8.10.1",
-    "moment": "^2.29.1",
+    "moment": "^2.29.4",
     "moment-timezone": "^0.5.34",
     "node-polyfill-webpack-plugin": "^2.0.0",
     "register-service-worker": "^1.7.2",
@@ -29,8 +29,8 @@
     "vuex": "^3.6.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.16",
-    "@babel/eslint-parser": "^7.12.16",
+    "@babel/core": "^7.18.9",
+    "@babel/eslint-parser": "^7.18.9",
     "@vue/cli-plugin-babel": "^5.0.8",
     "@vue/cli-plugin-eslint": "^5.0.8",
     "@vue/cli-plugin-pwa": "^5.0.8",
@@ -39,12 +39,12 @@
     "@vue/cli-service": "^5.0.8",
     "@vue/eslint-config-standard": "^8.0.0",
     "eslint": "^8.20.0",
-    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^9.3.0",
     "node-sass": "^7.0.1",
-    "vue-template-compiler": "^2.6.12"
+    "vue-template-compiler": "^2.7.8"
   }
 }
