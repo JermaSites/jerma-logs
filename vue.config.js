@@ -19,7 +19,7 @@ module.exports = defineConfig({
     appleMobileWebAppStatusBarStyle: "black",
     workboxPluginMode: "InjectManifest",
     workboxOptions: {
-      swSrc: "src/firebase-messaging-sw.js",
+      swSrc: "./src/firebase-messaging-sw.js",
     },
   },
   css: {
