@@ -6,9 +6,7 @@
   >
     <slot />
     <div class="bg-slate-800 rounded-md">
-      <div>
-        <slot name="nav"></slot>
-      </div>
+      <slot name="nav"></slot>
     </div>
     <div class="bg-slate-800 rounded-md">
       <slot name="settings"></slot>

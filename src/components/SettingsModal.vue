@@ -87,16 +87,16 @@ watchEffect(async () => {
             <h2 class="text-xl font-medium">Choose a layout</h2>
             <hr class="border-slate-400" />
           </div>
-          <div class="flex gap-8">
+          <div class="flex flex-wrap gap-8">
             <div class="flex-1">
-              <p class="text-sm text-slate-400">
+              <p class="text-base text-slate-400">
                 {{ settings.layout.description }}
               </p>
             </div>
             <div class="flex-1">
               <Listbox v-model="settings.layout">
                 <ListboxButton
-                  class="relative w-full pr-10 rounded-lg bg-slate-700 p-3 text-left shadow-md"
+                  class="relative w-80 pr-10 rounded-lg bg-slate-700 p-3 text-left shadow-md"
                 >
                   <span class="block truncate text-white font-medium">{{
                     settings.layout.name
@@ -116,7 +116,7 @@ watchEffect(async () => {
                   leave-to-class="opacity-0"
                 >
                   <ListboxOptions
-                    class="absolute w-1/2 mt-1 max-h-60 overflow-auto rounded-md bg-slate-700 py-1 shadow-lg"
+                    class="absolute z-10 w-80 mt-1 max-h-60 overflow-auto rounded-md bg-slate-700 py-1 shadow-lg"
                   >
                     <ListboxOption
                       v-slot="{ active, selected }"

@@ -27,13 +27,21 @@ function toggleSortOrder() {
 </script>
 
 <template>
-  <button @click="toggleSortOrder" class="p-4 rounded-l-md hover:bg-slate-900">
-    <SortAscendingIcon v-if="sortOrder === 'asc'" class="w-6 text-blue-500" />
-    <SortDescendingIcon v-else class="w-6 text-blue-500" />
-  </button>
-  <button @click="open = true" class="p-4 rounded-r-md hover:bg-slate-900">
-    <CogIcon class="w-6 text-blue-500" />
-  </button>
+  <div class="flex">
+    <button
+      @click="toggleSortOrder"
+      class="p-4 rounded-l-md hover:bg-slate-900"
+    >
+      <SortAscendingIcon v-if="sortOrder === 'asc'" class="w-6 text-blue-500" />
+      <SortDescendingIcon v-else class="w-6 text-blue-500" />
+    </button>
+    <button
+      @click="open = true"
+      class="p-4 px- rounded-r-md hover:bg-slate-900"
+    >
+      <CogIcon class="w-6 text-blue-500" />
+    </button>
+  </div>
   <Teleport to="#app">
     <SettingsModal v-if="open" @close="open = false" />
   </Teleport>
