@@ -4,9 +4,9 @@ import logoUrl from "../assets/images/logo.png";
 
 <template>
   <header class="bg-slate-900">
-    <div class="container flex mx-auto items-center p-4">
+    <div class="container flex mx-auto items-center p-4 md:max-w-6xl">
       <img :src="logoUrl" alt="Jerma Logs Logo" />
-      <h1 class="ml-6 text-slate-200 text-5xl">Jerma Logs</h1>
+      <h1 class="ml-6 text-slate-200 text-5xl text-center">Jerma Logs</h1>
     </div>
   </header>
 </template>
