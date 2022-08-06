@@ -45,7 +45,6 @@ watchEffect(async () => {
         token: settings.fcmToken,
         created: Date.now(),
       });
-      console.log(settings.fcmToken);
     } else {
       settings.notifications = false;
     }
@@ -53,7 +52,6 @@ watchEffect(async () => {
     Notification.permission === "granted" &&
     settings.fcmToken !== null
   ) {
-    console.log("remove token", settings.fcmToken);
     await deleteDoc(doc(db, "subscribers", settings.fcmToken));
     settings.fcmToken = null;
   }

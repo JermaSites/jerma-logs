@@ -11,7 +11,6 @@ const settings = useSettings();
 const route = useRoute();
 
 function setSortOrder(order) {
-  console.log(order);
   settings.monthSort = order;
 }
 </script>

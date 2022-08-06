@@ -10,16 +10,16 @@ import MessageListSeperated from "../components/MessageListSeperated.vue";
 import { useEmotes } from "../composables/emotes.js";
 import { useBadges } from "../composables/badges.js";
 
+const props = defineProps({
+  sortOrder: String,
+});
+
 const settings = useSettings();
 
 const layouts = {
   MessageListSimple,
   MessageListSeperated,
 };
-
-const props = defineProps({
-  sortOrder: String,
-});
 
 const { parseMessage } = await useEmotes();
 const { parseBadges } = await useBadges();
