@@ -4,8 +4,8 @@ import MessageList from "../components/MessageList.vue";
 import ListLoader from "../components/ListLoader.vue";
 import NavBar from "../components/NavBar.vue";
 import SortAndSettings from "../components/SortAndSettings.vue";
+import ScrollFab from "../components/ScrollFab.vue";
 import { useSettings } from "../store/settings";
-import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/vue/solid";
 
 const settings = useSettings();
 
@@ -13,22 +13,6 @@ const route = useRoute();
 
 function setSortOrder(order) {
   settings.messageSort = order;
-}
-
-function scrollToTop() {
-  window.scroll({
-    top: 0,
-    left: 0,
-    behavior: "smooth",
-  });
-}
-
-function scrollToBottom() {
-  window.scroll({
-    top: document.body.scrollHeight,
-    left: 0,
-    behavior: "smooth",
-  });
 }
 </script>
 
@@ -70,22 +54,5 @@ function scrollToBottom() {
     </template>
   </Suspense>
 
-  <div
-    v-if="settings.fab"
-    class="fixed z-90 bottom-6 right-6 flex flex-col gap-5"
-  >
-    <button
-      @click="scrollToTop"
-      class="bg-slate-800 w-14 h-14 rounded-full flex justify-center items-center border-2 border-slate-500 drop-shadow-md"
-    >
-      <ChevronUpIcon class="w-6 text-blue-500 bg-slate-800" />
-    </button>
-
-    <button
-      @click="scrollToBottom"
-      class="bg-slate-800 w-14 h-14 rounded-full flex justify-center items-center border-2 border-slate-500 drop-shadow-md"
-    >
-      <ChevronDownIcon class="w-6 text-blue-500 bg-slate-800" />
-    </button>
-  </div>
+  <ScrollFab v-if="settings.fab" />
 </template>
