@@ -2,7 +2,7 @@
 import YearList from "../components/YearList.vue";
 import ListLoader from "../components/ListLoader.vue";
 import NavBar from "../components/NavBar.vue";
-import SortAndSettings from "../components/SortAndSettings.vue";
+
 import { useSettings } from "../store/settings";
 
 const settings = useSettings();
@@ -13,18 +13,7 @@ function setSortOrder(order) {
 </script>
 
 <template>
-  <NavBar>
-    <template #nav>
-      <div class="p-4">Home</div>
-    </template>
-
-    <template #settings>
-      <SortAndSettings
-        @sort-order="setSortOrder"
-        :sort-order="settings.yearSort"
-      />
-    </template>
-  </NavBar>
+  <NavBar />
 
   <Suspense>
     <section>

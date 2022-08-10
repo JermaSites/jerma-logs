@@ -17,21 +17,10 @@ function setSortOrder(order) {
 
 <template>
   <NavBar>
-    <template #nav>
-      <router-link
-        :to="{ name: 'Home' }"
-        class="text-sky-400 hover:underline pl-4 pr-2 py-4 inline-block"
-      >
-        Home
-      </router-link>
-      /
-      <span class="pl-2 pr-4 py-4">{{ route.params.year }}</span>
-    </template>
-
     <template #settings>
       <SortAndSettings
         @sort-order="setSortOrder"
-        :sort-order="settings.monthSort"
+        :sort-order="settings.messageSort"
       />
     </template>
   </NavBar>

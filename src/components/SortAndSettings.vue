@@ -1,5 +1,7 @@
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { useSettings } from "../store/settings";
 import {
   CogIcon,
   SortAscendingIcon,
@@ -8,22 +10,28 @@ import {
 
 import SettingsModal from "./SettingsModal.vue";
 
-const props = defineProps({
-  sortOrder: {
-    type: String,
-    required: true,
-  },
+const route = useRoute();
+const router = useRouter();
+const settings = useSettings();
+
+const routeSort = {
+  Home: "yearSort",
+  Months: "monthSort",
+  Messages: "messageSort",
+  Latest: "latestSort",
+};
+
+const sortOrder = computed(() => {
+  return settings[routeSort[route.name]];
 });
 
-const emits = defineEmits(["sortOrder"]);
+function toggleSortOrder() {
+  settings[routeSort[route.name]] === "asc"
+    ? (settings[routeSort[route.name]] = "desc")
+    : (settings[routeSort[route.name]] = "asc");
+}
 
 const open = ref(false);
-
-function toggleSortOrder() {
-  props.sortOrder === "asc"
-    ? emits("sortOrder", "desc")
-    : emits("sortOrder", "asc");
-}
 </script>
 
 <template>
