@@ -1,5 +1,5 @@
 <script setup>
-import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/vue/solid";
+import { ChevronUpIcon, ChevronDownIcon } from "@heroicons/vue/24/solid";
 
 function scrollToTop() {
   window.scroll({

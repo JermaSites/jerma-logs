@@ -8,11 +8,11 @@ import {
   SwitchGroup,
   SwitchLabel,
 } from "@headlessui/vue";
-import { XCircleIcon, CheckIcon, SelectorIcon } from "@heroicons/vue/solid";
+import { XCircleIcon, CheckIcon, ChevronUpDownIcon } from "@heroicons/vue/24/solid";
 import { useSettings } from "../store/settings";
 import { messaging } from "../firebase";
 import { getToken } from "firebase/messaging";
-import { computed, watch, watchEffect } from "vue";
+import { computed, watchEffect } from "vue";
 import { db } from "../firebase";
 import { doc, setDoc, deleteDoc } from "@firebase/firestore";
 
@@ -102,7 +102,7 @@ watchEffect(async () => {
                   <span
                     class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"
                   >
-                    <SelectorIcon
+                    <ChevronUpDownIcon
                       class="h-5 w-5 text-blue-500"
                       aria-hidden="true"
                     />
