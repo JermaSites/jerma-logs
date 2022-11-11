@@ -9,6 +9,8 @@ import {
 } from "@heroicons/vue/24/solid";
 
 import SettingsModal from "./SettingsModal.vue";
+import BaseModal from "./BaseModal.vue";
+
 
 const route = useRoute();
 const settings = useSettings();
@@ -35,21 +37,20 @@ const open = ref(false);
 
 <template>
   <div class="flex">
-    <button
-      @click="toggleSortOrder"
-      class="p-4 rounded-l-md hover:bg-slate-900"
-    >
+    <button @click="toggleSortOrder" class="p-4 rounded-l-md hover:bg-slate-900">
       <BarsArrowUpIcon v-if="sortOrder === 'asc'" class="w-6 h-6 text-blue-500" />
       <BarsArrowDownIcon v-else class="w-6 h-6 text-blue-500" />
     </button>
-    <button
-      @click="open = true"
-      class="p-4 px- rounded-r-md hover:bg-slate-900"
-    >
-      <Cog8ToothIcon class="w-6 h-6 text-blue-500" />
-    </button>
+
+    <BaseModal>
+      <template #activator>
+        <button class="p-4 px- rounded-r-md hover:bg-slate-900">
+          <Cog8ToothIcon class="w-6 h-6 text-blue-500" />
+        </button>
+      </template>
+      <template #default="{ close }">
+        <SettingsModal @close="close" />
+      </template>
+    </BaseModal>
   </div>
-  <Teleport to="#app">
-    <SettingsModal v-if="open" @close="open = false" />
-  </Teleport>
 </template>

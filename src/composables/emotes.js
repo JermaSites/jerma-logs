@@ -40,8 +40,10 @@ export async function useEmotes() {
         const emoteName = messageObj.message.substring(+start, +end + 1);
         const imgSrc = `${twitchEmotesUrl}/${emoteId}/1.0`;
         const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" alt="${emoteName}">`;
+        const escapedEmote = emoteName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        const regEx = new RegExp(`(?<=^|\\s)${escapedEmote}(?=$|\\s)`, "g");
 
-        text = text.replaceAll(emoteName, imgEl);
+        text = text.replaceAll(regEx, imgEl);
       }
     }
 
@@ -50,7 +52,9 @@ export async function useEmotes() {
     bttvEmotes.forEach((emote) => {
       const imgSrc = bttvEmotesUrl.replace("{{id}}", emote.id);
       const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" alt="${emote.code}">`;
-      text = text.replaceAll(emote.code, imgEl);
+      const escapedEmote = emote.code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      const regEx = new RegExp(`(?<=^|\\s)${escapedEmote}(?=$|\\s)`, "g");
+      text = text.replaceAll(regEx, imgEl);
     });
 
     return text;
