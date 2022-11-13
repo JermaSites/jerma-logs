@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
 import { doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
@@ -60,6 +60,11 @@ const sortedMessages = computed(() => {
 
   return messages.value.sort((b, a) => +b.sentAt - +a.sentAt);
 });
+
+onUnmounted(() => {
+  console.log("Unmounted")
+  unsub()
+})
 </script>
 
 <template>
