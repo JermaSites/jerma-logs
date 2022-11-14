@@ -1,5 +1,5 @@
 {
-  "name": "vue-3-playground",
+  "name": "jerma-logs",
   "version": "0.0.0",
   "scripts": {
     "dev": "vite --port 3000",
