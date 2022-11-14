@@ -40,7 +40,8 @@ onUnmounted(() => {
 });
 
 const parsedMessages = computed(() => {
-  return messages.value
+  console.time("parse emotes and badges");
+  const t = messages.value
     .filter((msg) => msg.username !== "moduspwnens")
     .map((msg) => {
       msg.message = parseMessage(msg);
@@ -48,6 +49,8 @@ const parsedMessages = computed(() => {
       return msg;
     })
     .sort((a, b) => +b.sentAt - +a.sentAt);
+  console.timeEnd("parse emotes and badges");
+  return t;
 });
 
 const sortedMessages = computed(() => {

@@ -66,7 +66,8 @@ onUnmounted(() => {
 });
 
 const parsedMessages = computed(() => {
-  return latestMessages.value
+  console.time("computed parse");
+  const t = latestMessages.value
     .filter((msg) => msg.username !== "moduspwnens")
     .map((msg) => {
       msg.message = parseMessage(msg);
@@ -74,6 +75,9 @@ const parsedMessages = computed(() => {
       return msg;
     })
     .sort((a, b) => +b.sentAt - +a.sentAt);
+
+  console.timeEnd("computed parse");
+  return t;
 });
 
 const sortedMessages = computed(() => {
