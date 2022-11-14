@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
-import { doc, getDoc, onSnapshot } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 import { useSettings } from "../store/settings";
 
@@ -29,21 +29,18 @@ const messages = ref([]);
 
 const docPath = `messagesByYear/${route.params.year}/messagesByMonth/${route.params.month}`;
 const docRef = doc(db, docPath);
-const docSnap = await getDoc(docRef);
-const { messages: msgs } = docSnap.data();
-messages.value = msgs
-  .filter((msg) => msg.username !== "moduspwnens")
-  .map((msg) => {
-    msg.message = parseMessage(msg);
-    msg.badgeURLS = parseBadges(msg);
-    return msg;
-  })
-  .sort((a, b) => +b.sentAt - +a.sentAt);
 
 const unsub = onSnapshot(docRef, (doc) => {
   const { messages: msgs } = doc.data();
+  messages.value = msgs;
+});
 
-  messages.value = msgs
+onUnmounted(() => {
+  unsub();
+});
+
+const parsedMessages = computed(() => {
+  return messages.value
     .filter((msg) => msg.username !== "moduspwnens")
     .map((msg) => {
       msg.message = parseMessage(msg);
@@ -55,16 +52,11 @@ const unsub = onSnapshot(docRef, (doc) => {
 
 const sortedMessages = computed(() => {
   if (props.sortOrder === "asc") {
-    return messages.value.sort((a, b) => +b.sentAt - +a.sentAt);
+    return parsedMessages.value.sort((a, b) => +b.sentAt - +a.sentAt);
   }
 
-  return messages.value.sort((b, a) => +b.sentAt - +a.sentAt);
+  return parsedMessages.value.sort((b, a) => +b.sentAt - +a.sentAt);
 });
-
-onUnmounted(() => {
-  console.log("Unmounted")
-  unsub()
-})
 </script>
 
 <template>
