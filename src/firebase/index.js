@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getMessaging, onMessage } from "firebase/messaging";
+import { getMessaging, onMessage, isSupported } from "firebase/messaging";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBV9G06TKa-B6LF7fe63Z7QFbm8PJU7ad4",
@@ -17,11 +17,16 @@ const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
-const messaging = getMessaging(app);
+let messaging;
+isSupported().then((supported) => {
+  if (supported) {
+    messaging = getMessaging(app);
 
-onMessage(messaging, (payload) => {
-  console.log("Message received. ", payload);
-  // ...
+    onMessage(messaging, (payload) => {
+      console.log("Message received. ", payload);
+      // ...
+    });
+  }
 });
 
 export { db, messaging };
