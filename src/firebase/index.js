@@ -26,6 +26,8 @@ isSupported().then((supported) => {
       console.log("Message received. ", payload);
       // ...
     });
+  } else {
+    console.log("Firebase Messaging is not supported");
   }
 });
 
