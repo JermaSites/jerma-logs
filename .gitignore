@@ -5,3 +5,6 @@ dist-ssr
 *.local
 .firebase
 android
+/test-results/
+/playwright-report/
+/playwright/.cache/
