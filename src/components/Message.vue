@@ -13,7 +13,8 @@ dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(advancedFormat);
 
-const tz = dayjs.tz.guess();
+const tzGuess = dayjs.tz.guess();
+dayjs.tz.setDefault(tzGuess);
 
 const props = defineProps({
   message: Object,
@@ -23,12 +24,12 @@ const settings = useSettings();
 
 const messageSentAt = computed(() => {
   const sentAt = +props.message.sentAt;
-  return dayjs.utc(sentAt).tz(tz).format("MMM Do hh:mm A z");
+  return dayjs(sentAt).format("MMM Do hh:mm A z");
 });
 
 const messageSentAtTimeAgo = computed(() => {
   const sentAt = +props.message.sentAt;
-  return dayjs.utc(sentAt).fromNow();
+  return dayjs(sentAt).fromNow();
 });
 </script>
 
