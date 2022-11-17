@@ -10,11 +10,14 @@ import TheHeader from "./components/TheHeader.vue";
     </main>
     <section>
       <div class="p-6 text-center">
-        Message me on Discord for any issues (<a
-          href="https://discordapp.com/users/Modus%20Pwnens#9109"
-          class="text-blue-400 hover:underline"
-          >Modus Pwnens#9109</a
-        >)
+        Message me on Discord for any issues
+        <div class="inline-block">
+          (<a
+            href="https://discordapp.com/users/Modus%20Pwnens#9109"
+            class="text-blue-400 hover:underline"
+            >Modus Pwnens#9109</a
+          >)
+        </div>
       </div>
     </section>
   </div>
