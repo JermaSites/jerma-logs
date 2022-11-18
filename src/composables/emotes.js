@@ -3,6 +3,35 @@ import axios from "axios";
 import linkifyStr from "linkify-string";
 
 export async function useEmotes() {
+  // TODO: Get Twitch Emotes from API
+  // async function fetchTwitchEmotes() {
+  //   const globalEmotesPromise = axios.get(
+  //     "https://api.twitch.tv/helix/chat/emotes/global"
+  //   );
+  //   const channelEmotesPromise = axios.get(
+  //     "https://api.twitch.tv/helix/chat/emotes?broadcaster_id=23936415"
+  //   );
+
+  //   const [globalEmotes, channelEmotes] = await Promise.all([
+  //     globalEmotesPromise,
+  //     channelEmotesPromise,
+  //   ]);
+
+  //   return [...globalEmotes.data, ...channelEmotes.data.sharedEmotes];
+  // }
+
+  // const twitchEmoteMap = new Map();
+
+  // try {
+  //   const twitchEmotes = reactive(await fetchTwitchEmotes());
+
+  //   twitchEmotes.forEach((emote) => {
+  //     twitchEmoteMap.set(emote.code, emote);
+  //   });
+  // } catch (error) {
+  //   console.error(error.message);
+  // }
+
   async function fetchBetterTTVEmotes() {
     const globalEmotesPromise = axios.get(
       "https://api.betterttv.net/3/cached/emotes/global"
@@ -19,12 +48,16 @@ export async function useEmotes() {
     return [...globalEmotes.data, ...channelEmotes.data.sharedEmotes];
   }
 
-  const bttvEmotes = reactive(await fetchBetterTTVEmotes());
   const bttvEmoteMap = new Map();
+  try {
+    const bttvEmotes = reactive(await fetchBetterTTVEmotes());
 
-  bttvEmotes.forEach((emote) => {
-    bttvEmoteMap.set(emote.code, emote);
-  });
+    bttvEmotes.forEach((emote) => {
+      bttvEmoteMap.set(emote.code, emote);
+    });
+  } catch (error) {
+    console.error(error.message);
+  }
 
   const parseMessage = (messageObj) => {
     return parseEmotes(parseLinks(messageObj.message), messageObj);
