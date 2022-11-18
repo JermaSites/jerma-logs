@@ -42,7 +42,7 @@ onUnmounted(() => {
 const parsedMessages = computed(() => {
   console.time("parse emotes and badges");
   const t = messages.value
-    .filter((msg) => msg.username == "moduspwnens")
+    .filter((msg) => msg.username !== "moduspwnens")
     .map((msg) => {
       msg.message = parseMessage(msg);
       msg.badgeURLS = parseBadges(msg);
