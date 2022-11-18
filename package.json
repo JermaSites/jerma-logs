@@ -5,7 +5,7 @@
     "dev": "vite --port 3000",
     "build": "vite build",
     "serve": "vite preview",
-    "deploy": "firebase deploy --only hosting"
+    "deploy": "npm run build && firebase deploy --only hosting"
   },
   "dependencies": {
     "@headlessui/vue": "^1.6.7",
