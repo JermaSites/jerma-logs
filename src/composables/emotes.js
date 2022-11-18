@@ -20,6 +20,11 @@ export async function useEmotes() {
   }
 
   const bttvEmotes = reactive(await fetchBetterTTVEmotes());
+  const bttvEmoteMap = new Map();
+
+  bttvEmotes.forEach((emote) => {
+    bttvEmoteMap.set(emote.code, emote);
+  });
 
   const parseMessage = (messageObj) => {
     return parseEmotes(parseLinks(messageObj.message), messageObj);
@@ -39,23 +44,47 @@ export async function useEmotes() {
         const end = emoteLocations[0].split("-")[1];
         const emoteName = messageObj.message.substring(+start, +end + 1);
         const imgSrc = `${twitchEmotesUrl}/${emoteId}/1.0`;
-        const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" alt="${emoteName}">`;
-        const escapedEmote = emoteName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        const regEx = new RegExp(`(^|\\s)(${escapedEmote})($|\\s)`, "g");
+        const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" alt="${emoteName}" title="${emoteName}">`;
+        // const escapedEmote = emoteName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        // const regEx = new RegExp(`(^|\\s)(${escapedEmote})($|\\s)`, "g");
 
-        text = text.replaceAll(regEx, `$1${imgEl}$3`);
+        // text = text.replaceAll(regEx, `$1${imgEl}$3`);
+        text = text
+          .split(" ")
+          .map((word) => {
+            if (word === emoteName) {
+              return imgEl;
+            }
+
+            return word;
+          })
+          .join(" ");
       }
     }
 
     const bttvEmotesUrl = "//cdn.betterttv.net/emote/{{id}}/1x";
 
-    bttvEmotes.forEach((emote) => {
-      const imgSrc = bttvEmotesUrl.replace("{{id}}", emote.id);
-      const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" alt="${emote.code}">`;
-      const escapedEmote = emote.code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-      const regEx = new RegExp(`(^|\\s)(${escapedEmote})($|\\s)`, "g");
-      text = text.replaceAll(regEx, `$1${imgEl}$3`);
-    });
+    text = text
+      .split(" ")
+      .map((word) => {
+        if (bttvEmoteMap.has(word)) {
+          const emote = bttvEmoteMap.get(word);
+          const imgSrc = bttvEmotesUrl.replace("{{id}}", emote.id);
+          const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" alt="${emote.code}" title="${emote.code}">`;
+          return imgEl;
+        }
+
+        return word;
+      })
+      .join(" ");
+
+    // bttvEmotes.forEach((emote) => {
+    //   const imgSrc = bttvEmotesUrl.replace("{{id}}", emote.id);
+    //   const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" alt="${emote.code}" title="${emote.code}">`;
+    //   const escapedEmote = emote.code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    //   const regEx = new RegExp(`(^|\\s)(${escapedEmote})($|\\s)`, "g");
+    //   text = text.replaceAll(regEx, `$1${imgEl}$3`);
+    // });
 
     return text;
   };
