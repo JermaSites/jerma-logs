@@ -66,8 +66,7 @@ onUnmounted(() => {
 });
 
 const parsedMessages = computed(() => {
-  console.time("computed parse");
-  const t = latestMessages.value
+  return latestMessages.value
     .filter((msg) => msg.username !== "moduspwnens")
     .map((msg) => {
       msg.message = parseMessage(msg);
@@ -75,17 +74,6 @@ const parsedMessages = computed(() => {
       return msg;
     })
     .sort((a, b) => +b.sentAt - +a.sentAt);
-
-  console.timeEnd("computed parse");
-  return t;
-});
-
-const sortedMessages = computed(() => {
-  if (settings.latestSort === "asc") {
-    return parsedMessages.value.sort((a, b) => +b.sentAt - +a.sentAt);
-  }
-
-  return parsedMessages.value.sort((b, a) => +b.sentAt - +a.sentAt);
 });
 </script>
 
@@ -93,8 +81,9 @@ const sortedMessages = computed(() => {
   <div class="pb-2">
     <component
       :is="layouts[settings.layout.componentName]"
-      :messages="sortedMessages"
+      :messages="parsedMessages"
       :chrono="settings.layout.crono"
+      :sort-order="settings.latestSort"
     ></component>
   </div>
 

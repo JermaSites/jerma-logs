@@ -1,5 +1,4 @@
 <script setup>
-import { useRoute } from "vue-router";
 import MessageList from "../components/MessageList.vue";
 import ListLoader from "../components/ListLoader.vue";
 import NavBar from "../components/NavBar.vue";
@@ -8,8 +7,6 @@ import ScrollFab from "../components/ScrollFab.vue";
 import { useSettings } from "../store/settings";
 
 const settings = useSettings();
-
-const route = useRoute();
 
 function setSortOrder(order) {
   settings.messageSort = order;
@@ -27,7 +24,7 @@ function setSortOrder(order) {
   </NavBar>
 
   <Suspense>
-    <MessageList :sort-order="settings.messageSort" />
+    <MessageList />
 
     <template #fallback>
       <ListLoader :size="3" />

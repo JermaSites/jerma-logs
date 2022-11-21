@@ -10,10 +10,6 @@ import MessageListSeperated from "../components/MessageListSeperated.vue";
 import { useEmotes } from "../composables/emotes.js";
 import { useBadges } from "../composables/badges.js";
 
-const props = defineProps({
-  sortOrder: String,
-});
-
 const settings = useSettings();
 
 const layouts = {
@@ -40,25 +36,13 @@ onUnmounted(() => {
 });
 
 const parsedMessages = computed(() => {
-  console.time("parse emotes and badges");
-  const t = messages.value
+  return messages.value
     .filter((msg) => msg.username !== "moduspwnens")
     .map((msg) => {
       msg.message = parseMessage(msg);
       msg.badgeURLS = parseBadges(msg);
       return msg;
-    })
-    .sort((a, b) => +b.sentAt - +a.sentAt);
-  console.timeEnd("parse emotes and badges");
-  return t;
-});
-
-const sortedMessages = computed(() => {
-  if (props.sortOrder === "asc") {
-    return parsedMessages.value.sort((a, b) => +b.sentAt - +a.sentAt);
-  }
-
-  return parsedMessages.value.sort((b, a) => +b.sentAt - +a.sentAt);
+    });
 });
 </script>
 
@@ -66,8 +50,9 @@ const sortedMessages = computed(() => {
   <div class="pb-2">
     <component
       :is="layouts[settings.layout.componentName]"
-      :messages="sortedMessages"
+      :messages="parsedMessages"
       :chrono="settings.layout.crono"
+      :sort-order="settings.messageSort"
     ></component>
   </div>
 </template>

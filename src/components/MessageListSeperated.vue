@@ -10,14 +10,27 @@ dayjs.extend(advancedFormat);
 const props = defineProps({
   messages: Array,
   chrono: Boolean,
+  sortOrder: String,
 });
 
 function formatDate(date) {
   return dayjs(date).format("dddd, MMMM Do YYYY");
 }
 
+const sortedMessages = computed(() => {
+  if (props.sortOrder === "asc") {
+    return props.messages.sort((a, b) => {
+      return +a.sentAt - +b.sentAt;
+    });
+  }
+
+  return props.messages.sort((a, b) => {
+    return +b.sentAt - +a.sentAt;
+  });
+});
+
 const seperatedMessages = computed(() => {
-  const groupedMessages = _.groupBy(props.messages, (msg) => {
+  const groupedMessages = _.groupBy(sortedMessages.value, (msg) => {
     return dayjs(+msg.sentAt).startOf("day");
   });
 
@@ -44,7 +57,7 @@ const seperatedMessages = computed(() => {
 </script>
 
 <template>
-  <section v-for="(messages, i) in seperatedMessages" :key="i" class="">
+  <section v-for="(messages, i) in seperatedMessages" :key="i">
     <div
       class="bg-emerald-600 text-slate-200 p-4 font-bold sticky top-20 border-b-2 border-emerald-400"
     >
