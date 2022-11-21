@@ -18,7 +18,7 @@ watch(y, () => {
   showFabTimeout.value = setTimeout(() => {
     console.log("setTimeout");
     showFab.value = false;
-  }, 3000);
+  }, 2000);
 });
 
 function scrollToTop() {
@@ -41,18 +41,18 @@ function scrollToBottom() {
 <template>
   <Transition>
     <div v-if="showFab" class="fixed z-90 bottom-6 right-6 flex flex-col gap-5">
-      <button
+      <div
         @click="scrollToTop"
-        class="bg-slate-800 w-14 h-14 rounded-full flex justify-center items-center border-2 border-slate-500 drop-shadow-md"
+        class="bg-slate-800 w-14 h-14 rounded-full flex justify-center items-center border-2 border-slate-500 drop-shadow-md outline-none"
       >
         <ChevronUpIcon class="w-6 text-blue-500 bg-slate-800" />
-      </button>
-      <button
+      </div>
+      <div
         @click="scrollToBottom"
         class="bg-slate-800 w-14 h-14 rounded-full flex justify-center items-center border-2 border-slate-500 drop-shadow-md"
       >
         <ChevronDownIcon class="w-6 text-blue-500 bg-slate-800" />
-      </button>
+      </div>
     </div>
   </Transition>
 </template>
