@@ -19,7 +19,7 @@
     "linkifyjs": "^4.0.2",
     "lodash": "^4.17.21",
     "pinia": "^2.0.20",
-    "pinia-plugin-persistedstate": "^2.1.1",
+    "pinia-plugin-persistedstate": "^3.0.0",
     "vue": "^3.2.37",
     "vue-router": "^4.1.4"
   },
