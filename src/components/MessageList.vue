@@ -26,13 +26,16 @@ const messages = ref([]);
 const docPath = `messagesByYear/${route.params.year}/messagesByMonth/${route.params.month}`;
 const docRef = doc(db, docPath);
 
-const unsub = onSnapshot(docRef, (doc) => {
-  const { messages: msgs } = doc.data();
-  messages.value = msgs;
+const res = await new Promise(async (resolve) => {
+  const unsub = onSnapshot(docRef, (doc) => {
+    const { messages: msgs } = doc.data();
+    messages.value = msgs;
+    resolve({ unsub });
+  });
 });
 
 onUnmounted(() => {
-  unsub();
+  res.unsub();
 });
 
 const parsedMessages = computed(() => {

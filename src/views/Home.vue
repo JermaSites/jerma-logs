@@ -7,9 +7,6 @@ import { useSettings } from "../store/settings";
 
 const settings = useSettings();
 
-function setSortOrder(order) {
-  settings.yearSort = order;
-}
 </script>
 
 <template>

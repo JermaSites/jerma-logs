@@ -52,17 +52,21 @@ const latestMessagesQuery = query(
 
 const latestMessages = ref([]);
 
-const unsub = onSnapshot(latestMessagesQuery, (querySnapshot) => {
-  const messages = [];
-  querySnapshot.forEach((doc) => {
-    messages.push(doc.data());
-  });
+const res = await new Promise(async (resolve) => {
+  const unsub = onSnapshot(latestMessagesQuery, (querySnapshot) => {
+    const messages = [];
+    querySnapshot.forEach((doc) => {
+      messages.push(doc.data());
+    });
 
-  latestMessages.value = messages;
+    latestMessages.value = messages;
+
+    resolve({ unsub });
+  });
 });
 
 onUnmounted(() => {
-  unsub();
+  res.unsub();
 });
 
 const parsedMessages = computed(() => {
