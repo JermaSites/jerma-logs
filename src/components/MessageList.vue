@@ -40,7 +40,7 @@ onUnmounted(() => {
 
 const parsedMessages = computed(() => {
   return messages.value
-    .filter((msg) => msg.username !== "moduspwnens")
+    .filter((msg) => msg.username === import.meta.env.VITE_USERNAME)
     .map((msg) => {
       msg.message = parseMessage(msg);
       msg.badgeURLS = parseBadges(msg);
@@ -52,10 +52,14 @@ const parsedMessages = computed(() => {
 <template>
   <div class="pb-2">
     <component
+      v-if="parsedMessages.length !== 0"
       :is="layouts[settings.layout.componentName]"
       :messages="parsedMessages"
       :chrono="settings.layout.crono"
       :sort-order="settings.messageSort"
     ></component>
+    <div v-else class="text-center text-5xl md:text-8xl p-8">
+      <h1>No Messages Found</h1>
+    </div>
   </div>
 </template>

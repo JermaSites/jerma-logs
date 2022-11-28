@@ -31,6 +31,7 @@ const { parseBadges } = await useBadges();
 // Get the most recent message
 const latestMessageQuery = query(
   collection(db, "messages"),
+  where("username", "==", import.meta.env.VITE_USERNAME),
   orderBy("sentAt", "desc"),
   limit(1)
 );
@@ -70,14 +71,16 @@ onUnmounted(() => {
 });
 
 const parsedMessages = computed(() => {
-  return latestMessages.value
-    .filter((msg) => msg.username !== "moduspwnens")
-    .map((msg) => {
-      msg.message = parseMessage(msg);
-      msg.badgeURLS = parseBadges(msg);
-      return msg;
-    })
-    .sort((a, b) => +b.sentAt - +a.sentAt);
+  return (
+    latestMessages.value
+      .filter((msg) => msg.username === import.meta.env.VITE_USERNAME)
+      .map((msg) => {
+        msg.message = parseMessage(msg);
+        msg.badgeURLS = parseBadges(msg);
+        return msg;
+      })
+      .sort((a, b) => +b.sentAt - +a.sentAt)
+  );
 });
 </script>
 
