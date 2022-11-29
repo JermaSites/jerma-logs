@@ -42,12 +42,14 @@ function scrollToBottom() {
     <div v-if="showFab" class="fixed z-90 bottom-6 right-6 flex flex-col gap-5">
       <button
         @click="scrollToTop"
+        aria-label="Scroll to top of page"
         class="bg-slate-800 w-14 h-14 rounded-full flex justify-center items-center border-2 border-slate-500 drop-shadow-md outline-none"
       >
         <ChevronUpIcon class="w-6 text-blue-500 bg-slate-800" />
       </button>
       <button
         @click="scrollToBottom"
+        aria-label="Scroll to bottom of page"
         class="bg-slate-800 w-14 h-14 rounded-full flex justify-center items-center border-2 border-slate-500 drop-shadow-md"
       >
         <ChevronDownIcon class="w-6 text-blue-500 bg-slate-800" />
