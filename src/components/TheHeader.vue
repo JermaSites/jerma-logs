@@ -6,7 +6,7 @@ import logoUrl from "../assets/images/logo.png";
   <header class="bg-slate-900">
     <div class="container mx-auto p-4 md:max-w-6xl">
       <router-link :to="{ name: 'Home' }" class="flex items-center">
-        <img :src="logoUrl" width="128" height="128" alt="Jerma Logs Logo" />
+        <img :src="logoUrl" width="128" height="127" alt="Jerma Logs Logo" />
 
         <h1 class="text-slate-200 text-5xl ml-6">Jerma Logs</h1>
       </router-link>
