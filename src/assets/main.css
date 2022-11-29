@@ -11,6 +11,7 @@ html {
   font-display: auto;
   unicode-range: U+000-5FF;
   src: local("Inter"), url("./fonts/Inter/Inter-Regular.ttf") format("truetype");
+  font-display: swap;
 }
 
 @font-face {
@@ -21,4 +22,5 @@ html {
   unicode-range: U+000-5FF;
   src: local("Roboto"),
     url("./fonts/Roboto/Roboto-Regular.ttf") format("truetype");
+  font-display: swap;
 }
