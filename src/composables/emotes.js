@@ -77,11 +77,8 @@ export async function useEmotes() {
         const end = emoteLocations[0].split("-")[1];
         const emoteName = messageObj.message.substring(+start, +end + 1);
         const imgSrc = `${twitchEmotesUrl}/${emoteId}/1.0`;
-        const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" alt="${emoteName}" title="${emoteName}">`;
-        // const escapedEmote = emoteName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-        // const regEx = new RegExp(`(^|\\s)(${escapedEmote})($|\\s)`, "g");
+        const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="18" height="18" alt="${emoteName}" title="${emoteName}">`;
 
-        // text = text.replaceAll(regEx, `$1${imgEl}$3`);
         text = text
           .split(" ")
           .map((word) => {
@@ -103,21 +100,13 @@ export async function useEmotes() {
         if (bttvEmoteMap.has(word)) {
           const emote = bttvEmoteMap.get(word);
           const imgSrc = bttvEmotesUrl.replace("{{id}}", emote.id);
-          const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" alt="${emote.code}" title="${emote.code}">`;
+          const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="18" height="18" alt="${emote.code}" title="${emote.code}">`;
           return imgEl;
         }
 
         return word;
       })
       .join(" ");
-
-    // bttvEmotes.forEach((emote) => {
-    //   const imgSrc = bttvEmotesUrl.replace("{{id}}", emote.id);
-    //   const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" alt="${emote.code}" title="${emote.code}">`;
-    //   const escapedEmote = emote.code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    //   const regEx = new RegExp(`(^|\\s)(${escapedEmote})($|\\s)`, "g");
-    //   text = text.replaceAll(regEx, `$1${imgEl}$3`);
-    // });
 
     return text;
   };
