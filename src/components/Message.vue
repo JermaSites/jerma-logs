@@ -49,6 +49,8 @@ const messageSentAtTimeAgo = computed(() => {
           v-for="badge in message.badgeURLS"
           :src="badge"
           class="inline-block mr-1"
+          width="18"
+          height="18"
         />
       </span>
       <span :style="{ color: message.color }" class="font-bold">
