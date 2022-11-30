@@ -77,7 +77,7 @@ export async function useEmotes() {
         const end = emoteLocations[0].split("-")[1];
         const emoteName = messageObj.message.substring(+start, +end + 1);
         const imgSrc = `${twitchEmotesUrl}/${emoteId}/1.0`;
-        const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="18" height="18" alt="${emoteName}" title="${emoteName}">`;
+        const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="28" height="28" alt="${emoteName}" title="${emoteName}">`;
 
         text = text
           .split(" ")
@@ -100,7 +100,7 @@ export async function useEmotes() {
         if (bttvEmoteMap.has(word)) {
           const emote = bttvEmoteMap.get(word);
           const imgSrc = bttvEmotesUrl.replace("{{id}}", emote.id);
-          const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="18" height="18" alt="${emote.code}" title="${emote.code}">`;
+          const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="28" height="28" alt="${emote.code}" title="${emote.code}">`;
           return imgEl;
         }
 
