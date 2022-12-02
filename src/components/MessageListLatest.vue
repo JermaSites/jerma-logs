@@ -75,7 +75,7 @@ const parsedMessages = computed(() => {
     latestMessages.value
       .filter((msg) => msg.username === import.meta.env.VITE_USERNAME)
       .map((msg) => {
-        msg.message = parseMessage(msg);
+        msg.message = parseMessage(msg.message);
         msg.badgeURLS = parseBadges(msg);
         return msg;
       })

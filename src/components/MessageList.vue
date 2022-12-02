@@ -39,13 +39,16 @@ onUnmounted(() => {
 });
 
 const parsedMessages = computed(() => {
-  return messages.value
+  console.time()
+  const test = messages.value
     .filter((msg) => msg.username === import.meta.env.VITE_USERNAME)
     .map((msg) => {
-      msg.message = parseMessage(msg);
+      msg.message = parseMessage(msg.message);
       msg.badgeURLS = parseBadges(msg);
       return msg;
     });
+  console.timeEnd()
+  return test
 });
 </script>
 

@@ -1,114 +1,60 @@
-import { reactive } from "vue";
 import axios from "axios";
 import linkifyStr from "linkify-string";
 
+async function fetchEmotes() {
+  const globalEmotesPromise = axios.get(
+    "https://emotes.adamcy.pl/v1/global/emotes/twitch.7tv.bttv.ffz"
+  );
+  const channelEmotesPromise = axios.get(
+    "https://emotes.adamcy.pl/v1/channel/23936415/emotes/twitch.7tv.bttv.ffz"
+  );
+
+  const [globalEmotes, channelEmotes] = await Promise.all([
+    globalEmotesPromise,
+    channelEmotesPromise,
+  ]);
+
+  const emotes = [...globalEmotes.data, ...channelEmotes.data];
+
+  const emoteMap = new Map();
+
+  emotes.forEach((emote) => {
+    emoteMap.set(emote.code, emote);
+  });
+
+  return emoteMap;
+}
+
+let emoteMap;
+
 export async function useEmotes() {
-  // TODO: Get Twitch Emotes from API
-  // async function fetchTwitchEmotes() {
-  //   const globalEmotesPromise = axios.get(
-  //     "https://api.twitch.tv/helix/chat/emotes/global"
-  //   );
-  //   const channelEmotesPromise = axios.get(
-  //     "https://api.twitch.tv/helix/chat/emotes?broadcaster_id=23936415"
-  //   );
-
-  //   const [globalEmotes, channelEmotes] = await Promise.all([
-  //     globalEmotesPromise,
-  //     channelEmotesPromise,
-  //   ]);
-
-  //   return [...globalEmotes.data, ...channelEmotes.data.sharedEmotes];
-  // }
-
-  // const twitchEmoteMap = new Map();
-
-  // try {
-  //   const twitchEmotes = reactive(await fetchTwitchEmotes());
-
-  //   twitchEmotes.forEach((emote) => {
-  //     twitchEmoteMap.set(emote.code, emote);
-  //   });
-  // } catch (error) {
-  //   console.error(error.message);
-  // }
-
-  async function fetchBetterTTVEmotes() {
-    const globalEmotesPromise = axios.get(
-      "https://api.betterttv.net/3/cached/emotes/global"
-    );
-    const channelEmotesPromise = axios.get(
-      "https://api.betterttv.net/3/cached/users/twitch/23936415"
-    );
-
-    const [globalEmotes, channelEmotes] = await Promise.all([
-      globalEmotesPromise,
-      channelEmotesPromise,
-    ]);
-
-    return [...globalEmotes.data, ...channelEmotes.data.sharedEmotes];
+  if (!emoteMap) {
+    emoteMap = await fetchEmotes()
   }
 
-  const bttvEmoteMap = new Map();
-  try {
-    const bttvEmotes = reactive(await fetchBetterTTVEmotes());
-
-    bttvEmotes.forEach((emote) => {
-      bttvEmoteMap.set(emote.code, emote);
-    });
-  } catch (error) {
-    console.error(error.message);
-  }
-
-  const parseMessage = (messageObj) => {
-    return parseEmotes(parseLinks(messageObj.message), messageObj);
+  const parseMessage = (message) => {
+    return parseEmotes(parseLinks(message));
   };
 
-  const parseLinks = (text) => {
-    return linkifyStr(text);
+  const parseLinks = (message) => {
+    return linkifyStr(message);
   };
 
-  const parseEmotes = (text, messageObj) => {
-    const twitchEmotesUrl = "https://static-cdn.jtvnw.net/emoticons/v1";
-    if (messageObj.emotes) {
-      for (const [emoteId, emoteLocations] of Object.entries(
-        messageObj.emotes
-      )) {
-        const start = emoteLocations[0].split("-")[0];
-        const end = emoteLocations[0].split("-")[1];
-        const emoteName = messageObj.message.substring(+start, +end + 1);
-        const imgSrc = `${twitchEmotesUrl}/${emoteId}/1.0`;
-        const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="28" height="28" alt="${emoteName}" title="${emoteName}">`;
-
-        text = text
-          .split(" ")
-          .map((word) => {
-            if (word === emoteName) {
-              return imgEl;
-            }
-
-            return word;
-          })
-          .join(" ");
-      }
-    }
-
-    const bttvEmotesUrl = "//cdn.betterttv.net/emote/{{id}}/1x";
-
-    text = text
+  const parseEmotes = (message) => {
+    return message
       .split(" ")
       .map((word) => {
-        if (bttvEmoteMap.has(word)) {
-          const emote = bttvEmoteMap.get(word);
-          const imgSrc = bttvEmotesUrl.replace("{{id}}", emote.id);
-          const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="28" height="28" alt="${emote.code}" title="${emote.code}">`;
+        if (emoteMap.has(word)) {
+          const emote = emoteMap.get(word);
+          const emoteName = emote.code;
+          const imgSrc = emote.urls[0].url;
+          const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="28" height="28" alt="${emoteName}" title="${emoteName}">`;
           return imgEl;
         }
 
         return word;
       })
       .join(" ");
-
-    return text;
   };
 
   return { parseMessage };
