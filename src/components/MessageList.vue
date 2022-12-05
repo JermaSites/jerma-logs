@@ -17,8 +17,11 @@ const layouts = {
   MessageListSeperated,
 };
 
-const { parseMessage } = await useEmotes();
-const { parseBadges } = await useBadges();
+const { fetchEmotes, parseEmotes } = useEmotes();
+const { fetchBadges, parseBadges } = useBadges();
+
+const emotes = await fetchEmotes();
+const badges = await fetchBadges();
 
 const route = useRoute();
 const messages = ref([]);
@@ -39,16 +42,16 @@ onUnmounted(() => {
 });
 
 const parsedMessages = computed(() => {
-  console.time()
+  console.time();
   const test = messages.value
     .filter((msg) => msg.username === import.meta.env.VITE_USERNAME)
     .map((msg) => {
-      msg.message = parseMessage(msg.message);
-      msg.badgeURLS = parseBadges(msg);
+      msg.message = parseEmotes(msg.message, emotes);
+      msg.badgeURLS = parseBadges(msg.badges, badges);
       return msg;
     });
-  console.timeEnd()
-  return test
+  console.timeEnd();
+  return test;
 });
 </script>
 

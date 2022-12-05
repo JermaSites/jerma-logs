@@ -25,8 +25,11 @@ const layouts = {
 
 const settings = useSettings();
 
-const { parseMessage } = await useEmotes();
-const { parseBadges } = await useBadges();
+const { fetchEmotes, parseEmotes } = useEmotes();
+const { fetchBadges, parseBadges } = useBadges();
+
+const emotes = await fetchEmotes();
+const badges = await fetchBadges();
 
 // Get the most recent message
 const latestMessageQuery = query(
@@ -71,16 +74,14 @@ onUnmounted(() => {
 });
 
 const parsedMessages = computed(() => {
-  return (
-    latestMessages.value
-      .filter((msg) => msg.username === import.meta.env.VITE_USERNAME)
-      .map((msg) => {
-        msg.message = parseMessage(msg.message);
-        msg.badgeURLS = parseBadges(msg);
-        return msg;
-      })
-      .sort((a, b) => +b.sentAt - +a.sentAt)
-  );
+  return latestMessages.value
+    .filter((msg) => msg.username === import.meta.env.VITE_USERNAME)
+    .map((msg) => {
+      msg.message = parseEmotes(msg.message, emotes);
+      msg.badgeURLS = parseBadges(msg.badges, badges);
+      return msg;
+    })
+    .sort((a, b) => +b.sentAt - +a.sentAt);
 });
 </script>
 
