@@ -28,9 +28,6 @@ const settings = useSettings();
 const { fetchEmotes, parseEmotes } = useEmotes();
 const { fetchBadges, parseBadges } = useBadges();
 
-const emotes = await fetchEmotes();
-const badges = await fetchBadges();
-
 // Get the most recent message
 const latestMessageQuery = query(
   collection(db, "messages"),
@@ -39,7 +36,11 @@ const latestMessageQuery = query(
   limit(1)
 );
 
-const latestMessageQuerySnapshot = await getDocs(latestMessageQuery);
+const [emotes, badges, latestMessageQuerySnapshot] = await Promise.all([
+  fetchEmotes(),
+  fetchBadges(),
+  getDocs(latestMessageQuery),
+]);
 
 const latestMessage = latestMessageQuerySnapshot.docs[0].data();
 

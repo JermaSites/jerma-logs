@@ -20,22 +20,21 @@ const layouts = {
 const { fetchEmotes, parseEmotes } = useEmotes();
 const { fetchBadges, parseBadges } = useBadges();
 
-const emotes = await fetchEmotes();
-const badges = await fetchBadges();
-
 const route = useRoute();
 const messages = ref([]);
 
 const docPath = `messagesByYear/${route.params.year}/messagesByMonth/${route.params.month}`;
 const docRef = doc(db, docPath);
 
-const res = await new Promise(async (resolve) => {
+const docPromise = new Promise(async (resolve) => {
   const unsub = onSnapshot(docRef, (doc) => {
     const { messages: msgs } = doc.data();
     messages.value = msgs;
     resolve({ unsub });
   });
 });
+
+const [emotes, badges, res] = await Promise.all([fetchEmotes(), fetchBadges(), docPromise])
 
 onUnmounted(() => {
   res.unsub();
