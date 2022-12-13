@@ -70,10 +70,6 @@ const res = await new Promise(async (resolve) => {
   });
 });
 
-onUnmounted(() => {
-  res.unsub();
-});
-
 const parsedMessages = computed(() => {
   return latestMessages.value
     .filter((msg) => msg.username === import.meta.env.VITE_USERNAME)
@@ -83,6 +79,10 @@ const parsedMessages = computed(() => {
       return msg;
     })
     .sort((a, b) => +b.sentAt - +a.sentAt);
+});
+
+onUnmounted(() => {
+  res.unsub();
 });
 </script>
 

@@ -3,46 +3,48 @@ import { reactive, computed } from "vue";
 import { useRoute } from "vue-router";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
+import dayjs from "dayjs";
 
 const props = defineProps({
   sortOrder: String,
 });
 
-const route = useRoute();
+const orderedMonths = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 
-const months = reactive([]);
-
-const collectionPath = `messagesByYear/${route.params.year}/messagesByMonth`;
-const querySnapshot = await getDocs(collection(db, collectionPath));
-querySnapshot.forEach((doc) => {
-  months.push(doc.id);
+const months = computed(() => {
+  const currentMonth = dayjs().month();
+  return orderedMonths.slice(0, currentMonth + 1);
 });
 
-const sortedMonths = computed(() => {
-  const orderedMonths = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
-  ];
+// const route = useRoute();
 
+// const months = reactive([]);
+
+// const collectionPath = `messagesByYear/${route.params.year}/messagesByMonth`;
+// const querySnapshot = await getDocs(collection(db, collectionPath));
+// querySnapshot.forEach((doc) => {
+//   months.push(doc.id);
+// });
+
+const sortedMonths = computed(() => {
   if (props.sortOrder === "asc") {
-    return months
-      .slice(0)
-      .sort((b, a) => orderedMonths.indexOf(b) - orderedMonths.indexOf(a));
+    return months.value.slice();
   }
 
-  return months
-    .slice(0)
-    .sort((a, b) => orderedMonths.indexOf(b) - orderedMonths.indexOf(a));
+  return months.value.slice().reverse();
 });
 </script>
 

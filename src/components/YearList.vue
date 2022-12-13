@@ -2,24 +2,34 @@
 import { reactive, computed } from "vue";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
+import dayjs from "dayjs";
 
 const props = defineProps({
   sortOrder: String,
 });
 
-const years = reactive([]);
+const years = computed(() => {
+  const years = [];
+  const startYear = 2020;
+  const currentYear = dayjs().year();
+  for (let i = startYear; i <= currentYear; i++) {
+    years.push(i);
+  }
 
-const querySnapshot = await getDocs(collection(db, "messagesByYear"));
-querySnapshot.forEach((doc) => {
-  const { year } = doc.data();
-  years.push(year);
+  return years;
 });
+
+// const querySnapshot = await getDocs(collection(db, "messagesByYear"));
+// querySnapshot.forEach((doc) => {
+//   const { year } = doc.data();
+//   years.push(year);
+// });
 
 const sortedYears = computed(() => {
   if (props.sortOrder === "asc") {
-    return years.sort();
+    return years.value.sort();
   } else {
-    return years.reverse();
+    return years.value.reverse();
   }
 });
 </script>

@@ -1,9 +1,10 @@
 <script setup>
 import { ref, computed, onUnmounted } from "vue";
 import { useRoute } from "vue-router";
-import { doc, onSnapshot } from "firebase/firestore";
+import { doc, collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 import { useSettings } from "../store/settings";
+import dayjs from "dayjs";
 
 import MessageListSimple from "../components/MessageListSimple.vue";
 import MessageListSeperated from "../components/MessageListSeperated.vue";
@@ -23,34 +24,55 @@ const { fetchBadges, parseBadges } = useBadges();
 const route = useRoute();
 const messages = ref([]);
 
-const docPath = `messagesByYear/${route.params.year}/messagesByMonth/${route.params.month}`;
-const docRef = doc(db, docPath);
+// const docPath = `messagesByYear/${route.params.year}/messagesByMonth/${route.params.month}`;
+// const docRef = doc(db, docPath);
+
+// const docPromise = new Promise(async (resolve) => {
+//   const unsub = onSnapshot(docRef, (doc) => {
+//     const { messages: msgs } = doc.data();
+//     messages.value = msgs;
+//     resolve({ unsub });
+//   });
+// });
+
+const monthAndYear = dayjs(
+  `${route.params.year}-${route.params.month}`,
+  "YYYY-MMMM"
+);
+const startTimestamp = monthAndYear.startOf("month").valueOf();
+const endTimestamp = monthAndYear.endOf("month").valueOf();
+
+const q = query(
+  collection(db, "messages"),
+  where("sentAt", ">=", startTimestamp.toString()),
+  where("sentAt", "<=", endTimestamp.toString()),
+  where("username", "==", import.meta.env.VITE_USERNAME)
+);
 
 const docPromise = new Promise(async (resolve) => {
-  const unsub = onSnapshot(docRef, (doc) => {
-    const { messages: msgs } = doc.data();
-    messages.value = msgs;
-    resolve({ unsub });
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
+    const msgs = []
+    querySnapshot.forEach((doc) => {
+      msgs.push(doc.data())
+    });
+    messages.value = msgs
   });
+  resolve({ unsubscribe });
 });
 
-const [emotes, badges, res] = await Promise.all([fetchEmotes(), fetchBadges(), docPromise])
-
-onUnmounted(() => {
-  res.unsub();
-});
+const [emotes, badges, res] = await Promise.all([fetchEmotes(), fetchBadges(), docPromise]);
 
 const parsedMessages = computed(() => {
-  console.time();
-  const test = messages.value
-    .filter((msg) => msg.username === import.meta.env.VITE_USERNAME)
+  return messages.value
     .map((msg) => {
       msg.message = parseEmotes(msg.message, emotes);
       msg.badgeURLS = parseBadges(msg.badges, badges);
       return msg;
     });
-  console.timeEnd();
-  return test;
+});
+
+onUnmounted(() => {
+  res.unsubscribe();
 });
 </script>
 
