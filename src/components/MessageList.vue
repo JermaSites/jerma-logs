@@ -5,11 +5,14 @@ import { doc, collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 import { useSettings } from "../store/settings";
 import dayjs from "dayjs";
+import customParseFormat  from "dayjs/plugin/customParseFormat";
 
 import MessageListSimple from "../components/MessageListSimple.vue";
 import MessageListSeperated from "../components/MessageListSeperated.vue";
 import { useEmotes } from "../composables/emotes.js";
 import { useBadges } from "../composables/badges.js";
+dayjs.extend(customParseFormat)
+
 
 const settings = useSettings();
 
@@ -35,40 +38,43 @@ const messages = ref([]);
 //   });
 // });
 
-const monthAndYear = dayjs(
-  `${route.params.year}-${route.params.month}`,
-  "YYYY-MMMM"
-);
+const monthAndYear = dayjs(`${route.params.year}-${route.params.month}`,"YYYY-MMMM");
+
 const startTimestamp = monthAndYear.startOf("month").valueOf();
 const endTimestamp = monthAndYear.endOf("month").valueOf();
+
+const username = import.meta.env.VITE_USERNAME;
 
 const q = query(
   collection(db, "messages"),
   where("sentAt", ">=", startTimestamp.toString()),
   where("sentAt", "<=", endTimestamp.toString()),
-  where("username", "==", import.meta.env.VITE_USERNAME)
+  where("username", "==", username)
 );
 
 const docPromise = new Promise(async (resolve) => {
   const unsubscribe = onSnapshot(q, (querySnapshot) => {
-    const msgs = []
+    const msgs = [];
     querySnapshot.forEach((doc) => {
-      msgs.push(doc.data())
+      msgs.push(doc.data());
     });
-    messages.value = msgs
+    messages.value = msgs;
   });
   resolve({ unsubscribe });
 });
 
-const [emotes, badges, res] = await Promise.all([fetchEmotes(), fetchBadges(), docPromise]);
+const [emotes, badges, res] = await Promise.all([
+  fetchEmotes(),
+  fetchBadges(),
+  docPromise,
+]);
 
 const parsedMessages = computed(() => {
-  return messages.value
-    .map((msg) => {
-      msg.message = parseEmotes(msg.message, emotes);
-      msg.badgeURLS = parseBadges(msg.badges, badges);
-      return msg;
-    });
+  return messages.value.map((msg) => {
+    msg.message = parseEmotes(msg.message, emotes);
+    msg.badgeURLS = parseBadges(msg.badges, badges);
+    return msg;
+  });
 });
 
 onUnmounted(() => {

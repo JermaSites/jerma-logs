@@ -28,10 +28,12 @@ const settings = useSettings();
 const { fetchEmotes, parseEmotes } = useEmotes();
 const { fetchBadges, parseBadges } = useBadges();
 
+const username = import.meta.env.VITE_USERNAME
+
 // Get the most recent message
 const latestMessageQuery = query(
   collection(db, "messages"),
-  where("username", "==", import.meta.env.VITE_USERNAME),
+  where("username", "==", username),
   orderBy("sentAt", "desc"),
   limit(1)
 );
@@ -52,6 +54,7 @@ const latestMessagesDaySent = dayjs(+latestMessage.sentAt)
 // Query for all messages sent on the same day as the latest message
 const latestMessagesQuery = query(
   collection(db, "messages"),
+  where("username", "==", username),
   where("sentAt", ">=", latestMessagesDaySent.toString())
 );
 
@@ -72,7 +75,6 @@ const res = await new Promise(async (resolve) => {
 
 const parsedMessages = computed(() => {
   return latestMessages.value
-    .filter((msg) => msg.username === import.meta.env.VITE_USERNAME)
     .map((msg) => {
       msg.message = parseEmotes(msg.message, emotes);
       msg.badgeURLS = parseBadges(msg.badges, badges);
