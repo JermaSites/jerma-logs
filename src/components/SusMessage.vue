@@ -54,6 +54,7 @@ const parsedMessage = computed(() => {
 });
 
 const messageSentAtTimeAgo = computed(() => {
+  if (!latestMessage) return ""
   const sentAt = +latestMessage.sentAt;
   return dayjs(sentAt).fromNow();
 });
@@ -62,7 +63,7 @@ const messageSentAtTimeAgo = computed(() => {
 <template>
   <div class="text-center">
     <div class="bg-slate-900 px-4 py-2">
-      <h1 class="text-xl font-meduim">Latest Sus (set {{ messageSentAtTimeAgo }})</h1>
+      <h1 class="text-xl font-meduim">Latest Sus <span v-if="parsedMessage">(set {{ messageSentAtTimeAgo }})</span></h1>
     </div>
     <div class="bg-slate-800 p-4">
       <div v-if="parsedMessage" v-html="parsedMessage"></div>
