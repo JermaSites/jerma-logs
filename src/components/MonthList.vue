@@ -1,9 +1,10 @@
 <script setup>
-import { reactive, computed } from "vue";
+import { ref, computed } from "vue";
 import { useRoute } from "vue-router";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
-import dayjs from "dayjs";
+
+const route = useRoute();
 
 const props = defineProps({
   sortOrder: String,
@@ -24,27 +25,24 @@ const orderedMonths = [
   "December",
 ];
 
-const months = computed(() => {
-  const currentMonth = dayjs().month();
-  return orderedMonths.slice(0, currentMonth + 1);
+const months = ref([]);
+
+const collectionPath = `messagesByYear/${route.params.year}/messagesByMonth`;
+const querySnapshot = await getDocs(collection(db, collectionPath));
+querySnapshot.forEach((doc) => {
+  months.value.push(doc.id);
 });
 
-// const route = useRoute();
-
-// const months = reactive([]);
-
-// const collectionPath = `messagesByYear/${route.params.year}/messagesByMonth`;
-// const querySnapshot = await getDocs(collection(db, collectionPath));
-// querySnapshot.forEach((doc) => {
-//   months.push(doc.id);
-// });
+const filteredMonths = computed(() => {
+  return orderedMonths.filter(month => months.value.includes(month))
+})
 
 const sortedMonths = computed(() => {
-  if (props.sortOrder === "asc") {
-    return months.value.slice();
+  const monthsCopy = filteredMonths.value.slice()
+  if (props.sortOrder === "desc") {
+    return monthsCopy
   }
-
-  return months.value.slice().reverse();
+  return monthsCopy.reverse();
 });
 </script>
 
