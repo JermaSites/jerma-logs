@@ -25,12 +25,12 @@ dayjs.extend(advancedFormat);
 const { fetchEmotes, parseEmotes } = useEmotes();
 const { fetchBadges, parseBadges } = useBadges();
 
-const username = import.meta.env.VITE_USERNAME;
+const roomID = import.meta.env.VITE_ROOM_ID;
 
 // Get the most recent message
 const latestSusMessageQuery = query(
   collection(db, "sus"),
-  where("username", "==", username),
+  where("roomID", "==", roomID),
   orderBy("sentAt", "desc"),
   limit(1)
 );
@@ -47,7 +47,9 @@ const parsedMessage = computed(() => {
   if (latestMessage) {
     latestMessage.message = parseEmotes(latestMessage.message, emotes);
     latestMessage.badgeURLS = parseBadges(latestMessage.badges, badges);
-    return latestMessage.message.split("!sus ")[1]
+    const susRegExp = new RegExp(/^!(commands\s+edit|editcom)\s+(-cd=\d+\s+)?(!sus)\s+(-cd=\d+\s+)?(?<susMessage>.+)$/);
+    const sus = latestMessage.message.match(susRegExp).groups.susMessage
+    return sus
   }
 
   return ""
