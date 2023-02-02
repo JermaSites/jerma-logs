@@ -5,6 +5,8 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 import dayjs from "dayjs";
 
+const route = useRoute();
+
 const props = defineProps({
   sortOrder: String,
 });
@@ -25,8 +27,17 @@ const orderedMonths = [
 ];
 
 const months = computed(() => {
+  const selectedYear = route.params.year;
+  const currentYear = dayjs().year();
   const currentMonth = dayjs().month();
-  return orderedMonths.slice(0, currentMonth + 1);
+
+  if (selectedYear == currentYear) {
+    return orderedMonths.slice(0, currentMonth + 1);
+  } else if (selectedYear == 2020) {
+    // only started recording form May 2020 onward
+    return orderedMonths.slice(4)
+  }
+  return orderedMonths;
 });
 
 // const route = useRoute();
