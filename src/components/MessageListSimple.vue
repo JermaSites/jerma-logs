@@ -1,5 +1,5 @@
 <script setup>
-import { onUpdated, computed } from "vue";
+import { computed } from "vue";
 import Message from "./Message.vue";
 
 const props = defineProps({
