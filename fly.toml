@@ -1,0 +1,17 @@
+# fly.toml app configuration file generated for jerma-logs on 2023-04-28T16:58:56-04:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "jerma-logs"
+primary_region = "dfw"
+kill_signal = "SIGINT"
+kill_timeout = "5s"
+
+[env]
+  CHANNEL = "jerma985"
+  FIREBASE_CLIENT_EMAIL = "firebase-adminsdk-6k2fc@jerma-logs.iam.gserviceaccount.com"
+  FIREBASE_PRIVATE_KEY = "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCv4byaM5fBzjBd\nOa8pa4NNqvS0m5N+W5L7FtrPF/gyKK8rChwvflds8dX7FIuZzt1eI2DzTmXL45A+\nZ/zyFhRo023kkVv9YaudTa2sjk/hxxcCA9OlCmXS3Btbu/deiCwcrab/GIueulDS\n2+za1+MTsKodkJ065KPsP0lqm5qxydqdPzfCjNki4SdZ+hw729OXT7aPvbr22sMC\n73WT2wl8u39rgBJFzBfVW2ebUJbVQ4TE/AW+h8Y6Js5/tVrsviAadefGvZVbBtsb\nsMhAPnAjagOdeZYG4wFWRjCU/HX1B0puSwJGWwOaVU7MXmXzYmtUnd+ilBVYnkMJ\no4bDTOgFAgMBAAECggEABA/RBLijTRD/ce+2mVzHw//qNc+P+O+RdeYBuJ2jmDjz\nTqmlm/0tdLEjEXDYhn1OBHIJt6S8WhiPyLkrEMYsw3z6gThQKQpb5b6Y/66rrpmj\n8OJ4vUt/rX5yzUwKeu7nIeRqwmJlOw2vdycoEafBsT83toYT83u7Q2X0wpcEXA21\nBHXNGqUKL6CHE9fu/b9fI54W+5UOnGVYRXhSn25TqENsSjlTpAc4yWULM0nj+hN5\n5jUfpzhssr1KQ/tv6iyd8tWKalTmV/ROVt80iLQLjspKPClxcz6THPU4qkmcrA0v\nTwkp6HccsBMIGXgYHsRZvWVoudWQ58Wrwl/wYrly8wKBgQDecNLaefelX+NdWN2b\nFXbqDgwVehyUyGmSquZcJFQ+TZ1mpQ6f1fXUkyYHEJ/4miNjfhB2FiuIX0jpDbni\nxoEc+BZlj+oD0NCn7YtPGVNH4GwSSBhHKgD3HtnTtHWCNP3lnlD1tVPARE+jpGrh\ninkkWFzwo1jw4nGZA+0/d1pd/wKBgQDKarL4pttBsBh6soq64dRQH8OR6r6h1XrN\nQbFMOHqECykqrftoOmkcgT5TYHkYBULPCrNtxUVWGXPB4P3FLP+tN5o+flI6XuKt\ncQkSqn/gJkNfSRZGCRwqQ4uMkwMcZtZV+ZdHPOAqL8Imi/elapuN5lMC6jUujZaL\nD6hy/itB+wKBgQC+v/GQ+NatMjU/b11aCGYZAELMiBLKY7Jk27j/ewfjBZvc0d5g\nopJU4HrTxCXqggOm5gwnt4tNPqi/cc3d8mv186kBHxCGhSLpXoMAKa+JC6KhasGn\nBRYe1I3nRfEe32J67fBvRDe1wN6qbexZzO1lhYDtuqYiq4zOstdYfXk48QKBgGtH\nbZ9XX7FK0U6GPfyaH9pvW0mErpA7AqCyhnMtI9HD0IesOiidfIP9A7lQ0h0m/Kea\ntkohWYQubSl+Q0Ezfjah13/zl0UUcPMXi4V3E9sKrH5d0A5CWckUj2trpyRwZHyg\nkcrRusThFvczC4eCHvtv7OMImjMYG4eMPuzjRK3tAoGAWLnZVqcD3OiJsjAjovxe\nnNBFVFNGENTjYi2rwsymPiUrTqoWdLNnGQZb1080YuJKtMTS8wVEmA5aIyiDek3D\nsbx63ZyaJaIkL+VCkIqEdPS1p6naa73vlPDF7YLJIbrbBLFSReBFl73u+UHhtxaE\ny754ZsGMIa0SiMYnHNwuEJI=\n-----END PRIVATE KEY-----\n"
+  FIREBASE_PROJECT_ID = "jerma-logs"
+  PORT = "8080"
+  USER = "jerma985"
