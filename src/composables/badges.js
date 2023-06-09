@@ -5,12 +5,8 @@ export function useBadges() {
 
   async function fetchBadges() {
     try {
-      const globalBadgesPromise = twitchApi.get(
-        "chat/badges?broadcaster_id=23936415"
-      );
-      const channelBadgesPromise = twitchApi.get(
-        "chat/badges/global"
-      );
+      const globalBadgesPromise = twitchApi.get("chat/badges/global");
+      const channelBadgesPromise = twitchApi.get("chat/badges?broadcaster_id=23936415");
       const [globalBadges, channelBadges] = await Promise.all([
         globalBadgesPromise,
         channelBadgesPromise,
@@ -18,7 +14,7 @@ export function useBadges() {
 
       const badges = [...globalBadges.data.data, ...channelBadges.data.data]
 
-      const badgesMap = new Map(badges.map(badge => [badge.set_id, badge.versions]))
+      const badgesMap = new Map(badges.map(badge => [badge.set_id, new Map(badge.versions.map(v => [v.id, v]))]))
 
       return badgesMap
     } catch (error) {
@@ -64,8 +60,9 @@ export function useBadges() {
       }, {});
 
     return Object.entries(sortedKeys).map((badge) => {
-      console.log(badgeList.get(badge[0])[0].image_url_1x)
-      const badgeURL = badgeList.get(badge[0])[0].image_url_1x
+      console.log(badgeList.get(badge[0]))
+      console.log(badge)
+      const badgeURL = badgeList.get(badge[0]).get(badge[1]).image_url_1x
       return badgeURL;
     });
   }
