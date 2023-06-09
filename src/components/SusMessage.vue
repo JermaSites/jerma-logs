@@ -47,16 +47,18 @@ const parsedMessage = computed(() => {
   if (latestMessage) {
     latestMessage.message = parseEmotes(latestMessage.message, emotes);
     latestMessage.badgeURLS = parseBadges(latestMessage.badges, badges);
-    const susRegExp = new RegExp(/^!(commands\s+edit|editcom)\s+(-cd=\d+\s+)?(!sus)\s+(-cd=\d+\s+)?(?<susMessage>.+)$/);
-    const sus = latestMessage.message.match(susRegExp).groups.susMessage
-    return sus
+    const susRegExp = new RegExp(
+      /^!(commands\s+edit|editcom)\s+(-cd=\d+\s+)?(!sus)\s+(-cd=\d+\s+)?(?<susMessage>.+)$/
+    );
+    const sus = latestMessage.message.match(susRegExp).groups.susMessage;
+    return sus;
   }
 
-  return ""
+  return "";
 });
 
 const messageSentAtTimeAgo = computed(() => {
-  if (!latestMessage) return ""
+  if (!latestMessage) return "";
   const sentAt = +latestMessage.sentAt;
   return dayjs(sentAt).fromNow();
 });
@@ -65,7 +67,10 @@ const messageSentAtTimeAgo = computed(() => {
 <template>
   <div class="text-center">
     <div class="bg-slate-900 px-4 py-2">
-      <h1 class="text-xl font-meduim">Latest Sus <span v-if="parsedMessage">(set {{ messageSentAtTimeAgo }})</span></h1>
+      <h1 class="text-xl font-meduim">
+        Latest Sus
+        <span v-if="parsedMessage">(set {{ messageSentAtTimeAgo }})</span>
+      </h1>
     </div>
     <div class="bg-slate-800 p-4">
       <div v-if="parsedMessage" v-html="parsedMessage"></div>
