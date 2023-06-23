@@ -60,8 +60,6 @@ export function useBadges() {
       }, {});
 
     return Object.entries(sortedKeys).map((badge) => {
-      console.log(badgeList.get(badge[0]))
-      console.log(badge)
       const badgeURL = badgeList.get(badge[0]).get(badge[1]).image_url_1x
       return badgeURL;
     });
