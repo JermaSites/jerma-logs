@@ -1,7 +1,7 @@
 import { useTwitchAPI } from "./twitch-api"
+const twitchApi = useTwitchAPI()
 
 export function useBadges() {
-  const twitchApi = useTwitchAPI()
 
   async function fetchBadges() {
     try {

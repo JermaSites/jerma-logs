@@ -1,9 +1,12 @@
 import axios from "axios";
 import rateLimit from "axios-rate-limit"
+import { useTwitchAuth } from "../store/twitchAuth";
+const twitchAuth = useTwitchAuth()
+let failedRequestQueue = []
+let isFetchingToken = false
 
 export function useTwitchAPI() {
-    let isFetchingToken = false
-    let failedRequestQueue = []
+
 
     const twitchApi = rateLimit(axios.create({
         baseURL: import.meta.env.VITE_TWITCH_API_BASE_URL,
@@ -11,6 +14,10 @@ export function useTwitchAPI() {
             'Client-ID': import.meta.env.VITE_TWITCH_CLIENT_ID
         }
     }), { maxRPS: 12 })
+
+    if (twitchAuth.token) {
+        twitchApi.defaults.headers.common['Authorization'] = `Bearer ${twitchAuth.token}`
+    }
 
     twitchApi.interceptors.response.use((response) => {
         // Any status code that lie within the range of 2xx cause this function to trigger
@@ -39,6 +46,7 @@ export function useTwitchAPI() {
 
             try {
                 const token = await getAuthToken()
+                twitchAuth.token = token
                 twitchApi.defaults.headers.common['Authorization'] = `Bearer ${token}`
                 processQueue(null, token)
                 return twitchApi(originalRequest)
