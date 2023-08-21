@@ -8,8 +8,6 @@ import { useSettings } from "../store/settings";
 
 const settings = useSettings();
 
-const route = useRoute();
-
 function setSortOrder(order) {
   settings.monthSort = order;
 }
