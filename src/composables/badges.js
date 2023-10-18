@@ -1,29 +1,34 @@
-import { useTwitchAPI } from "./twitch-api"
-const twitchApi = useTwitchAPI()
+import { useTwitchAPI } from "./twitch-api";
+const twitchApi = useTwitchAPI();
 
 export function useBadges() {
-
   async function fetchBadges() {
     try {
       const globalBadgesPromise = twitchApi.get("chat/badges/global");
-      const channelBadgesPromise = twitchApi.get("chat/badges?broadcaster_id=23936415");
+      const channelBadgesPromise = twitchApi.get(
+        "chat/badges?broadcaster_id=23936415"
+      );
       const [globalBadges, channelBadges] = await Promise.all([
         globalBadgesPromise,
         channelBadgesPromise,
       ]);
 
-      const badges = [...globalBadges.data.data, ...channelBadges.data.data]
+      const badges = [...globalBadges.data.data, ...channelBadges.data.data];
 
-      const badgesMap = new Map(badges.map(badge => [badge.set_id, new Map(badge.versions.map(v => [v.id, v]))]))
+      const badgesMap = new Map(
+        badges.map((badge) => [
+          badge.set_id,
+          new Map(badge.versions.map((v) => [v.id, v])),
+        ])
+      );
 
-      return badgesMap
+      return badgesMap;
     } catch (error) {
       console.error(error);
     }
   }
 
   function parseBadges(badges, badgeList) {
-
     if (!badges) return [];
 
     const sortedKeys = Object.keys(badges)
@@ -60,8 +65,9 @@ export function useBadges() {
       }, {});
 
     return Object.entries(sortedKeys).map((badge) => {
-      const badgeURL = badgeList.get(badge[0]).get(badge[1]).image_url_1x
-      return badgeURL;
+      const badgeURL = badgeList.get(badge[0]).get(badge[1]).image_url_1x;
+      const name = badge[0];
+      return { name: name, url: badgeURL };
     });
   }
 
