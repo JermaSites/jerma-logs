@@ -14,7 +14,7 @@ import TheHeader from "./components/TheHeader.vue";
         <div class="inline-block">
           <a
             href="https://discordapp.com/users/178211447350886401"
-            class="hover:underline"
+            class="underline"
             >Modus Pwnens</a
           >
         </div>
