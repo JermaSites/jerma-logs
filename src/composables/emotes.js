@@ -2,29 +2,27 @@ import axios from "axios";
 import linkifyStr from "linkify-string";
 
 export function useEmotes() {
-  // if (!emoteMap) {
-  //   emoteMap = await fetchEmotes()
-  // }
+  // Disable emotes as the api is not working
   async function fetchEmotes() {
-    const globalEmotesPromise = axios.get(
-      "https://emotes.adamcy.pl/v1/global/emotes/twitch.7tv.bttv.ffz"
-    );
-    const channelEmotesPromise = axios.get(
-      "https://emotes.adamcy.pl/v1/channel/23936415/emotes/twitch.7tv.bttv.ffz"
-    );
+    // const globalEmotesPromise = axios.get(
+    //   "https://emotes.adamcy.pl/v1/global/emotes/twitch.7tv.bttv.ffz"
+    // );
+    // const channelEmotesPromise = axios.get(
+    //   "https://emotes.adamcy.pl/v1/channel/23936415/emotes/twitch.7tv.bttv.ffz"
+    // );
 
-    const [globalEmotes, channelEmotes] = await Promise.all([
-      globalEmotesPromise,
-      channelEmotesPromise,
-    ]);
+    // const [globalEmotes, channelEmotes] = await Promise.all([
+    //   globalEmotesPromise,
+    //   channelEmotesPromise,
+    // ]);
 
-    const emotes = [...globalEmotes.data, ...channelEmotes.data];
+    // const emotes = [...globalEmotes.data, ...channelEmotes.data];
 
     const emoteMap = new Map();
 
-    emotes.forEach((emote) => {
-      emoteMap.set(emote.code, emote);
-    });
+    // emotes.forEach((emote) => {
+    //   emoteMap.set(emote.code, emote);
+    // });
 
     return emoteMap;
   }
