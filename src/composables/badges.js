@@ -8,6 +8,7 @@ export function useBadges() {
       const channelBadgesPromise = twitchApi.get(
         "chat/badges?broadcaster_id=23936415"
       );
+
       const [globalBadges, channelBadges] = await Promise.all([
         globalBadgesPromise,
         channelBadgesPromise,
@@ -24,12 +25,13 @@ export function useBadges() {
 
       return badgesMap;
     } catch (error) {
-      console.error(error);
+      console.error("Failed to fetch badges:", error.message);
+      return new Map();
     }
   }
 
   function parseBadges(badges, badgeList) {
-    if (!badges) return [];
+    if (!badges || badgeList.size === 0) return [];
 
     const sortedKeys = Object.keys(badges)
       .sort((a, b) => {
