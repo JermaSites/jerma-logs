@@ -8,7 +8,7 @@ const open = ref(false);
 onClickOutside(modal, () => (open.value = false));
 
 function close() {
-  open.value = false
+  open.value = false;
 }
 </script>
 
