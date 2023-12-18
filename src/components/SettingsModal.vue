@@ -36,10 +36,12 @@ watchEffect(async () => {
     const permission = await Notification.requestPermission();
 
     if (permission === "granted") {
-      settings.fcmToken = await getToken(messaging, {
-        vapidKey:
-          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-      });
+      if (settings.fcmToken === null) {
+        settings.fcmToken = await getToken(messaging, {
+          vapidKey:
+            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+        });
+      }
 
       await setDoc(doc(db, "subscribers", settings.fcmToken), {
         token: settings.fcmToken,
@@ -61,10 +63,12 @@ watchEffect(async () => {
     const permission = await Notification.requestPermission();
 
     if (permission === "granted") {
-      settings.fcmToken = await getToken(messaging, {
-        vapidKey:
-          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-      });
+      if (settings.fcmToken === null) {
+        settings.fcmToken = await getToken(messaging, {
+          vapidKey:
+            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+        });
+      }
 
       await setDoc(doc(db, "susSubscribers", settings.fcmToken), {
         token: settings.fcmToken,
