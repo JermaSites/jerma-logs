@@ -34,6 +34,37 @@ exports.sendNotification = functions.firestore
     return admin.messaging().sendToDevice(tokens, payload);
   });
 
+exports.sendSusNotification = functions.firestore
+  .document("/sus/{documentId}")
+  .onCreate(async (snap, context) => {
+    const querySnapshot = await admin
+      .firestore()
+      .collection("susSubscribers")
+      .get();
+
+    const messsageData = snap.data();
+    if (messsageData.username !== "jerma985" && !messsageData.mod) return;
+
+    const tokens = [];
+    querySnapshot.forEach((doc) => {
+      const { token } = doc.data();
+      tokens.push(token);
+    });
+
+    // Notification details.
+    const payload = {
+      notification: {
+        tag: "sus",
+        title: "You cast SUS!",
+        body: messsageData.message,
+        icon: "https://logs.jerma.io/logo.png",
+        click_action: `https://logs.jerma.io/`,
+      },
+    };
+
+    return admin.messaging().sendToDevice(tokens, payload);
+  });
+
 exports.sendTestNotification = functions.firestore
   .document("/test/{documentId}")
   .onWrite(async (change, context) => {

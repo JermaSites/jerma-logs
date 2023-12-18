@@ -10,6 +10,7 @@ export const useSettings = defineStore("settings", {
       latestSort: "desc",
       timestamps: true,
       notifications: false,
+      susNotifications: false,
       fab: true,
       fcmToken: null,
       layout: {
