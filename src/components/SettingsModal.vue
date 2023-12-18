@@ -301,7 +301,7 @@ watchEffect(async () => {
             <SwitchLabel class="ml-4">Enable SUS! Notifications</SwitchLabel>
           </div>
 
-          <div v-if="false" class="flex items-center mb-4">
+          <div v-if="true" class="flex items-center mb-4">
             <Switch
               v-model="settings.testNotifications"
               :class="
