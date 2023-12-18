@@ -84,6 +84,60 @@ watchEffect(async () => {
     await deleteDoc(doc(db, "susSubscribers", settings.fcmToken));
   }
 });
+
+watchEffect(async () => {
+  if (settings.susNotifications) {
+    const permission = await Notification.requestPermission();
+
+    if (permission === "granted") {
+      if (settings.fcmToken === null) {
+        settings.fcmToken = await getToken(messaging, {
+          vapidKey:
+            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+        });
+      }
+
+      await setDoc(doc(db, "susSubscribers", settings.fcmToken), {
+        token: settings.fcmToken,
+        created: Date.now(),
+      });
+    } else {
+      settings.susNotifications = false;
+    }
+  } else if (
+    Notification.permission === "granted" &&
+    settings.fcmToken !== null
+  ) {
+    await deleteDoc(doc(db, "susSubscribers", settings.fcmToken));
+  }
+});
+
+watchEffect(async () => {
+  if (settings.testNotifications) {
+    const permission = await Notification.requestPermission();
+
+    if (permission === "granted") {
+      if (settings.fcmToken === null) {
+        settings.fcmToken = await getToken(messaging, {
+          vapidKey:
+            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+        });
+      }
+
+      await setDoc(doc(db, "testSubscribers", settings.fcmToken), {
+        token: settings.fcmToken,
+        created: Date.now(),
+      });
+    } else {
+      settings.testNotifications = false;
+    }
+  } else if (
+    Notification.permission === "granted" &&
+    settings.fcmToken !== null
+  ) {
+    await deleteDoc(doc(db, "testSubscribers", settings.fcmToken));
+  }
+});
 </script>
 
 <template>
@@ -245,6 +299,25 @@ watchEffect(async () => {
               />
             </Switch>
             <SwitchLabel class="ml-4">Enable SUS! Notifications</SwitchLabel>
+          </div>
+
+          <div v-if="false" class="flex items-center mb-4">
+            <Switch
+              v-model="settings.testNotifications"
+              :class="
+                settings.testNotifications ? 'bg-blue-600' : 'bg-blue-500'
+              "
+              class="relative inline-flex h-6 w-11 items-center rounded-full"
+            >
+              <span class="sr-only">Enable Test Notifications</span>
+              <span
+                :class="
+                  settings.testNotifications ? 'translate-x-6' : 'translate-x-1'
+                "
+                class="inline-block h-4 w-4 transform transition duration-200 ease-in-out rounded-full bg-slate-200"
+              />
+            </Switch>
+            <SwitchLabel class="ml-4">Enable Test Notifications</SwitchLabel>
           </div>
         </SwitchGroup>
       </section>

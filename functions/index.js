@@ -3,22 +3,31 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
 
-exports.sendNotification = functions.firestore
+exports.subscribeToMessageNotification = functions.firestore
+  .document("/messageSubscribers/{documentId}")
+  .onCreate(async (snap, context) => {
+    const data = snap.data();
+
+    const { token } = data;
+
+    return admin.messaging().subscribeToTopic(token, "message");
+  });
+
+exports.unsubscribeFromMessageNotification = functions.firestore
+  .document("/messageSubscribers/{documentId}")
+  .onDelete(async (snap, context) => {
+    const data = snap.data();
+
+    const { token } = data;
+
+    return admin.messaging().unsubscribeFromTopic(token, "message");
+  });
+
+exports.sendMessageNotification = functions.firestore
   .document("/messages/{documentId}")
   .onCreate(async (snap, context) => {
-    const querySnapshot = await admin
-      .firestore()
-      .collection("subscribers")
-      .get();
-
     const messsageData = snap.data();
     if (messsageData.username !== "jerma985") return;
-
-    const tokens = [];
-    querySnapshot.forEach((doc) => {
-      const { token } = doc.data();
-      tokens.push(token);
-    });
 
     // Notification details.
     const payload = {
@@ -31,25 +40,34 @@ exports.sendNotification = functions.firestore
       },
     };
 
-    return admin.messaging().sendToDevice(tokens, payload);
+    return admin.messaging().sendToTopic("message", payload);
+  });
+
+exports.subscribeToSusNotification = functions.firestore
+  .document("/susSubscribers/{documentId}")
+  .onCreate(async (snap, context) => {
+    const data = snap.data();
+
+    const { token } = data;
+
+    return admin.messaging().subscribeToTopic(token, "sus");
+  });
+
+exports.unsubscribeFromSusNotification = functions.firestore
+  .document("/susSubscribers/{documentId}")
+  .onDelete(async (snap, context) => {
+    const data = snap.data();
+
+    const { token } = data;
+
+    return admin.messaging().unsubscribeFromTopic(token, "sus");
   });
 
 exports.sendSusNotification = functions.firestore
   .document("/sus/{documentId}")
   .onCreate(async (snap, context) => {
-    const querySnapshot = await admin
-      .firestore()
-      .collection("susSubscribers")
-      .get();
-
     const messsageData = snap.data();
     if (messsageData.username !== "jerma985" && !messsageData.mod) return;
-
-    const tokens = [];
-    querySnapshot.forEach((doc) => {
-      const { token } = doc.data();
-      tokens.push(token);
-    });
 
     // Notification details.
     const payload = {
@@ -58,11 +76,31 @@ exports.sendSusNotification = functions.firestore
         title: "You cast SUS!",
         body: messsageData.message,
         icon: "https://logs.jerma.io/logo.png",
-        click_action: `https://logs.jerma.io/`,
+        clickAction: `https://logs.jerma.io/`,
       },
     };
 
-    return admin.messaging().sendToDevice(tokens, payload);
+    return admin.messaging().sendToTopic("sus", payload);
+  });
+
+exports.subscribeToTestNotification = functions.firestore
+  .document("/testSubscribers/{documentId}")
+  .onCreate(async (snap, context) => {
+    const data = snap.data();
+
+    const { token } = data;
+
+    return admin.messaging().subscribeToTopic(token, "test");
+  });
+
+exports.unsubscribeFromTestNotification = functions.firestore
+  .document("/testSubscribers/{documentId}")
+  .onDelete(async (snap, context) => {
+    const data = snap.data();
+
+    const { token } = data;
+
+    return admin.messaging().unsubscribeFromTopic(token, "test");
   });
 
 exports.sendTestNotification = functions.firestore
@@ -71,12 +109,10 @@ exports.sendTestNotification = functions.firestore
     const messsageData = change.after.data();
     if (messsageData.name !== "test") return;
 
-    const tokens = messsageData.tokens;
-
     // Notification details.
     const payload = {
       notification: {
-        tag: "jerma",
+        tag: "test",
         title: "Test Message",
         body: messsageData.message,
         icon: "https://logs.jerma.io/logo.png",
@@ -84,5 +120,5 @@ exports.sendTestNotification = functions.firestore
       },
     };
 
-    return admin.messaging().sendToDevice(tokens, payload);
+    return admin.messaging().sendToTopic("test", payload);
   });

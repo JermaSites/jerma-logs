@@ -11,6 +11,7 @@ export const useSettings = defineStore("settings", {
       timestamps: true,
       notifications: false,
       susNotifications: false,
+      testNotifications: false,
       fab: true,
       fcmToken: null,
       layout: {
