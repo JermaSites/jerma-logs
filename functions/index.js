@@ -107,7 +107,6 @@ exports.sendTestNotification = functions.firestore
   .document("/test/{documentId}")
   .onWrite(async (change, context) => {
     const messsageData = change.after.data();
-    if (messsageData.name !== "test") return;
 
     // Notification details.
     const payload = {
