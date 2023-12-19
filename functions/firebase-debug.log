@@ -1,0 +1,14 @@
+[debug] [2023-12-19T07:16:43.068Z] ----------------------------------------------------------------------
+[debug] [2023-12-19T07:16:43.070Z] Command:       C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\firebase-tools\lib\bin\firebase.js deploy --only functions
+[debug] [2023-12-19T07:16:43.070Z] CLI Version:   13.0.2
+[debug] [2023-12-19T07:16:43.070Z] Platform:      win32
+[debug] [2023-12-19T07:16:43.070Z] Node Version:  v20.10.0
+[debug] [2023-12-19T07:16:43.070Z] Time:          Tue Dec 19 2023 02:16:43 GMT-0500 (Eastern Standard Time)
+[debug] [2023-12-19T07:16:43.070Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-12-19T07:16:43.124Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-12-19T07:16:43.124Z] > authorizing via signed-in user (ijh.hunter@gmail.com)
+[debug] [2023-12-19T07:16:43.124Z] [iam] checking project jerma-logs for permissions ["cloudfunctions.functions.create","cloudfunctions.functions.delete","cloudfunctions.functions.get","cloudfunctions.functions.list","cloudfunctions.functions.update","cloudfunctions.operations.get","firebase.projects.get"]
+[debug] [2023-12-19T07:16:43.125Z] > refreshing access token with scopes: []
+[debug] [2023-12-19T07:16:43.126Z] >>> [apiv2][query] POST https://www.googleapis.com/oauth2/v3/token [none]
+[debug] [2023-12-19T07:16:43.126Z] >>> [apiv2][body] POST https://www.googleapis.com/oauth2/v3/token [omitted]

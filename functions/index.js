@@ -76,7 +76,7 @@ exports.sendSusNotification = functions.firestore
         title: "You cast SUS!",
         body: messsageData.message,
         icon: "https://logs.jerma.io/logo.png",
-        clickAction: `https://logs.jerma.io/`,
+        click_action: `https://logs.jerma.io/`,
       },
     };
 
@@ -115,7 +115,7 @@ exports.sendTestNotification = functions.firestore
         title: "Test Message",
         body: messsageData.message,
         icon: "https://logs.jerma.io/logo.png",
-        clickAction: "/Latest",
+        click_action: `https://logs.jerma.io/`,
       },
     };
 
