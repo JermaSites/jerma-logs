@@ -16,7 +16,7 @@ import {
 import { useSettings } from "../store/settings";
 import { messaging } from "../firebase";
 import { getToken } from "firebase/messaging";
-import { computed, watchEffect } from "vue";
+import { watchEffect } from "vue";
 import { db } from "../firebase";
 import { doc, setDoc, deleteDoc } from "@firebase/firestore";
 
@@ -117,12 +117,10 @@ watchEffect(async () => {
     const permission = await Notification.requestPermission();
 
     if (permission === "granted") {
-      if (settings.fcmToken === null) {
-        settings.fcmToken = await getToken(messaging, {
-          vapidKey:
-            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-        });
-      }
+      settings.fcmToken = await getToken(messaging, {
+        vapidKey:
+          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+      });
 
       await setDoc(doc(db, "testSubscribers", settings.fcmToken), {
         token: settings.fcmToken,
