@@ -116,7 +116,11 @@ exports.sendTestNotification = functions.firestore
         title: "Test Message",
         body: messsageData.message,
         icon: "https://logs.jerma.io/logo.png",
-        click_action: `https://logs.jerma.io/Latest`,
+      },
+      webpush: {
+        fcmOptions: {
+          link: "/Latest",
+        },
       },
     };
 
