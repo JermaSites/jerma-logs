@@ -12,13 +12,15 @@ import {
   XCircleIcon,
   CheckIcon,
   ChevronUpDownIcon,
+  ExclamationCircleIcon,
 } from "@heroicons/vue/24/solid";
 import { useSettings } from "../store/settings";
 import { messaging } from "../firebase";
 import { getToken } from "firebase/messaging";
-import { watchEffect } from "vue";
+import { computed, watchEffect } from "vue";
 import { db } from "../firebase";
 import { doc, setDoc, deleteDoc } from "@firebase/firestore";
+import { usePermission } from "@vueuse/core";
 
 defineEmits(["close"]);
 
@@ -30,6 +32,12 @@ settings.layout = settings.layouts.findIndex(
 )
   ? settings.layout
   : settings.layouts[0];
+
+const notificationPermission = usePermission("notifications");
+
+const hasNotificationPermission = computed(() => {
+  return notificationPermission.value === "granted";
+});
 
 watchEffect(async () => {
   if (settings.notifications) {
@@ -53,31 +61,6 @@ watchEffect(async () => {
     settings.fcmToken !== null
   ) {
     await deleteDoc(doc(db, "subscribers", settings.fcmToken));
-  }
-});
-
-watchEffect(async () => {
-  if (settings.susNotifications) {
-    const permission = await Notification.requestPermission();
-
-    if (permission === "granted") {
-      settings.fcmToken = await getToken(messaging, {
-        vapidKey:
-          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-      });
-
-      await setDoc(doc(db, "susSubscribers", settings.fcmToken), {
-        token: settings.fcmToken,
-        created: Date.now(),
-      });
-    } else {
-      settings.susNotifications = false;
-    }
-  } else if (
-    Notification.permission === "granted" &&
-    settings.fcmToken !== null
-  ) {
-    await deleteDoc(doc(db, "susSubscribers", settings.fcmToken));
   }
 });
 
@@ -224,41 +207,18 @@ watchEffect(async () => {
 
       <section>
         <div class="mb-4">
-          <h2 class="text-xl font-medium">Other settings</h2>
+          <h2 class="text-xl font-medium">Notification settings</h2>
           <hr class="border-slate-400" />
         </div>
 
         <SwitchGroup>
-          <div class="flex items-center mb-4">
-            <Switch
-              v-model="settings.timestamps"
-              :class="settings.timestamps ? 'bg-blue-600' : 'bg-blue-500'"
-              class="relative inline-flex h-6 w-11 items-center rounded-full"
-            >
-              <span class="sr-only">Show Timestamps</span>
-              <span
-                :class="settings.timestamps ? 'translate-x-6' : 'translate-x-1'"
-                class="inline-block h-4 w-4 transform transition duration-200 ease-in-out rounded-full bg-slate-200"
-              />
-            </Switch>
-            <SwitchLabel class="ml-4">Show Timestamps</SwitchLabel>
+          <div
+            v-if="!hasNotificationPermission"
+            class="flex items-center justify-center gap-4 border border-rose-500 rounded-lg mb-4 p-4"
+          >
+            <ExclamationCircleIcon class="w-8 text-rose-600" />
+            Notification permission must be allowed for notifications to work
           </div>
-
-          <div class="flex items-center mb-4">
-            <Switch
-              v-model="settings.fab"
-              :class="settings.fab ? 'bg-blue-600' : 'bg-blue-500'"
-              class="relative inline-flex h-6 w-11 items-center rounded-full"
-            >
-              <span class="sr-only">Show floating action buttons</span>
-              <span
-                :class="settings.fab ? 'translate-x-6' : 'translate-x-1'"
-                class="inline-block h-4 w-4 transform transition duration-200 ease-in-out rounded-full bg-slate-200"
-              />
-            </Switch>
-            <SwitchLabel class="ml-4">Show floating action buttons</SwitchLabel>
-          </div>
-
           <div class="flex items-center mb-4">
             <Switch
               v-model="settings.notifications"
@@ -293,7 +253,7 @@ watchEffect(async () => {
             <SwitchLabel class="ml-4">Enable SUS! Notifications</SwitchLabel>
           </div>
 
-          <div v-if="false" class="flex items-center mb-4">
+          <div v-if="true" class="flex items-center mb-4">
             <Switch
               v-model="settings.testNotifications"
               :class="
@@ -310,6 +270,45 @@ watchEffect(async () => {
               />
             </Switch>
             <SwitchLabel class="ml-4">Enable Test Notifications</SwitchLabel>
+          </div>
+        </SwitchGroup>
+      </section>
+
+      <section>
+        <div class="mb-4">
+          <h2 class="text-xl font-medium">Other settings</h2>
+          <hr class="border-slate-400" />
+        </div>
+
+        <SwitchGroup>
+          <div class="flex items-center mb-4">
+            <Switch
+              v-model="settings.timestamps"
+              :class="settings.timestamps ? 'bg-blue-600' : 'bg-blue-500'"
+              class="relative inline-flex h-6 w-11 items-center rounded-full"
+            >
+              <span class="sr-only">Show Timestamps</span>
+              <span
+                :class="settings.timestamps ? 'translate-x-6' : 'translate-x-1'"
+                class="inline-block h-4 w-4 transform transition duration-200 ease-in-out rounded-full bg-slate-200"
+              />
+            </Switch>
+            <SwitchLabel class="ml-4">Show Timestamps</SwitchLabel>
+          </div>
+
+          <div class="flex items-center mb-4">
+            <Switch
+              v-model="settings.fab"
+              :class="settings.fab ? 'bg-blue-600' : 'bg-blue-500'"
+              class="relative inline-flex h-6 w-11 items-center rounded-full"
+            >
+              <span class="sr-only">Show floating action buttons</span>
+              <span
+                :class="settings.fab ? 'translate-x-6' : 'translate-x-1'"
+                class="inline-block h-4 w-4 transform transition duration-200 ease-in-out rounded-full bg-slate-200"
+              />
+            </Switch>
+            <SwitchLabel class="ml-4">Show floating action buttons</SwitchLabel>
           </div>
         </SwitchGroup>
       </section>
