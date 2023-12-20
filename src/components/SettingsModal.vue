@@ -15,10 +15,10 @@ import {
   ExclamationCircleIcon,
 } from "@heroicons/vue/24/solid";
 import { useSettings } from "../store/settings";
-import { messaging } from "../firebase";
+import { httpsCallable } from "firebase/functions";
 import { getToken } from "firebase/messaging";
 import { computed, watchEffect } from "vue";
-import { db } from "../firebase";
+import { db, messaging, functions } from "../firebase";
 import { doc, setDoc, deleteDoc } from "@firebase/firestore";
 import { usePermission } from "@vueuse/core";
 
@@ -32,6 +32,10 @@ settings.layout = settings.layouts.findIndex(
 )
   ? settings.layout
   : settings.layouts[0];
+
+const subscribeToTopic = httpsCallable(functions, "subscribeToTopic");
+
+const unsubscribeFromTopic = httpsCallable(functions, "unsubscribeFromTopic");
 
 const notificationPermission = usePermission("notifications");
 
@@ -49,9 +53,9 @@ watchEffect(async () => {
           "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
       });
 
-      await setDoc(doc(db, "subscribers", settings.fcmToken), {
+      await subscribeToTopic({
         token: settings.fcmToken,
-        created: Date.now(),
+        topic: "message",
       });
     } else {
       settings.notifications = false;
@@ -60,7 +64,7 @@ watchEffect(async () => {
     Notification.permission === "granted" &&
     settings.fcmToken !== null
   ) {
-    await deleteDoc(doc(db, "subscribers", settings.fcmToken));
+    await unsubscribeFromTopic({ token: settings.fcmToken, topic: "message" });
   }
 });
 
@@ -74,9 +78,9 @@ watchEffect(async () => {
           "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
       });
 
-      await setDoc(doc(db, "susSubscribers", settings.fcmToken), {
+      await subscribeToTopic({
         token: settings.fcmToken,
-        created: Date.now(),
+        topic: "sus",
       });
     } else {
       settings.susNotifications = false;
@@ -85,7 +89,7 @@ watchEffect(async () => {
     Notification.permission === "granted" &&
     settings.fcmToken !== null
   ) {
-    await deleteDoc(doc(db, "susSubscribers", settings.fcmToken));
+    await unsubscribeFromTopic({ token: settings.fcmToken, topic: "sus" });
   }
 });
 
@@ -99,9 +103,9 @@ watchEffect(async () => {
           "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
       });
 
-      await setDoc(doc(db, "testSubscribers", settings.fcmToken), {
+      await subscribeToTopic({
         token: settings.fcmToken,
-        created: Date.now(),
+        topic: "test",
       });
     } else {
       settings.testNotifications = false;
@@ -110,7 +114,7 @@ watchEffect(async () => {
     Notification.permission === "granted" &&
     settings.fcmToken !== null
   ) {
-    await deleteDoc(doc(db, "testSubscribers", settings.fcmToken));
+    await unsubscribeFromTopic({ token: settings.fcmToken, topic: "test" });
   }
 });
 </script>

@@ -5,6 +5,7 @@ import {
   persistentMultipleTabManager,
 } from "firebase/firestore";
 import { getMessaging, onMessage, isSupported } from "firebase/messaging";
+import { getFunctions } from "firebase/functions";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBV9G06TKa-B6LF7fe63Z7QFbm8PJU7ad4",
@@ -25,6 +26,8 @@ const db = initializeFirestore(app, {
   ),
 });
 
+const functions = getFunctions(app);
+
 let messaging;
 isSupported().then((supported) => {
   if (supported) {
@@ -39,4 +42,4 @@ isSupported().then((supported) => {
   }
 });
 
-export { db, messaging };
+export { db, messaging, functions };

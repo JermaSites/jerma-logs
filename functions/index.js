@@ -3,25 +3,15 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 admin.initializeApp();
 
-exports.subscribeToMessageNotification = functions.firestore
-  .document("/messageSubscribers/{documentId}")
-  .onCreate(async (snap, context) => {
-    const data = snap.data();
+exports.subscribeToTopic = functions.https.onCall((data, context) => {
+  const { token, topic } = data;
+  return admin.messaging().subscribeToTopic(token, topic);
+});
 
-    const { token } = data;
-
-    return admin.messaging().subscribeToTopic(token, "message");
-  });
-
-exports.unsubscribeFromMessageNotification = functions.firestore
-  .document("/messageSubscribers/{documentId}")
-  .onDelete(async (snap, context) => {
-    const data = snap.data();
-
-    const { token } = data;
-
-    return admin.messaging().unsubscribeFromTopic(token, "message");
-  });
+exports.unsubscribeFromTopic = functions.https.onCall((data, context) => {
+  const { token, topic } = data;
+  return admin.messaging().unsubscribeFromTopic(token, topic);
+});
 
 exports.sendMessageNotification = functions.firestore
   .document("/messages/{documentId}")
@@ -43,26 +33,6 @@ exports.sendMessageNotification = functions.firestore
     return admin.messaging().sendToTopic("message", payload);
   });
 
-exports.subscribeToSusNotification = functions.firestore
-  .document("/susSubscribers/{documentId}")
-  .onCreate(async (snap, context) => {
-    const data = snap.data();
-
-    const { token } = data;
-
-    return admin.messaging().subscribeToTopic(token, "sus");
-  });
-
-exports.unsubscribeFromSusNotification = functions.firestore
-  .document("/susSubscribers/{documentId}")
-  .onDelete(async (snap, context) => {
-    const data = snap.data();
-
-    const { token } = data;
-
-    return admin.messaging().unsubscribeFromTopic(token, "sus");
-  });
-
 exports.sendSusNotification = functions.firestore
   .document("/sus/{documentId}")
   .onCreate(async (snap, context) => {
@@ -81,26 +51,6 @@ exports.sendSusNotification = functions.firestore
     };
 
     return admin.messaging().sendToTopic("sus", payload);
-  });
-
-exports.subscribeToTestNotification = functions.firestore
-  .document("/testSubscribers/{documentId}")
-  .onCreate(async (snap, context) => {
-    const data = snap.data();
-
-    const { token } = data;
-
-    return admin.messaging().subscribeToTopic(token, "test");
-  });
-
-exports.unsubscribeFromTestNotification = functions.firestore
-  .document("/testSubscribers/{documentId}")
-  .onDelete(async (snap, context) => {
-    const data = snap.data();
-
-    const { token } = data;
-
-    return admin.messaging().unsubscribeFromTopic(token, "test");
   });
 
 exports.sendTestNotification = functions.firestore
