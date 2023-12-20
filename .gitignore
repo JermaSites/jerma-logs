@@ -8,3 +8,4 @@ android
 /test-results/
 /playwright-report/
 /playwright/.cache/
+firebase-debug.log

@@ -1,6 +1,6 @@
+const admin = require("firebase-admin");
 const functions = require("firebase-functions");
 
-const admin = require("firebase-admin");
 admin.initializeApp();
 
 exports.subscribeToTopic = functions.https.onCall((data, context) => {
@@ -16,16 +16,18 @@ exports.unsubscribeFromTopic = functions.https.onCall((data, context) => {
 exports.sendMessageNotification = functions.firestore
   .document("/messages/{documentId}")
   .onCreate(async (snap, context) => {
-    const messsageData = snap.data();
-    if (messsageData.username !== "jerma985") return;
+    const { message, username } = snap.data();
+
+    if (username !== "jerma985") return;
 
     // Notification details.
     const payload = {
       data: {
         tag: "jerma",
         title: "Jerma in Twitch chat",
-        body: messsageData.message,
-        data: "/Latest",
+        body: message,
+        icon: "/logo.png",
+        clickAction: "/Latest",
       },
     };
 
@@ -35,16 +37,18 @@ exports.sendMessageNotification = functions.firestore
 exports.sendSusNotification = functions.firestore
   .document("/sus/{documentId}")
   .onCreate(async (snap, context) => {
-    const messsageData = snap.data();
-    if (messsageData.username !== "jerma985" && !messsageData.mod) return;
+    const { message, username, mod } = snap.data();
+
+    if (username !== "jerma985" && !mod) return;
 
     // Notification details.
     const payload = {
       data: {
         tag: "sus",
         title: "You cast SUS!",
-        body: messsageData.message,
-        data: "/",
+        body: message,
+        icon: "/logo.png",
+        clickAction: "/",
       },
     };
 
@@ -58,11 +62,12 @@ exports.sendTestNotification = functions.firestore
 
     // Notification details.
     const payload = {
-      data: {
+      notification: {
         tag: "test",
         title: "Test Message",
         body: message,
-        data: "/Test",
+        icon: "/logo.png",
+        clickAction: "/Test",
       },
     };
 
