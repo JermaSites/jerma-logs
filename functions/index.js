@@ -21,12 +21,11 @@ exports.sendMessageNotification = functions.firestore
 
     // Notification details.
     const payload = {
-      notification: {
+      data: {
         tag: "jerma",
         title: "Jerma in Twitch chat",
         body: messsageData.message,
-        icon: "https://logs.jerma.io/logo.png",
-        click_action: `https://logs.jerma.io/Latest`,
+        data: "/Latest",
       },
     };
 
@@ -41,12 +40,11 @@ exports.sendSusNotification = functions.firestore
 
     // Notification details.
     const payload = {
-      notification: {
+      data: {
         tag: "sus",
         title: "You cast SUS!",
         body: messsageData.message,
-        icon: "https://logs.jerma.io/logo.png",
-        click_action: `https://logs.jerma.io/`,
+        data: "/",
       },
     };
 
@@ -56,16 +54,15 @@ exports.sendSusNotification = functions.firestore
 exports.sendTestNotification = functions.firestore
   .document("/test/{documentId}")
   .onWrite(async (change, context) => {
-    const messsageData = change.after.data();
+    const { message } = change.after.data();
 
     // Notification details.
     const payload = {
-      notification: {
+      data: {
         tag: "test",
         title: "Test Message",
-        body: messsageData.message,
-        icon: "https://logs.jerma.io/logo.png",
-        click_action: `https://logs.jerma.io/`,
+        body: message,
+        data: "/Test",
       },
     };
 
