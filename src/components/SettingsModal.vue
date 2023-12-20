@@ -17,9 +17,8 @@ import {
 import { useSettings } from "../store/settings";
 import { httpsCallable } from "firebase/functions";
 import { getToken } from "firebase/messaging";
-import { computed, watchEffect } from "vue";
-import { db, messaging, functions } from "../firebase";
-import { doc, setDoc, deleteDoc } from "@firebase/firestore";
+import { computed, watch } from "vue";
+import { messaging, functions } from "../firebase";
 import { usePermission } from "@vueuse/core";
 
 defineEmits(["close"]);
@@ -43,80 +42,86 @@ const hasNotificationPermission = computed(() => {
   return notificationPermission.value === "granted";
 });
 
-watchEffect(async () => {
-  if (settings.notifications) {
-    const permission = await Notification.requestPermission();
+watch(
+  () => settings.notifications,
+  async (value) => {
+    if (value) {
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        settings.fcmToken = await getToken(messaging, {
+          vapidKey:
+            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+        });
 
-    if (permission === "granted") {
-      settings.fcmToken = await getToken(messaging, {
-        vapidKey:
-          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-      });
-
-      await subscribeToTopic({
-        token: settings.fcmToken,
-        topic: "message",
-      });
+        await subscribeToTopic({
+          token: settings.fcmToken,
+          topic: "test",
+        });
+      } else {
+        settings.notifications = false;
+      }
     } else {
-      settings.notifications = false;
-    }
-  } else if (
-    Notification.permission === "granted" &&
-    settings.fcmToken !== null
-  ) {
-    await unsubscribeFromTopic({ token: settings.fcmToken, topic: "message" });
-  }
-});
-
-watchEffect(async () => {
-  if (settings.susNotifications) {
-    const permission = await Notification.requestPermission();
-
-    if (permission === "granted") {
-      settings.fcmToken = await getToken(messaging, {
-        vapidKey:
-          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-      });
-
-      await subscribeToTopic({
-        token: settings.fcmToken,
-        topic: "sus",
-      });
-    } else {
-      settings.susNotifications = false;
-    }
-  } else if (
-    Notification.permission === "granted" &&
-    settings.fcmToken !== null
-  ) {
-    await unsubscribeFromTopic({ token: settings.fcmToken, topic: "sus" });
-  }
-});
-
-watchEffect(async () => {
-  if (settings.testNotifications) {
-    const permission = await Notification.requestPermission();
-
-    if (permission === "granted") {
-      settings.fcmToken = await getToken(messaging, {
-        vapidKey:
-          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-      });
-
-      await subscribeToTopic({
+      await unsubscribeFromTopic({
         token: settings.fcmToken,
         topic: "test",
       });
-    } else {
-      settings.testNotifications = false;
     }
-  } else if (
-    Notification.permission === "granted" &&
-    settings.fcmToken !== null
-  ) {
-    await unsubscribeFromTopic({ token: settings.fcmToken, topic: "test" });
   }
-});
+);
+
+watch(
+  () => settings.susNotifications,
+  async (value) => {
+    if (value) {
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        settings.fcmToken = await getToken(messaging, {
+          vapidKey:
+            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+        });
+
+        await subscribeToTopic({
+          token: settings.fcmToken,
+          topic: "test",
+        });
+      } else {
+        settings.susNotifications = false;
+      }
+    } else {
+      await unsubscribeFromTopic({
+        token: settings.fcmToken,
+        topic: "test",
+      });
+    }
+  }
+);
+
+watch(
+  () => settings.testNotifications,
+  async (value) => {
+    if (value) {
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        settings.fcmToken = await getToken(messaging, {
+          vapidKey:
+            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+        });
+
+        await subscribeToTopic({
+          token: settings.fcmToken,
+          topic: "test",
+        });
+      } else {
+        settings.testNotifications = false;
+      }
+    } else {
+      await unsubscribeFromTopic({
+        token: settings.fcmToken,
+        topic: "test",
+      });
+    }
+  }
+);
 </script>
 
 <template>
