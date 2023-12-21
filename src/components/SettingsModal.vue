@@ -17,7 +17,7 @@ import {
 import { useSettings } from "../store/settings";
 import { httpsCallable } from "firebase/functions";
 import { getToken } from "firebase/messaging";
-import { computed, watch } from "vue";
+import { computed, onMounted, watch } from "vue";
 import { messaging, functions } from "../firebase";
 import { usePermission } from "@vueuse/core";
 
@@ -38,87 +38,119 @@ const unsubscribeFromTopic = httpsCallable(functions, "unsubscribeFromTopic");
 
 const notificationPermission = usePermission("notifications");
 
-const hasNotificationPermission = computed(() => {
-  return notificationPermission.value === "granted";
+const notificationPermissionIsDenied = computed(() => {
+  return notificationPermission.value === "denied";
+});
+
+watch(notificationPermission, (permission) => {
+  if (permission !== "granted") {
+    settings.notifications = false;
+    settings.susNotifications = false;
+    settings.testNotifications = false;
+  }
 });
 
 watch(
   () => settings.notifications,
-  async (value) => {
-    if (value) {
-      const permission = await Notification.requestPermission();
-      if (permission === "granted") {
-        settings.fcmToken = await getToken(messaging, {
+  async (enableNotifications) => {
+    if (enableNotifications) {
+      try {
+        const currentToken = await getToken(messaging, {
           vapidKey:
             "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
         });
 
         await subscribeToTopic({
-          token: settings.fcmToken,
-          topic: "test",
+          token: currentToken,
+          topic: "message",
         });
-      } else {
-        settings.notifications = false;
+      } catch (error) {
+        console.error("Error subscribing FCM token to topic", error);
       }
-    } else {
-      await unsubscribeFromTopic({
-        token: settings.fcmToken,
-        topic: "test",
-      });
+    } else if (notificationPermission.value === "granted") {
+      try {
+        const currentToken = await getToken(messaging, {
+          vapidKey:
+            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+        });
+
+        await unsubscribeFromTopic({
+          token: currentToken,
+          topic: "message",
+        });
+      } catch (error) {
+        console.error("Error unsubscribing FCM token from topic", error);
+      }
     }
   }
 );
 
 watch(
   () => settings.susNotifications,
-  async (value) => {
-    if (value) {
-      const permission = await Notification.requestPermission();
-      if (permission === "granted") {
-        settings.fcmToken = await getToken(messaging, {
+  async (enableNotifications) => {
+    if (enableNotifications) {
+      try {
+        const currentToken = await getToken(messaging, {
           vapidKey:
             "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
         });
 
         await subscribeToTopic({
-          token: settings.fcmToken,
-          topic: "test",
+          token: currentToken,
+          topic: "sus",
         });
-      } else {
-        settings.susNotifications = false;
+      } catch (error) {
+        console.error("Error subscribing FCM token to topic", error);
       }
-    } else {
-      await unsubscribeFromTopic({
-        token: settings.fcmToken,
-        topic: "test",
-      });
+    } else if (notificationPermission.value === "granted") {
+      try {
+        const currentToken = await getToken(messaging, {
+          vapidKey:
+            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+        });
+
+        await unsubscribeFromTopic({
+          token: currentToken,
+          topic: "sus",
+        });
+      } catch (error) {
+        console.error("Error unsubscribing FCM token from topic", error);
+      }
     }
   }
 );
 
 watch(
   () => settings.testNotifications,
-  async (value) => {
-    if (value) {
-      const permission = await Notification.requestPermission();
-      if (permission === "granted") {
-        settings.fcmToken = await getToken(messaging, {
+  async (enableNotifications) => {
+    if (enableNotifications) {
+      try {
+        const currentToken = await getToken(messaging, {
           vapidKey:
             "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
         });
 
         await subscribeToTopic({
-          token: settings.fcmToken,
+          token: currentToken,
           topic: "test",
         });
-      } else {
-        settings.testNotifications = false;
+      } catch (error) {
+        console.error("Error subscribing FCM token to topic", error);
       }
-    } else {
-      await unsubscribeFromTopic({
-        token: settings.fcmToken,
-        topic: "test",
-      });
+    } else if (notificationPermission.value === "granted") {
+      try {
+        const currentToken = await getToken(messaging, {
+          vapidKey:
+            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+        });
+
+        await unsubscribeFromTopic({
+          token: currentToken,
+          topic: "test",
+        });
+      } catch (error) {
+        console.error("Error unsubscribing FCM token from topic", error);
+      }
     }
   }
 );
@@ -222,7 +254,7 @@ watch(
 
         <SwitchGroup>
           <div
-            v-if="!hasNotificationPermission"
+            v-if="notificationPermissionIsDenied"
             class="flex items-center justify-center gap-4 border border-rose-500 rounded-lg mb-4 p-4"
           >
             <ExclamationCircleIcon class="w-8 text-rose-600" />
@@ -231,6 +263,7 @@ watch(
           <div class="flex items-center mb-4">
             <Switch
               v-model="settings.notifications"
+              :disabled="notificationPermissionIsDenied"
               :class="settings.notifications ? 'bg-blue-600' : 'bg-blue-500'"
               class="relative inline-flex h-6 w-11 items-center rounded-full"
             >
@@ -248,6 +281,7 @@ watch(
           <div class="flex items-center mb-4">
             <Switch
               v-model="settings.susNotifications"
+              :disabled="notificationPermissionIsDenied"
               :class="settings.susNotifications ? 'bg-blue-600' : 'bg-blue-500'"
               class="relative inline-flex h-6 w-11 items-center rounded-full"
             >
@@ -265,6 +299,7 @@ watch(
           <div v-if="true" class="flex items-center mb-4">
             <Switch
               v-model="settings.testNotifications"
+              :disabled="notificationPermissionIsDenied"
               :class="
                 settings.testNotifications ? 'bg-blue-600' : 'bg-blue-500'
               "
