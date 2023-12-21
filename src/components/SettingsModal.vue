@@ -17,7 +17,7 @@ import {
 import { useSettings } from "../store/settings";
 import { httpsCallable } from "firebase/functions";
 import { getToken } from "firebase/messaging";
-import { computed, onMounted, watch } from "vue";
+import { computed, watch } from "vue";
 import { messaging, functions } from "../firebase";
 import { usePermission } from "@vueuse/core";
 
@@ -264,7 +264,10 @@ watch(
             <Switch
               v-model="settings.notifications"
               :disabled="notificationPermissionIsDenied"
-              :class="settings.notifications ? 'bg-blue-600' : 'bg-blue-500'"
+              :class="[
+                settings.notifications ? 'bg-blue-600' : 'bg-blue-500',
+                { 'cursor-not-allowed': notificationPermissionIsDenied },
+              ]"
               class="relative inline-flex h-6 w-11 items-center rounded-full"
             >
               <span class="sr-only">Enable Notifications</span>
@@ -275,14 +278,21 @@ watch(
                 class="inline-block h-4 w-4 transform transition duration-200 ease-in-out rounded-full bg-slate-200"
               />
             </Switch>
-            <SwitchLabel class="ml-4">Enable Notifications</SwitchLabel>
+            <SwitchLabel
+              :class="{ 'cursor-not-allowed': notificationPermissionIsDenied }"
+              class="ml-4"
+              >Enable Notifications</SwitchLabel
+            >
           </div>
 
           <div class="flex items-center mb-4">
             <Switch
               v-model="settings.susNotifications"
               :disabled="notificationPermissionIsDenied"
-              :class="settings.susNotifications ? 'bg-blue-600' : 'bg-blue-500'"
+              :class="[
+                settings.notifications ? 'bg-blue-600' : 'bg-blue-500',
+                { 'cursor-not-allowed': notificationPermissionIsDenied },
+              ]"
               class="relative inline-flex h-6 w-11 items-center rounded-full"
             >
               <span class="sr-only">Enable SUS! Notifications</span>
@@ -293,16 +303,21 @@ watch(
                 class="inline-block h-4 w-4 transform transition duration-200 ease-in-out rounded-full bg-slate-200"
               />
             </Switch>
-            <SwitchLabel class="ml-4">Enable SUS! Notifications</SwitchLabel>
+            <SwitchLabel
+              :class="{ 'cursor-not-allowed': notificationPermissionIsDenied }"
+              class="ml-4"
+              >Enable SUS! Notifications</SwitchLabel
+            >
           </div>
 
           <div v-if="true" class="flex items-center mb-4">
             <Switch
               v-model="settings.testNotifications"
               :disabled="notificationPermissionIsDenied"
-              :class="
-                settings.testNotifications ? 'bg-blue-600' : 'bg-blue-500'
-              "
+              :class="[
+                settings.notifications ? 'bg-blue-600' : 'bg-blue-500',
+                { 'cursor-not-allowed': notificationPermissionIsDenied },
+              ]"
               class="relative inline-flex h-6 w-11 items-center rounded-full"
             >
               <span class="sr-only">Enable Test Notifications</span>
@@ -313,7 +328,11 @@ watch(
                 class="inline-block h-4 w-4 transform transition duration-200 ease-in-out rounded-full bg-slate-200"
               />
             </Switch>
-            <SwitchLabel class="ml-4">Enable Test Notifications</SwitchLabel>
+            <SwitchLabel
+              :class="{ 'cursor-not-allowed': notificationPermissionIsDenied }"
+              class="ml-4"
+              >Enable Test Notifications</SwitchLabel
+            >
           </div>
         </SwitchGroup>
       </section>
