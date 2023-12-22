@@ -18,7 +18,7 @@ function close() {
   </div>
   <Teleport to="#app">
     <div
-      v-if="open"
+      v-show="open"
       class="fixed top-0 left-0 flex justify-center items-center w-full h-full bg-blue-900/50 z-50"
     >
       <div ref="modal">

@@ -119,6 +119,7 @@ watchEffect(async () => {
 
 watchEffect(async () => {
   if (settings.testNotifications) {
+    console.log("sub to test notifications");
     try {
       const currentToken = await getToken(messaging, {
         vapidKey:
