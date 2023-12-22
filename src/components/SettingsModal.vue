@@ -21,6 +21,8 @@ import { computed, watchEffect } from "vue";
 import { messaging, functions } from "../firebase";
 import { usePermission } from "@vueuse/core";
 
+const showTest = import.meta.env.VITE_TEST === "true";
+
 defineEmits(["close"]);
 
 const settings = useSettings();
@@ -119,7 +121,6 @@ watchEffect(async () => {
 
 watchEffect(async () => {
   if (settings.testNotifications) {
-    console.log("sub to test notifications");
     try {
       const currentToken = await getToken(messaging, {
         vapidKey:
@@ -305,7 +306,7 @@ watchEffect(async () => {
             >
           </div>
 
-          <div v-if="true" class="flex items-center mb-4">
+          <div v-if="showTest" class="flex items-center mb-4">
             <Switch
               v-model="settings.testNotifications"
               :disabled="notificationPermissionIsDenied"
