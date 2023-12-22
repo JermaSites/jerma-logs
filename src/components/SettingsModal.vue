@@ -17,7 +17,7 @@ import {
 import { useSettings } from "../store/settings";
 import { httpsCallable } from "firebase/functions";
 import { getToken } from "firebase/messaging";
-import { computed, watch } from "vue";
+import { computed, watchEffect } from "vue";
 import { messaging, functions } from "../firebase";
 import { usePermission } from "@vueuse/core";
 
@@ -42,118 +42,112 @@ const notificationPermissionIsDenied = computed(() => {
   return notificationPermission.value === "denied";
 });
 
-watch(notificationPermission, (permission) => {
-  if (permission !== "granted") {
+watchEffect(() => {
+  if (
+    notificationPermission.value &&
+    notificationPermission.value !== "granted"
+  ) {
     settings.notifications = false;
     settings.susNotifications = false;
     settings.testNotifications = false;
   }
 });
 
-watch(
-  () => settings.notifications,
-  async (enableNotifications) => {
-    if (enableNotifications) {
-      try {
-        const currentToken = await getToken(messaging, {
-          vapidKey:
-            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-        });
+watchEffect(async () => {
+  if (settings.notifications) {
+    try {
+      const currentToken = await getToken(messaging, {
+        vapidKey:
+          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+      });
 
-        await subscribeToTopic({
-          token: currentToken,
-          topic: "message",
-        });
-      } catch (error) {
-        console.error("Error subscribing FCM token to topic", error);
-      }
-    } else if (notificationPermission.value === "granted") {
-      try {
-        const currentToken = await getToken(messaging, {
-          vapidKey:
-            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-        });
+      await subscribeToTopic({
+        token: currentToken,
+        topic: "message",
+      });
+    } catch (error) {
+      console.error("Error subscribing FCM token to topic", error);
+    }
+  } else if (notificationPermission.value === "granted") {
+    try {
+      const currentToken = await getToken(messaging, {
+        vapidKey:
+          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+      });
 
-        await unsubscribeFromTopic({
-          token: currentToken,
-          topic: "message",
-        });
-      } catch (error) {
-        console.error("Error unsubscribing FCM token from topic", error);
-      }
+      await unsubscribeFromTopic({
+        token: currentToken,
+        topic: "message",
+      });
+    } catch (error) {
+      console.error("Error unsubscribing FCM token from topic", error);
     }
   }
-);
+});
 
-watch(
-  () => settings.susNotifications,
-  async (enableNotifications) => {
-    if (enableNotifications) {
-      try {
-        const currentToken = await getToken(messaging, {
-          vapidKey:
-            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-        });
+watchEffect(async () => {
+  if (settings.susNotifications) {
+    try {
+      const currentToken = await getToken(messaging, {
+        vapidKey:
+          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+      });
 
-        await subscribeToTopic({
-          token: currentToken,
-          topic: "sus",
-        });
-      } catch (error) {
-        console.error("Error subscribing FCM token to topic", error);
-      }
-    } else if (notificationPermission.value === "granted") {
-      try {
-        const currentToken = await getToken(messaging, {
-          vapidKey:
-            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-        });
+      await subscribeToTopic({
+        token: currentToken,
+        topic: "sus",
+      });
+    } catch (error) {
+      console.error("Error subscribing FCM token to topic", error);
+    }
+  } else if (notificationPermission.value === "granted") {
+    try {
+      const currentToken = await getToken(messaging, {
+        vapidKey:
+          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+      });
 
-        await unsubscribeFromTopic({
-          token: currentToken,
-          topic: "sus",
-        });
-      } catch (error) {
-        console.error("Error unsubscribing FCM token from topic", error);
-      }
+      await unsubscribeFromTopic({
+        token: currentToken,
+        topic: "sus",
+      });
+    } catch (error) {
+      console.error("Error unsubscribing FCM token from topic", error);
     }
   }
-);
+});
 
-watch(
-  () => settings.testNotifications,
-  async (enableNotifications) => {
-    if (enableNotifications) {
-      try {
-        const currentToken = await getToken(messaging, {
-          vapidKey:
-            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-        });
+watchEffect(async () => {
+  if (settings.testNotifications) {
+    try {
+      const currentToken = await getToken(messaging, {
+        vapidKey:
+          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+      });
 
-        await subscribeToTopic({
-          token: currentToken,
-          topic: "test",
-        });
-      } catch (error) {
-        console.error("Error subscribing FCM token to topic", error);
-      }
-    } else if (notificationPermission.value === "granted") {
-      try {
-        const currentToken = await getToken(messaging, {
-          vapidKey:
-            "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-        });
+      await subscribeToTopic({
+        token: currentToken,
+        topic: "test",
+      });
+    } catch (error) {
+      console.error("Error subscribing FCM token to topic", error);
+    }
+  } else if (notificationPermission.value === "granted") {
+    try {
+      const currentToken = await getToken(messaging, {
+        vapidKey:
+          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
+      });
 
-        await unsubscribeFromTopic({
-          token: currentToken,
-          topic: "test",
-        });
-      } catch (error) {
-        console.error("Error unsubscribing FCM token from topic", error);
-      }
+      await unsubscribeFromTopic({
+        token: currentToken,
+        topic: "test",
+      });
+    } catch (error) {
+      console.error("Error unsubscribing FCM token from topic", error);
     }
   }
-);
+});
 </script>
 
 <template>
