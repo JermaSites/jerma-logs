@@ -5,14 +5,13 @@ import { doc, collection, query, where, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase";
 import { useSettings } from "../store/settings";
 import dayjs from "dayjs";
-import customParseFormat  from "dayjs/plugin/customParseFormat";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
 import MessageListSimple from "../components/MessageListSimple.vue";
 import MessageListSeperated from "../components/MessageListSeperated.vue";
 import { useEmotes } from "../composables/emotes.js";
 import { useBadges } from "../composables/badges.js";
-dayjs.extend(customParseFormat)
-
+dayjs.extend(customParseFormat);
 
 const settings = useSettings();
 
@@ -27,18 +26,10 @@ const { fetchBadges, parseBadges } = useBadges();
 const route = useRoute();
 const messages = ref([]);
 
-// const docPath = `messagesByYear/${route.params.year}/messagesByMonth/${route.params.month}`;
-// const docRef = doc(db, docPath);
-
-// const docPromise = new Promise(async (resolve) => {
-//   const unsub = onSnapshot(docRef, (doc) => {
-//     const { messages: msgs } = doc.data();
-//     messages.value = msgs;
-//     resolve({ unsub });
-//   });
-// });
-
-const monthAndYear = dayjs(`${route.params.year}-${route.params.month}`,"YYYY-MMMM");
+const monthAndYear = dayjs(
+  `${route.params.year}-${route.params.month}`,
+  "YYYY-MMMM"
+);
 
 const startTimestamp = monthAndYear.startOf("month").valueOf();
 const endTimestamp = monthAndYear.endOf("month").valueOf();
