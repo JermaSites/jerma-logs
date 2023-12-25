@@ -30,7 +30,8 @@ const roomID = import.meta.env.VITE_ROOM_ID;
 // Get the most recent message
 const latestSusMessageQuery = query(
   collection(db, "sus"),
-  where("roomID", "==", roomID),
+  orderBy("username"),
+  where("username", "!=", "moduspwnens"),
   orderBy("sentAt", "desc"),
   limit(1)
 );
