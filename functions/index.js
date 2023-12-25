@@ -22,7 +22,7 @@ exports.sendMessageNotification = functions.firestore
 
     // Notification details.
     const payload = {
-      data: {
+      notification: {
         tag: "jerma",
         title: "Jerma in Twitch chat",
         body: message,
@@ -43,7 +43,7 @@ exports.sendSusNotification = functions.firestore
 
     // Notification details.
     const payload = {
-      data: {
+      notification: {
         tag: "sus",
         title: "You cast SUS!",
         body: message,
