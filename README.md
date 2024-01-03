@@ -1,3 +1,14 @@
+
+# Jerma Logs
+
+This is the frontend for the jerma logs which displays all of jerma's twitch chat messages circa may 2020
+
+
+
+
+
+
+
 # Nuxt 3 Minimal Starter
 
 Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
