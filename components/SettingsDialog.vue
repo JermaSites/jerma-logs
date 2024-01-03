@@ -269,7 +269,7 @@ function setIsOpen(value: boolean) {
                       </div>
                     </HeadlessSwitchLabel>
                   </div>
-                  <div class="flex items-center">
+                  <div class="flex items-center" v-if="false">
                     <HeadlessSwitch
                       v-model="testNotifications"
                       :class="
