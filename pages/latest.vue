@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Breadcrumb, Message } from "@/types";
 import { collection, query, onSnapshot, where } from "firebase/firestore";
+import html2canvas from "html2canvas";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 
@@ -47,7 +48,7 @@ onMounted(async () => {
   const latestMessagesQuery = query(
     collection(db, "messages"),
     where("username", "==", twitchUsername),
-    where("sentAt", ">=", dayOfLatestMessage),
+    where("sentAt", ">=", dayOfLatestMessage)
   );
 
   onSnapshot(latestMessagesQuery, (querySnapshot) => {
@@ -73,12 +74,36 @@ const sortedMessages = computed(() => {
     return parseInt(b.sentAt) - parseInt(a.sentAt);
   });
 });
+
+const messageList = ref<HTMLElement | null>(null);
+
+async function downloadImage() {
+  const list = document.getElementById("messageList");
+  if (!list) return;
+
+  const canvas = await html2canvas(list, { useCORS: true });
+  const link = document.createElement("a");
+  link.href = canvas.toDataURL("image/url");
+  link.setAttribute("download", "file.png");
+  link.click();
+}
 </script>
 
 <template>
   <section>
+    <button
+      @click="downloadImage"
+      class="p-4 bg-red pointer hover:bg-slate-700 bg-slate-800 border my-4"
+    >
+      Download
+    </button>
     <div v-if="sortedMessages?.length !== 0" class="flex flex-col">
-      <SimpleList :items="sortedMessages" v-slot="slotProps">
+      <SimpleList
+        :items="sortedMessages"
+        v-slot="slotProps"
+        ref="messageList"
+        id="messageList"
+      >
         <Message :message="slotProps.item" />
       </SimpleList>
     </div>
