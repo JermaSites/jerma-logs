@@ -86,6 +86,11 @@ async function downloadImage() {
   link.href = canvas.toDataURL("image/url");
   link.setAttribute("download", "file.png");
   link.click();
+
+  canvas.toBlob((blob) => {
+    if (!blob) return;
+    navigator.clipboard.write([new ClipboardItem({ "image/png": blob })]);
+  });
 }
 </script>
 
