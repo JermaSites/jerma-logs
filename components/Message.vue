@@ -81,12 +81,8 @@ const badges = computed(() => parseBadges(props.message.badges));
   <div
     class="grid w-full gap-1 p-4 md:grid-cols-[max-content_max-content_auto]"
   >
-    <div
-      v-show="!hideMessageTimestamps"
-      :title="messageSentAtTimeAgo"
-      class="font-mono"
-    >
-      [{{ messageSentAt }}]
+    <div :title="messageSentAtTimeAgo" class="font-mono">
+      <span v-show="!hideMessageTimestamps">[{{ messageSentAt }}]</span>
     </div>
     <div>
       <span>
