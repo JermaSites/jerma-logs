@@ -2,9 +2,6 @@
 import type { Breadcrumb, Message } from "@/types";
 import { collection, query, onSnapshot, where } from "firebase/firestore";
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc.js";
-
-dayjs.extend(utc);
 
 useServerSeoMeta({
   title: "Jerma Logs | Latest",
@@ -29,17 +26,17 @@ definePageMeta({
 });
 
 const { data: messages } = await useFetch<Message[]>("/api/latest");
+
+const { twitchUsername } = useRuntimeConfig().public;
+
+const { db } = useFirebase();
+
 onMounted(async () => {
-  const { twitchUsername } = useRuntimeConfig().public;
-
-  const { db } = useFirebase();
-
   const latestMessage = messages.value?.at(-1);
 
   if (!latestMessage) return;
 
-  const dayOfLatestMessage = dayjs
-    .utc(parseInt(latestMessage.sentAt))
+  const dayOfLatestMessage = dayjs(parseInt(latestMessage.sentAt))
     .subtract(1, "day")
     .valueOf()
     .toString();
@@ -47,7 +44,7 @@ onMounted(async () => {
   const latestMessagesQuery = query(
     collection(db, "messages"),
     where("username", "==", twitchUsername),
-    where("sentAt", ">=", dayOfLatestMessage),
+    where("sentAt", ">=", dayOfLatestMessage)
   );
 
   onSnapshot(latestMessagesQuery, (querySnapshot) => {

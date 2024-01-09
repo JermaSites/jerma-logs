@@ -1,27 +1,17 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
-import timezone from "dayjs/plugin/timezone";
 import { parse } from "firestore-rest-parser";
 import type { MessagesResponse } from "@/types";
 
 dayjs.extend(utc);
-dayjs.extend(timezone);
 
 export default cachedEventHandler(
   async (event) => {
     const { twitchUsername } = useRuntimeConfig().public;
     const { year, month } = getRouterParams(event);
-    const date = dayjs(`${year}-${month}`, "YYYY-MMMM").tz("America/New_York");
-    const startTime = dayjs(date)
-      .tz("America/New_York")
-      .startOf("month")
-      .valueOf()
-      .toString();
-    const endTime = dayjs(date)
-      .tz("America/New_York")
-      .endOf("month")
-      .valueOf()
-      .toString();
+    const date = dayjs(`${year}-${month}-01`, "YYYY-MMMM-DD");
+    const startTime = dayjs(date).startOf("month").valueOf().toString();
+    const endTime = dayjs(date).endOf("month").valueOf().toString();
 
     const url = `https://firestore.googleapis.com/v1beta1/projects/jerma-logs/databases/(default)/documents:runQuery`;
     const messagesQuery = await $fetch<MessagesResponse>(url, {
@@ -92,6 +82,7 @@ export default cachedEventHandler(
   {
     maxAge: 60 * 60 * 24,
     shouldInvalidateCache(event) {
+      return true;
       const { year, month } = getRouterParams(event);
       const date = dayjs.utc(`${year}-${month}`, "YYYY-MMMM");
 

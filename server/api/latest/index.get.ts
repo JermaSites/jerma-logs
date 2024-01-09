@@ -1,8 +1,5 @@
 import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc.js";
 import { parse } from "firestore-rest-parser";
-
-dayjs.extend(utc);
 
 import type { MessagesResponse } from "@/types";
 
@@ -48,8 +45,7 @@ export default defineEventHandler(async () => {
 
   if (!latestMessage) return [];
 
-  const dayOfLatestMessage = dayjs
-    .utc(parseInt(latestMessage.sentAt))
+  const dayOfLatestMessage = dayjs(parseInt(latestMessage.sentAt))
     .subtract(1, "day")
     .valueOf()
     .toString();
