@@ -8,7 +8,6 @@ export default defineNuxtConfig({
     "nuxt-headlessui",
     "@vueuse/nuxt",
     "@nuxtjs/color-mode",
-    "@nuxt/image",
   ],
   piniaPersistedstate: {
     cookieOptions: {
