@@ -5,12 +5,12 @@ import timezone from "dayjs/plugin/timezone.js";
 import relativeTime from "dayjs/plugin/relativeTime";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 
+import type { Message } from "@/types";
+
 dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(relativeTime);
 dayjs.extend(advancedFormat);
-
-import type { Message } from "@/types";
 
 type Props = {
   message: Message;
@@ -20,14 +20,18 @@ const props = defineProps<Props>();
 
 const settingsStore = useSettingsStore();
 
-const { hideMessageTimestamps } = storeToRefs(settingsStore);
+const { hideMessageTimestamps, userTimezone } = storeToRefs(settingsStore);
+
+if (userTimezone.value !== "") {
+  dayjs.tz.setDefault(userTimezone.value);
+}
 
 const messageSentAt = computed(() => {
-  return dayjs(parseInt(props.message.sentAt)).format("MMM Do hh:mm A z");
+  return dayjs.tz(parseInt(props.message.sentAt)).format("MMM Do hh:mm A z");
 });
 
 const messageSentAtTimeAgo = computed(() => {
-  return dayjs(parseInt(props.message.sentAt)).fromNow();
+  return dayjs.tz(parseInt(props.message.sentAt)).fromNow();
 });
 
 const colorMode = useColorMode();

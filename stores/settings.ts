@@ -5,6 +5,7 @@ export const useSettingsStore = defineStore(
     const susNotifications = ref(false);
     const testNotifications = ref(false);
     const hideMessageTimestamps = ref(false);
+    const userTimezone = ref("");
 
     const updateCookieExperation = ref(false);
 
@@ -13,8 +14,9 @@ export const useSettingsStore = defineStore(
       susNotifications,
       testNotifications,
       hideMessageTimestamps,
+      userTimezone,
       updateCookieExperation,
     };
   },
-  { persist: true },
+  { persist: true }
 );
