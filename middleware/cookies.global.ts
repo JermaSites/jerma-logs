@@ -10,8 +10,6 @@ export default defineNuxtRouteMiddleware((to, from) => {
   const sortStore = useSortStore();
   const settingsStore = useSettingsStore();
 
-  settingsStore.userTimezone = dayjs.tz.guess();
-
   sortStore.updateCookieExperation = !sortStore.updateCookieExperation;
   settingsStore.updateCookieExperation = !settingsStore.updateCookieExperation;
 });

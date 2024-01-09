@@ -22,24 +22,14 @@ const settingsStore = useSettingsStore();
 
 const { hideMessageTimestamps, userTimezone } = storeToRefs(settingsStore);
 
-const messageSentAt = computed(() => {
-  if (userTimezone.value != "") {
-    return dayjs(parseInt(props.message.sentAt))
-      .tz(userTimezone.value)
-      .format("MMM Do hh:mm A z");
-  }
+dayjs.tz.setDefault(userTimezone.value);
 
-  return dayjs(parseInt(props.message.sentAt)).format("MMM Do hh:mm A z");
+const messageSentAt = computed(() => {
+  return dayjs.tz(parseInt(props.message.sentAt)).format("MMM Do hh:mm A z");
 });
 
 const messageSentAtTimeAgo = computed(() => {
-  if (userTimezone.value != "") {
-    return dayjs(parseInt(props.message.sentAt))
-      .tz(userTimezone.value)
-      .fromNow();
-  }
-
-  return dayjs(parseInt(props.message.sentAt)).fromNow();
+  return dayjs.tz(parseInt(props.message.sentAt)).fromNow();
 });
 
 const colorMode = useColorMode();

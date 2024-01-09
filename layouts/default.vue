@@ -1,4 +1,11 @@
 <script setup lang="ts">
+import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc.js";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(utc);
+dayjs.extend(timezone);
+
 useHead({
   bodyAttrs: {
     class:
@@ -11,6 +18,12 @@ useServerSeoMeta({
   ogDescription: "Jerma985's twitch chat logs",
   ogImage: "https://logs.jerma.io/logo.png",
   twitterCard: "summary",
+});
+
+const settingsStore = useSettingsStore();
+
+onMounted(() => {
+  settingsStore.userTimezone = dayjs.tz.guess();
 });
 </script>
 
