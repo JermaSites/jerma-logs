@@ -9,9 +9,9 @@ export default cachedEventHandler(
   async (event) => {
     const { twitchUsername } = useRuntimeConfig().public;
     const { year, month } = getRouterParams(event);
-    const date = dayjs(`${year}-${month}-01`, "YYYY-MMMM-DD");
-    const startTime = dayjs(date).startOf("month").valueOf().toString();
-    const endTime = dayjs(date).endOf("month").valueOf().toString();
+    const date = dayjs.utc(`${year}-${month}-01`, "YYYY-MMMM-DD");
+    const startTime = date.startOf("month").valueOf().toString();
+    const endTime = date.endOf("month").valueOf().toString();
 
     const url = `https://firestore.googleapis.com/v1beta1/projects/jerma-logs/databases/(default)/documents:runQuery`;
     const messagesQuery = await $fetch<MessagesResponse>(url, {
@@ -85,7 +85,7 @@ export default cachedEventHandler(
       const { year, month } = getRouterParams(event);
       const date = dayjs.utc(`${year}-${month}`, "YYYY-MMMM");
 
-      const endTime = dayjs.utc(date).endOf("month").valueOf();
+      const endTime = date.endOf("month").valueOf();
       const currentDate = dayjs.utc().valueOf();
 
       return endTime > currentDate;

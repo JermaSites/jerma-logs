@@ -2,6 +2,9 @@
 import type { Breadcrumb, Message } from "@/types";
 import { collection, query, onSnapshot, where } from "firebase/firestore";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc.js";
+
+dayjs.extend(utc);
 
 useServerSeoMeta({
   title: "Jerma Logs | Latest",
@@ -36,7 +39,8 @@ onMounted(async () => {
 
   if (!latestMessage) return;
 
-  const dayOfLatestMessage = dayjs(parseInt(latestMessage.sentAt))
+  const dayOfLatestMessage = dayjs
+    .utc(parseInt(latestMessage.sentAt))
     .subtract(1, "day")
     .valueOf()
     .toString();

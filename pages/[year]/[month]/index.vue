@@ -3,6 +3,9 @@ import type { Breadcrumb, Message } from "@/types";
 import type { RouteLocationNormalizedLoaded } from "#vue-router";
 import { collection, query, onSnapshot, where } from "firebase/firestore";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc.js";
+
+dayjs.extend(utc);
 
 const route = useRoute();
 
@@ -38,9 +41,9 @@ definePageMeta({
 const { year, month } = route.params as { year: string; month: string };
 
 const isCurrentMonth = computed(() => {
-  const currentDate = dayjs();
-  const date = dayjs(`${year}-${capitalize(month)}-01`, "YYYY-MMMM-DD");
-  const endTime = dayjs(date).endOf("month");
+  const currentDate = dayjs.utc();
+  const date = dayjs.utc(`${year}-${capitalize(month)}-01`, "YYYY-MMMM-DD");
+  const endTime = date.endOf("month");
 
   return endTime.isAfter(currentDate);
 });
@@ -52,9 +55,9 @@ const { data: messages } = await useFetch<Message[]>(
 const { twitchUsername } = useRuntimeConfig().public;
 const { db } = useFirebase();
 onMounted(async () => {
-  const date = dayjs(`${year}-${capitalize(month)}-01`, "YYYY-MMMM-DD");
-  const startTime = dayjs(date).startOf("month").valueOf().toString();
-  const endTime = dayjs(date).endOf("month").valueOf().toString();
+  const date = dayjs.utc(`${year}-${capitalize(month)}-01`, "YYYY-MMMM-DD");
+  const startTime = date.startOf("month").valueOf().toString();
+  const endTime = date.endOf("month").valueOf().toString();
 
   if (!isCurrentMonth.value) return;
 

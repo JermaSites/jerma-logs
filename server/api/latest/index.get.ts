@@ -1,7 +1,10 @@
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc.js";
 import { parse } from "firestore-rest-parser";
 
 import type { MessagesResponse } from "@/types";
+
+dayjs.extend(utc);
 
 export default defineEventHandler(async () => {
   const { twitchUsername } = useRuntimeConfig().public;
@@ -45,7 +48,8 @@ export default defineEventHandler(async () => {
 
   if (!latestMessage) return [];
 
-  const dayOfLatestMessage = dayjs(parseInt(latestMessage.sentAt))
+  const dayOfLatestMessage = dayjs
+    .utc(parseInt(latestMessage.sentAt))
     .subtract(1, "day")
     .valueOf()
     .toString();

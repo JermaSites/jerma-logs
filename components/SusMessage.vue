@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { Message } from "@/types";
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc.js";
 import relativeTime from "dayjs/plugin/relativeTime";
 
+dayjs.extend(utc);
 dayjs.extend(relativeTime);
 
 const { data } = await useFetch<Message>("/api/sus");
@@ -30,7 +32,7 @@ const susMessageTimeFromNow = computed(() => {
 
   if (sentAt === undefined) return "";
 
-  return dayjs(parseInt(sentAt)).fromNow();
+  return dayjs.utc(parseInt(sentAt)).fromNow();
 });
 </script>
 
