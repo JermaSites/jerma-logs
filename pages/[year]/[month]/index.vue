@@ -4,8 +4,10 @@ import type { RouteLocationNormalizedLoaded } from "#vue-router";
 import { collection, query, onSnapshot, where } from "firebase/firestore";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
+import timezone from "dayjs/plugin/timezone";
 
 dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const route = useRoute();
 
@@ -41,32 +43,43 @@ definePageMeta({
 const { year, month } = route.params as { year: string; month: string };
 
 const isCurrentMonth = computed(() => {
-  const currentDate = dayjs.utc();
-  const date = dayjs.utc(`${year}-${capitalize(month)}-01`, "YYYY-MMMM-MM");
-  const endTime = dayjs.utc(date).endOf("month");
+  const currentDate = dayjs().tz("America/New_York");
+  const date = dayjs(`${year}-${capitalize(month)}-01`, "YYYY-MMMM-DD").tz(
+    "America/New_York"
+  );
+  const endTime = dayjs(date).endOf("month").tz("America/New_York");
 
   return endTime.isAfter(currentDate);
 });
 
 const { data: messages } = await useFetch<Message[]>(
-  `/api/messages/${year}/${month}`,
+  `/api/messages/${year}/${month}`
 );
 
+const { twitchUsername } = useRuntimeConfig().public;
+const { db } = useFirebase();
 onMounted(async () => {
-  const { twitchUsername } = useRuntimeConfig().public;
+  const date = dayjs(`${year}-${capitalize(month)}-01`, "YYYY-MMMM-DD").tz(
+    "America/New_York"
+  );
+  const startTime = dayjs(date)
+    .tz("America/New_York")
+    .startOf("month")
+    .valueOf()
+    .toString();
+  const endTime = dayjs(date)
+    .tz("America/New_York")
+    .endOf("month")
+    .valueOf()
+    .toString();
 
-  const { db } = useFirebase();
-  const date = dayjs.utc(`${year}-${capitalize(month)}-01`, "YYYY-MMMM-MM");
-  const startTime = dayjs.utc(date).startOf("month").valueOf().toString();
-  const endTime = dayjs.utc(date).endOf("month").valueOf().toString();
-
-  if (!isCurrentMonth) return;
+  if (!isCurrentMonth.value) return;
 
   const q = query(
     collection(db, "messages"),
     where("sentAt", ">=", startTime),
     where("sentAt", "<=", endTime),
-    where("username", "==", twitchUsername),
+    where("username", "==", twitchUsername)
   );
 
   onSnapshot(q, (querySnapshot) => {

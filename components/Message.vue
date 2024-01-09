@@ -1,12 +1,16 @@
 <script setup lang="ts">
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone";
 import relativeTime from "dayjs/plugin/relativeTime";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 
+dayjs.extend(utc);
 dayjs.extend(timezone);
 dayjs.extend(relativeTime);
 dayjs.extend(advancedFormat);
+
+dayjs.tz.setDefault("America/New_York");
 
 import type { Message } from "@/types";
 
@@ -21,15 +25,15 @@ const settingsStore = useSettingsStore();
 const { hideMessageTimestamps } = storeToRefs(settingsStore);
 
 const messageSentAt = computed(() => {
-  return dayjs(parseInt(props.message.sentAt)).format("MMM Do hh:mm A z");
+  return dayjs.tz(parseInt(props.message.sentAt)).format("MMM Do hh:mm A z");
 });
 
 const messageSentAtTimeAgo = computed(() => {
-  return dayjs(parseInt(props.message.sentAt)).fromNow();
+  return dayjs.tz(parseInt(props.message.sentAt)).fromNow();
 });
 
+const colorMode = useColorMode();
 const messageColor = computed(() => {
-  const colorMode = useColorMode();
   const hex = props.message.color;
 
   let r = parseInt("0x" + hex[1] + hex[2]);
