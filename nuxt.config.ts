@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     "nuxt-headlessui",
     "@vueuse/nuxt",
     "@nuxtjs/color-mode",
+    "@nuxtjs/robots",
   ],
   piniaPersistedstate: {
     cookieOptions: {
