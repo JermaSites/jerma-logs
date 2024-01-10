@@ -1,7 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getFunctions } from "firebase/functions";
-import { getMessaging, onMessage, isSupported } from "firebase/messaging";
 
 export function useFirebase() {
   const firebaseConfig = {
