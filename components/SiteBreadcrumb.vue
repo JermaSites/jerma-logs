@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { capitalize } from "vue";
 import type { Breadcrumb, BreadcrumbFunction } from "@/types";
 const route = useRoute();
 

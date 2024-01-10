@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { capitalize } from "vue";
 import type { Breadcrumb, Message } from "@/types";
 import type { RouteLocationNormalizedLoaded } from "#vue-router";
 import { collection, query, onSnapshot, where } from "firebase/firestore";

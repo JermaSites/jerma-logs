@@ -1,5 +1,6 @@
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
+import { capitalize } from "vue";
 import { parse } from "firestore-rest-parser";
 import type { MessagesResponse } from "@/types";
 
@@ -9,7 +10,7 @@ export default cachedEventHandler(
   async (event) => {
     const { twitchUsername } = useRuntimeConfig().public;
     const { year, month } = getRouterParams(event);
-    const date = dayjs.utc(`${year}-${month}-01`, "YYYY-MMMM-DD");
+    const date = dayjs(`${year}-${capitalize(month)}-01`, "YYYY-MMMM-DD");
     const startTime = date.startOf("month").valueOf().toString();
     const endTime = date.endOf("month").valueOf().toString();
 
@@ -82,6 +83,7 @@ export default cachedEventHandler(
   {
     maxAge: 60 * 60 * 24,
     shouldInvalidateCache(event) {
+      return true;
       const { year, month } = getRouterParams(event);
       const date = dayjs.utc(`${year}-${month}`, "YYYY-MMMM");
 
