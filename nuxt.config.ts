@@ -10,6 +10,13 @@ export default defineNuxtConfig({
     "@nuxtjs/color-mode",
     "@nuxtjs/robots",
   ],
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: "en",
+      },
+    },
+  },
   piniaPersistedstate: {
     cookieOptions: {
       sameSite: "strict",
