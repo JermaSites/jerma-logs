@@ -58,7 +58,7 @@ const badges = computed(() => parseBadges(props.message.badges));
 
     <div>
       <span>
-        <img
+        <NuxtImg
           v-for="badge in badges"
           :key="badge.name"
           :src="badge.url"
@@ -67,6 +67,8 @@ const badges = computed(() => parseBadges(props.message.badges));
           class="mr-1 inline-block"
           width="18"
           height="18"
+          loading="lazy"
+          placeholder
         />
       </span>
       <span :style="{ color: messageColor }" class="font-bold">

@@ -23,7 +23,7 @@ export function useEmotes() {
         const emote = emoteMap.get(word);
         const emoteName = emote?.code;
         const imgSrc = emote?.urls[0].url;
-        const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="28" height="28" alt="${emoteName}" title="${emoteName}">`;
+        const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="28" height="28" alt="${emoteName}" title="${emoteName}" loading="lazy">`;
         return imgEl;
       })
       .join(" ");

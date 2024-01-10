@@ -9,6 +9,7 @@ export default defineNuxtConfig({
     "@vueuse/nuxt",
     "@nuxtjs/color-mode",
     "@nuxtjs/robots",
+    "@nuxt/image",
   ],
   app: {
     head: {
@@ -16,6 +17,9 @@ export default defineNuxtConfig({
         lang: "en",
       },
     },
+  },
+  image: {
+    format: ["avif", "webp", "png"],
   },
   piniaPersistedstate: {
     cookieOptions: {
