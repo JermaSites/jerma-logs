@@ -1,4 +1,6 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { version } from "../package.json";
+</script>
 
 <template>
   <footer>
@@ -11,6 +13,9 @@
           >Modus Pwnens</a
         >
       </div>
+    </div>
+    <div class="text-center inset-x-0 bottom-0 text-slate-500">
+      v{{ version }}
     </div>
   </footer>
 </template>
