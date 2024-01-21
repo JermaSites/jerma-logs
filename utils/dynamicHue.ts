@@ -1,4 +1,14 @@
 export default function (hex: string, colorMode: string): string {
+  let { h, l, s } = hexToHLS(hex);
+
+  if (colorMode === "light") {
+    l -= 15;
+  }
+
+  return "hsl(" + h + "," + s + "%," + l + "%)";
+}
+
+function hexToHLS(hex: string) {
   let r = parseInt("0x" + hex[1] + hex[2]);
   let g = parseInt("0x" + hex[3] + hex[4]);
   let b = parseInt("0x" + hex[5] + hex[6]);
@@ -28,9 +38,5 @@ export default function (hex: string, colorMode: string): string {
   s = +(s * 100).toFixed(1);
   l = +(l * 100).toFixed(1);
 
-  if (colorMode === "light") {
-    l -= 15;
-  }
-
-  return "hsl(" + h + "," + s + "%," + l + "%)";
+  return { h, l, s };
 }

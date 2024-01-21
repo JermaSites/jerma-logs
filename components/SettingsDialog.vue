@@ -34,14 +34,12 @@ const colorMode = useColorMode();
 
 const lightModeEnabled = computed({
   get() {
-    return colorMode.preference === "light";
+    return colorMode.value === "light";
   },
-  set(mode) {
-    if (mode) {
-      colorMode.preference = "light";
-    } else {
-      colorMode.preference = "dark";
-    }
+  set(enableLightMode) {
+    enableLightMode
+      ? (colorMode.preference = "light")
+      : (colorMode.preference = "dark");
   },
 });
 
