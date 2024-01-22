@@ -7,7 +7,7 @@ import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
 
-const { data } = await useFetch<Message>("/api/sus");
+const { data } = await useFetch<Message>("/api/messages/sus");
 
 const { fetchEmotes, parseEmotes } = useEmotes();
 

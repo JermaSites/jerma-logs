@@ -28,7 +28,7 @@ definePageMeta({
   ] as Breadcrumb[],
 });
 
-const { data: messages } = await useFetch<Message[]>("/api/latest");
+const { data: messages } = await useFetch<Message[]>("/api/messages/latest");
 
 const { twitchUsername } = useRuntimeConfig().public;
 
