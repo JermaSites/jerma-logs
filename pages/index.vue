@@ -30,9 +30,11 @@ const { sortOrder } = storeToRefs(sortStore);
 
   <section class="mb-6">
     <SimpleList>
-      <NuxtLink :to="{ name: 'latest' }" class="block p-4 font-medium">
-        Latest Messages
-      </NuxtLink>
+      <SimpleListItem>
+        <NuxtLink :to="{ name: 'latest' }" class="block p-4 font-medium">
+          Latest Messages
+        </NuxtLink>
+      </SimpleListItem>
     </SimpleList>
   </section>
 

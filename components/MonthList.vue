@@ -60,23 +60,21 @@ const sortedMonths = computed(() => {
 </script>
 
 <template>
-  <SimpleList
-    :items="sortedMonths"
-    item-key="name"
-    v-slot="{ item }: { item: Month }"
-  >
-    <NuxtLink
-      :to="{
-        name: 'year-month',
-        params: {
-          year: route.params.year,
-          month: item.name.toLocaleLowerCase(),
-        },
-      }"
-      class="block p-4 font-medium"
-    >
-      {{ item.name }}
-    </NuxtLink>
+  <SimpleList>
+    <SimpleListItem v-for="month in sortedMonths" :key="month.id">
+      <NuxtLink
+        :to="{
+          name: 'year-month',
+          params: {
+            year: route.params.year,
+            month: month.name.toLocaleLowerCase(),
+          },
+        }"
+        class="block p-4 font-medium"
+      >
+        {{ month.name }}
+      </NuxtLink>
+    </SimpleListItem>
   </SimpleList>
 </template>
 

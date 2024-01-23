@@ -28,13 +28,15 @@ const sortedYears = computed(() => {
 </script>
 
 <template>
-  <SimpleList :items="sortedYears" v-slot="{ item }: { item: number }">
-    <NuxtLink
-      :to="{ name: 'year', params: { year: item } }"
-      class="block p-4 font-medium"
-    >
-      {{ item }}
-    </NuxtLink>
+  <SimpleList>
+    <SimpleListItem v-for="year in sortedYears" :key="year">
+      <NuxtLink
+        :to="{ name: 'year', params: { year: year } }"
+        class="block p-4 font-medium"
+      >
+        {{ year }}
+      </NuxtLink>
+    </SimpleListItem>
   </SimpleList>
 </template>
 

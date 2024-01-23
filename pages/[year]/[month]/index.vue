@@ -97,9 +97,11 @@ const sortedMessages = computed(() => {
 
 <template>
   <section>
-    <div v-if="messages && messages.length !== 0">
-      <SimpleList :items="sortedMessages" v-slot="{ item }: { item: Message }">
-        <Message :message="item" />
+    <div v-if="sortedMessages && sortedMessages.length !== 0">
+      <SimpleList>
+        <SimpleListItem v-for="message in sortedMessages" :key="message.id">
+          <Message :message="message" />
+        </SimpleListItem>
       </SimpleList>
     </div>
 
