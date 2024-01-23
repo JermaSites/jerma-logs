@@ -21,7 +21,8 @@ const props = defineProps<Props>();
 
 const settingsStore = useSettingsStore();
 
-const { hideMessageTimestamps, userTimezone } = storeToRefs(settingsStore);
+const { hideMessageTimestamps, colorModeValue, userTimezone } =
+  storeToRefs(settingsStore);
 
 dayjs.tz.setDefault(userTimezone.value);
 
@@ -33,10 +34,9 @@ const messageSentAtTimeAgo = computed(() => {
   return dayjs.tz(parseInt(props.message.sentAt)).fromNow();
 });
 
-const colorMode = useColorMode();
 const messageColor = computed(() => {
   const hex = props.message.color;
-  return dynamicHue(hex, colorMode.value);
+  return dynamicHue(hex, colorModeValue.value);
 });
 
 const { parseEmotes } = useEmotes();

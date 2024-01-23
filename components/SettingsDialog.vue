@@ -11,6 +11,15 @@ import { XCircleIcon } from "@heroicons/vue/24/solid";
 
 const { app, functions } = useFirebase();
 
+const settingsStore = useSettingsStore();
+const {
+  messageNotifications,
+  susNotifications,
+  testNotifications,
+  colorModeValue,
+  hideMessageTimestamps,
+} = storeToRefs(settingsStore);
+
 const messaging = ref<Messaging>();
 
 onMounted(async () => {
@@ -43,13 +52,12 @@ const lightModeEnabled = computed({
   },
 });
 
-const settingsStore = useSettingsStore();
-const {
-  messageNotifications,
-  susNotifications,
-  testNotifications,
-  hideMessageTimestamps,
-} = storeToRefs(settingsStore);
+// set the color mode on client only
+watchEffect(() => {
+  if (process.client) {
+    colorModeValue.value = colorMode.value;
+  }
+});
 
 watchEffect(() => {
   if (
