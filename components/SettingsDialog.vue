@@ -55,6 +55,7 @@ const lightModeEnabled = computed({
 // set the color mode on client only
 watchEffect(() => {
   if (process.client) {
+    console.log("Setting colorModeValue:", colorMode.value);
     colorModeValue.value = colorMode.value;
   }
 });
