@@ -51,7 +51,10 @@ export function useBadges() {
     return Object.entries(sortedKeys).map((badge) => {
       const badgeURL = badges?.get(badge[0])?.get(badge[1])?.image_url_1x;
       const name = badge[0];
-      return { name: name, url: badgeURL };
+      return {
+        name: name,
+        url: badgeURL || "https://placehold.co/18x18",
+      };
     });
   }
 

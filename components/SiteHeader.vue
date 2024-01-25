@@ -9,8 +9,6 @@
           width="128"
           height="127"
           alt="Jerma Logs Logo"
-          loading="lazy"
-          placeholder
           preload
         />
 
