@@ -2,11 +2,11 @@ import twitchApi from "../../utils/twitch";
 import type { ChannelEmotesResponse, GlobalEmotesResponse } from "@/types";
 
 export default cachedEventHandler(
-  async (event) => {
+  async () => {
     const { twitchId } = useRuntimeConfig().public;
 
     const channelEmotesPromise = twitchApi<ChannelEmotesResponse>(
-      `chat/emotes?broadcaster_id=${twitchId}`,
+      `chat/emotes?broadcaster_id=${twitchId}`
     );
 
     const globalEmotesPromise =
@@ -21,5 +21,5 @@ export default cachedEventHandler(
 
     return emotes;
   },
-  { maxAge: 60 * 60 * 24 },
+  { maxAge: 60 * 60 * 24 }
 );

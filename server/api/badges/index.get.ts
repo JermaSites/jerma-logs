@@ -21,11 +21,11 @@ type BadgesResponse = {
 };
 
 export default cachedEventHandler(
-  async (event) => {
+  async () => {
     const globalBadgesPromise = twitchApi<BadgesResponse>("chat/badges/global");
 
     const channelBadgesPromise = twitchApi<BadgesResponse>(
-      "chat/badges?broadcaster_id=23936415",
+      "chat/badges?broadcaster_id=23936415"
     );
 
     const [globalBadges, channelBadges] = await Promise.all([
@@ -39,5 +39,5 @@ export default cachedEventHandler(
   },
   {
     maxAge: 60 * 60 * 24,
-  },
+  }
 );

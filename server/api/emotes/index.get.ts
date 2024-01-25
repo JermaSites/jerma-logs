@@ -1,7 +1,7 @@
 import type { Emote } from "@/types";
 
 export default cachedEventHandler(
-  async (event) => {
+  async () => {
     const twitchEmotesPromise = $fetch("/api/emotes/twitch");
     const bttvEmotesPromise = $fetch("/api/emotes/bttv");
 
@@ -56,5 +56,5 @@ export default cachedEventHandler(
   },
   {
     maxAge: 60 * 60 * 24,
-  },
+  }
 );

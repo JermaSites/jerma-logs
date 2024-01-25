@@ -2,7 +2,7 @@ import { parse } from "firestore-rest-parser";
 import type { MessagesResponse } from "@/types";
 
 export default cachedEventHandler(
-  async (event) => {
+  async () => {
     const url = `https://firestore.googleapis.com/v1beta1/projects/jerma-logs/databases/(default)/documents:runQuery`;
     const sus = await $fetch<MessagesResponse>(url, {
       method: "POST",
@@ -31,5 +31,5 @@ export default cachedEventHandler(
   },
   {
     maxAge: 60 * 60,
-  },
+  }
 );

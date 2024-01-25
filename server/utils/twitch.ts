@@ -13,7 +13,7 @@ async function getAuthToken() {
     `https://id.twitch.tv/oauth2/token?client_id=${twitchClientId}&client_secret=${twitchClientSecret}&grant_type=client_credentials`,
     {
       method: "POST",
-    },
+    }
   );
 }
 
