@@ -9,35 +9,7 @@ import {
 } from "firebase/messaging";
 import { XCircleIcon } from "@heroicons/vue/24/solid";
 
-const { app, functions } = useFirebase();
-
 const settingsStore = useSettingsStore();
-const {
-  messageNotifications,
-  susNotifications,
-  testNotifications,
-  colorModeValue,
-  hideMessageTimestamps,
-} = storeToRefs(settingsStore);
-
-const messaging = ref<Messaging>();
-
-onMounted(async () => {
-  const messageSupport = await isSupported();
-  if (!messageSupport) return;
-
-  messaging.value = getMessaging(app);
-
-  onMessage(messaging.value, (payload) => {
-    console.log("Message received. ", payload);
-  });
-});
-
-const subscribeToTopic = httpsCallable(functions, "subscribeToTopic");
-
-const unsubscribeFromTopic = httpsCallable(functions, "unsubscribeFromTopic");
-
-const notificationPermission = usePermission("notifications");
 
 const colorMode = useColorMode();
 
@@ -52,6 +24,8 @@ const lightModeEnabled = computed({
   },
 });
 
+const { colorModeValue } = storeToRefs(settingsStore);
+
 // set the color mode on client only
 watchEffect(() => {
   if (colorMode.value !== "system") {
@@ -59,116 +33,108 @@ watchEffect(() => {
   }
 });
 
+const notificationPermission = usePermission("notifications");
+const { messageNotifications, susNotifications, testNotifications } =
+  storeToRefs(settingsStore);
+
+// set all notification settings to false if permission is denied
 watchEffect(() => {
   if (
-    notificationPermission.value &&
-    notificationPermission.value !== "granted"
-  ) {
-    messageNotifications.value = false;
-    susNotifications.value = false;
-    testNotifications.value = false;
-  }
+    !notificationPermission.value ||
+    notificationPermission.value === "granted"
+  )
+    return;
+
+  messageNotifications.value = false;
+  susNotifications.value = false;
+  testNotifications.value = false;
 });
 
+async function getFCMToken(messaging: Messaging) {
+  const vapidKey =
+    "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8";
+
+  try {
+    return await getToken(messaging, { vapidKey: vapidKey });
+  } catch (error) {
+    console.error("Error getting FCM token:", error);
+    return "";
+  }
+}
+
+const { functions } = useFirebase();
+
+const subscribeToTopic = httpsCallable(functions, "subscribeToTopic");
+
+const unsubscribeFromTopic = httpsCallable(functions, "unsubscribeFromTopic");
+
+async function getTokenAndSubscribeToTopic(
+  messaging: Messaging,
+  topic: string
+) {
+  try {
+    const currentToken = await getFCMToken(messaging);
+
+    await subscribeToTopic({
+      token: currentToken,
+      topic: topic,
+    });
+  } catch (error) {
+    console.error(`Error subscribing FCM token to topic "${topic}":`, error);
+  }
+}
+
+async function getTokenAndUnsubscribeToTopic(
+  messaging: Messaging,
+  topic: string
+) {
+  try {
+    const currentToken = await getFCMToken(messaging);
+
+    await unsubscribeFromTopic({
+      token: currentToken,
+      topic: topic,
+    });
+  } catch (error) {
+    console.error(`Error unsubscribing FCM token to topic "${topic}":`, error);
+  }
+}
+
+const messaging = ref<Messaging>();
+const { app } = useFirebase();
+
+// check for FCM support
+onMounted(async () => {
+  const messageSupport = await isSupported();
+  if (!messageSupport) return;
+
+  messaging.value = getMessaging(app);
+
+  onMessage(messaging.value, (payload) => {
+    console.log("Message received. ", payload);
+  });
+});
+
+// sub/unsub tokens on page load and when notification settings changes
 watchEffect(async () => {
   if (!messaging.value) return;
 
   if (messageNotifications.value) {
-    try {
-      const currentToken = await getToken(messaging.value, {
-        vapidKey:
-          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-      });
-
-      await subscribeToTopic({
-        token: currentToken,
-        topic: "message",
-      });
-    } catch (error) {
-      console.error("Error subscribing FCM token to topic", error);
-    }
+    getTokenAndSubscribeToTopic(messaging.value, "message");
   } else if (notificationPermission.value === "granted") {
-    try {
-      const currentToken = await getToken(messaging.value, {
-        vapidKey:
-          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-      });
-
-      await unsubscribeFromTopic({
-        token: currentToken,
-        topic: "message",
-      });
-    } catch (error) {
-      console.error("Error unsubscribing FCM token from topic", error);
-    }
+    getTokenAndUnsubscribeToTopic(messaging.value, "message");
   }
-});
-
-watchEffect(async () => {
-  if (!messaging.value) return;
 
   if (susNotifications.value) {
-    try {
-      const currentToken = await getToken(messaging.value, {
-        vapidKey:
-          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-      });
-
-      await subscribeToTopic({
-        token: currentToken,
-        topic: "sus",
-      });
-    } catch (error) {
-      console.error("Error subscribing FCM token to topic", error);
-    }
+    getTokenAndSubscribeToTopic(messaging.value, "sus");
   } else if (notificationPermission.value === "granted") {
-    try {
-      const currentToken = await getToken(messaging.value, {
-        vapidKey:
-          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-      });
-
-      await unsubscribeFromTopic({
-        token: currentToken,
-        topic: "sus",
-      });
-    } catch (error) {
-      console.error("Error unsubscribing FCM token from topic", error);
-    }
+    getTokenAndUnsubscribeToTopic(messaging.value, "sus");
   }
-});
-
-watchEffect(async () => {
-  if (!messaging.value) return;
 
   if (testNotifications.value) {
-    try {
-      const currentToken = await getToken(messaging.value, {
-        vapidKey:
-          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-      });
-
-      await subscribeToTopic({
-        token: currentToken,
-        topic: "test",
-      });
-    } catch (error) {
-      console.error("Error subscribing FCM token to topic", error);
-    }
+    getTokenAndSubscribeToTopic(messaging.value, "test");
   } else if (notificationPermission.value === "granted") {
-    try {
-      const currentToken = await getToken(messaging.value, {
-        vapidKey:
-          "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8",
-      });
-
-      await unsubscribeFromTopic({
-        token: currentToken,
-        topic: "test",
-      });
-    } catch (error) {
-      console.error("Error unsubscribing FCM token from topic", error);
-    }
+    getTokenAndUnsubscribeToTopic(messaging.value, "test");
   }
 });
 
@@ -178,6 +144,8 @@ const isOpen = ref(false);
 function setIsOpen(value: boolean) {
   isOpen.value = value;
 }
+
+const { hideMessageTimestamps } = storeToRefs(settingsStore);
 </script>
 
 <template>
