@@ -4,9 +4,8 @@ import utc from "dayjs/plugin/utc.js";
 import timezone from "dayjs/plugin/timezone.js";
 import relativeTime from "dayjs/plugin/relativeTime";
 import advancedFormat from "dayjs/plugin/advancedFormat";
-
-import type { Message } from "@/types";
 import dynamicHue from "~/utils/dynamicHue";
+import type { Message } from "@/types";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);

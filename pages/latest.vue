@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import type { Breadcrumb, Message } from "@/types";
-import { collection, query, onSnapshot, where } from "firebase/firestore";
+import {
+  collection,
+  query,
+  onSnapshot,
+  where,
+  type Unsubscribe,
+} from "firebase/firestore";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
+import type { Breadcrumb, Message } from "@/types";
 
 dayjs.extend(utc);
 
@@ -28,11 +34,30 @@ definePageMeta({
   ] as Breadcrumb[],
 });
 
+const { fetchEmotes } = useEmotes();
+const { fetchBadges } = useBadges();
+
+fetchEmotes();
+fetchBadges();
+
 const { data: messages } = await useFetch<Message[]>("/api/messages/latest");
 
-const { twitchUsername } = useRuntimeConfig().public;
+const sortStore = useSortStore();
+const { sortOrder } = storeToRefs(sortStore);
+
+const sortedMessages = computed(() => {
+  return messages?.value?.sort((a, b) => {
+    if (sortOrder.value.latest === "asc") {
+      return parseInt(a.sentAt) - parseInt(b.sentAt);
+    }
+
+    return parseInt(b.sentAt) - parseInt(a.sentAt);
+  });
+});
 
 const { db } = useFirebase();
+const { twitchUsername } = useRuntimeConfig().public;
+const unsub = ref<Unsubscribe>();
 
 onMounted(async () => {
   const latestMessage = messages.value?.at(-1);
@@ -51,28 +76,14 @@ onMounted(async () => {
     where("sentAt", ">=", dayOfLatestMessage)
   );
 
-  onSnapshot(latestMessagesQuery, (querySnapshot) => {
+  unsub.value = onSnapshot(latestMessagesQuery, (querySnapshot) => {
     messages.value = querySnapshot.docs.map((doc) => doc.data() as Message);
   });
 });
 
-const { fetchEmotes } = useEmotes();
-const { fetchBadges } = useBadges();
-
-fetchEmotes();
-await fetchBadges();
-
-const sortStore = useSortStore();
-const { sortOrder } = storeToRefs(sortStore);
-
-const sortedMessages = computed(() => {
-  return messages?.value?.sort((a, b) => {
-    if (sortOrder.value.latest === "asc") {
-      return parseInt(a.sentAt) - parseInt(b.sentAt);
-    }
-
-    return parseInt(b.sentAt) - parseInt(a.sentAt);
-  });
+onUnmounted(() => {
+  if (!unsub.value) return;
+  unsub.value();
 });
 </script>
 

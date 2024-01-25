@@ -1,17 +1,25 @@
 <script setup lang="ts">
-import type { Message } from "@/types";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 import relativeTime from "dayjs/plugin/relativeTime";
+import type { Message } from "@/types";
 
 dayjs.extend(utc);
 dayjs.extend(relativeTime);
 
-const { data } = await useFetch<Message>("/api/messages/sus");
-
-const { fetchEmotes, parseEmotes } = useEmotes();
+const { fetchEmotes } = useEmotes();
 
 fetchEmotes();
+
+const { data } = await useFetch<Message>("/api/messages/sus");
+
+const susMessageTimeFromNow = computed(() => {
+  const sentAt = data.value?.sentAt;
+
+  if (sentAt === undefined) return "";
+
+  return dayjs.utc(parseInt(sentAt)).fromNow();
+});
 
 const susRegExp = new RegExp(
   /^!(commands\s+edit|editcom)\s+(-cd=\d+\s+)?(!sus)\s+(-cd=\d+\s+)?(?<susMessage>.+)$/
@@ -25,15 +33,9 @@ const formattedSusMessage = computed(() => {
   return sus;
 });
 
+const { parseEmotes } = useEmotes();
+
 const parsedSusMessage = computed(() => parseEmotes(formattedSusMessage.value));
-
-const susMessageTimeFromNow = computed(() => {
-  const sentAt = data.value?.sentAt;
-
-  if (sentAt === undefined) return "";
-
-  return dayjs.utc(parseInt(sentAt)).fromNow();
-});
 </script>
 
 <template>

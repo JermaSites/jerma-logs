@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Messaging } from "firebase/messaging";
 import { httpsCallable } from "firebase/functions";
 import {
   getMessaging,
@@ -8,6 +7,7 @@ import {
   getToken,
 } from "firebase/messaging";
 import { XCircleIcon } from "@heroicons/vue/24/solid";
+import type { Messaging } from "firebase/messaging";
 
 const settingsStore = useSettingsStore();
 

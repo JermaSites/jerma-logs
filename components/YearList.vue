@@ -6,9 +6,10 @@ type Props = {
 const props = defineProps<Props>();
 
 const years = computed(() => {
-  const years: number[] = [];
   const startYear = 2020;
   const currentYear = new Date().getFullYear();
+
+  const years: number[] = [];
   for (let i = startYear; i <= currentYear; i++) {
     years.push(i);
   }

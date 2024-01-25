@@ -2,7 +2,13 @@
 import { capitalize } from "vue";
 import type { Breadcrumb, Message } from "@/types";
 import type { RouteLocationNormalizedLoaded } from "#vue-router";
-import { collection, query, onSnapshot, where } from "firebase/firestore";
+import {
+  collection,
+  query,
+  onSnapshot,
+  where,
+  type Unsubscribe,
+} from "firebase/firestore";
 import dayjs from "dayjs";
 import utc from "dayjs/plugin/utc.js";
 
@@ -39,6 +45,12 @@ definePageMeta({
   },
 });
 
+const { fetchEmotes } = useEmotes();
+const { fetchBadges } = useBadges();
+
+fetchEmotes();
+fetchBadges();
+
 const { year, month } = route.params as { year: string; month: string };
 
 const isCurrentMonth = computed(() => {
@@ -55,6 +67,8 @@ const { data: messages } = await useFetch<Message[]>(
 
 const { twitchUsername } = useRuntimeConfig().public;
 const { db } = useFirebase();
+const unsub = ref<Unsubscribe>();
+
 onMounted(async () => {
   const date = dayjs.utc(`${year}-${capitalize(month)}-01`, "YYYY-MMMM-DD");
   const startTime = date.startOf("month").valueOf().toString();
@@ -69,17 +83,16 @@ onMounted(async () => {
     where("username", "==", twitchUsername)
   );
 
-  onSnapshot(q, (querySnapshot) => {
+  unsub.value = onSnapshot(q, (querySnapshot) => {
     if (querySnapshot.docs.length === 0) return;
     messages.value = querySnapshot.docs.map((doc) => doc.data() as Message);
   });
 });
 
-const { fetchEmotes } = useEmotes();
-const { fetchBadges } = useBadges();
-
-fetchEmotes();
-await fetchBadges();
+onUnmounted(() => {
+  if (!unsub.value) return;
+  unsub.value();
+});
 
 const sortStore = useSortStore();
 const { sortOrder } = storeToRefs(sortStore);
