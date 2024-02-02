@@ -3,6 +3,10 @@ import linkifyHtml from "linkify-html";
 
 const emoteMap = reactive<EmoteMap>(new Map());
 
+function escapeRegExp(string: string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 export function useEmotes() {
   const fetchEmotes = async (): Promise<EmoteMap> => {
     const { data: emotes } = await useFetch("/api/emotes");
@@ -18,13 +22,12 @@ export function useEmotes() {
     return linkifyHtml(msg)
       .split(" ")
       .map((word) => {
-        if (!emoteMap.has(word)) return word;
-
         const emote = emoteMap.get(word);
-        const emoteName = emote?.code;
-        const imgSrc = emote?.urls[0].url || "https://placehold.co/28x28";
-        const imgEl = `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="28" height="28" alt="${emoteName}" title="${emoteName}" loading="lazy">`;
-        return imgEl;
+        if (!emote) return word;
+
+        const emoteName = emote.code;
+        const imgSrc = emote.urls.at(0)?.url;
+        return `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="28" height="28" alt="${emoteName}" title="${emoteName}" loading="lazy">`;
       })
       .join(" ");
   }
