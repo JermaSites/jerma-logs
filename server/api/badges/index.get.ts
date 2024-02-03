@@ -33,9 +33,7 @@ export default cachedEventHandler(
       channelBadgesPromise,
     ]);
 
-    const badges = [...globalBadges.data, ...channelBadges.data];
-
-    return badges;
+    return [...globalBadges.data, ...channelBadges.data];
   },
   {
     maxAge: 60 * 60 * 24,

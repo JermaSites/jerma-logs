@@ -21,8 +21,5 @@ export default cachedEventHandler(
   },
   {
     maxAge: 60 * 60 * 24,
-    shouldBypassCache(event) {
-      return true;
-    },
   }
 );
