@@ -11,6 +11,19 @@ export default defineNuxtConfig({
     "@nuxtjs/robots",
     "@nuxt/image",
   ],
+  nitro: {
+    storage: {
+      redis: {
+        driver: "redis",
+        port: process.env.NUXT_UPSTASH_REDIS_PORT,
+        host: process.env.NUXT_UPSTASH_REDIS_HOST,
+        username: process.env.NUXT_UPSTASH_REDIS_USERNAME,
+        password: process.env.NUXT_UPSTASH_REDIS_PASSWORD,
+        db: 0,
+        tls: {},
+      },
+    },
+  },
   app: {
     head: {
       htmlAttrs: {

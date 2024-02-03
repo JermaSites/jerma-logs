@@ -28,12 +28,12 @@ export default $fetch.create({
     "Client-ID": twitchClientId,
   },
   async onRequest({ options }: any) {
-    let token = await useStorage("twitch").getItem<AccessToken>("token");
+    let token = await useStorage("redis").getItem<AccessToken>("token");
 
     if (!token || token.expires_in <= Date.now()) {
       token = await getAuthToken();
       token.expires_in += Date.now();
-      await useStorage("twitch").setItem<AccessToken>("token", token);
+      await useStorage("redis").setItem<AccessToken>("token", token);
     }
 
     options.headers.authorization = `Bearer ${token.access_token}`;

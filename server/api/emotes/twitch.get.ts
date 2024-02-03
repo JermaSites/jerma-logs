@@ -19,5 +19,10 @@ export default cachedEventHandler(
 
     return [...channelEmotes.data, ...globalEmotes.data];
   },
-  { maxAge: 60 * 60 * 24 }
+  {
+    maxAge: 60 * 60 * 24,
+    shouldBypassCache(event) {
+      return true;
+    },
+  }
 );
