@@ -9,12 +9,17 @@ type AccessToken = {
 };
 
 async function getAuthToken() {
-  return await $fetch<AccessToken>(
-    `https://id.twitch.tv/oauth2/token?client_id=${twitchClientId}&client_secret=${twitchClientSecret}&grant_type=client_credentials`,
-    {
-      method: "POST",
-    }
-  );
+  return await $fetch<AccessToken>(`https://id.twitch.tv/oauth2/token`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body: new URLSearchParams({
+      client_id: twitchClientId,
+      client_secret: twitchClientSecret,
+      grant_type: "client_credentials",
+    }),
+  });
 }
 
 export default $fetch.create({
@@ -25,7 +30,7 @@ export default $fetch.create({
   async onRequest({ options }: any) {
     let token = await useStorage("twitch").getItem<AccessToken>("token");
 
-    if (token === null || token.expires_in <= Date.now()) {
+    if (!token || token.expires_in <= Date.now()) {
       token = await getAuthToken();
       token.expires_in += Date.now();
       await useStorage("twitch").setItem<AccessToken>("token", token);
