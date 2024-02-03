@@ -6,11 +6,18 @@ export default cachedEventHandler(
     const { twitchId } = useRuntimeConfig().public;
 
     const channelEmotesPromise = twitchApi<ChannelEmotesResponse>(
-      `chat/emotes?broadcaster_id=${twitchId}`
+      `chat/emotes?broadcaster_id=${twitchId}`,
+      {
+        method: "GET",
+      }
     );
 
-    const globalEmotesPromise =
-      twitchApi<GlobalEmotesResponse>("chat/emotes/global");
+    const globalEmotesPromise = twitchApi<GlobalEmotesResponse>(
+      "chat/emotes/global",
+      {
+        method: "GET",
+      }
+    );
 
     const [channelEmotes, globalEmotes] = await Promise.all([
       channelEmotesPromise,
@@ -19,5 +26,7 @@ export default cachedEventHandler(
 
     return [...channelEmotes.data, ...globalEmotes.data];
   },
-  { maxAge: 60 * 60 * 24 }
+  {
+    maxAge: 60 * 60 * 24,
+  }
 );

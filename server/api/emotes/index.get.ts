@@ -2,8 +2,12 @@ import type { Emote } from "@/types";
 
 export default cachedEventHandler(
   async () => {
-    const twitchEmotesPromise = $fetch("/api/emotes/twitch");
-    const bttvEmotesPromise = $fetch("/api/emotes/bttv");
+    const twitchEmotesPromise = $fetch("/api/emotes/twitch", {
+      method: "GET",
+    });
+    const bttvEmotesPromise = $fetch("/api/emotes/bttv", {
+      method: "GET",
+    });
 
     const [twitchEmotes, bttvEmotes] = await Promise.all([
       twitchEmotesPromise,
