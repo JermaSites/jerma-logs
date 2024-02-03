@@ -4,15 +4,20 @@ export default cachedEventHandler(
   async () => {
     const { twitchId } = useRuntimeConfig().public;
 
-    const user = await $fetch<UserBttvResponse>(
+    const userPromise = $fetch<UserBttvResponse>(
       `https://api.betterttv.net/3/cached/users/twitch/${twitchId}`
     );
 
-    const globalEmotes = await $fetch<BttvEmote[]>(
+    const globalEmotesPromise = $fetch<BttvEmote[]>(
       `https://api.betterttv.net/3/cached/emotes/global`
     );
 
-    return globalEmotes.concat(user.channelEmotes, user.sharedEmotes);
+    const [user, globalEmotes] = await Promise.all([
+      userPromise,
+      globalEmotesPromise,
+    ]);
+
+    return [...globalEmotes, ...user.channelEmotes, ...user.sharedEmotes];
   },
   {
     maxAge: 60 * 60 * 24,

@@ -12,14 +12,12 @@ export default cachedEventHandler(
     const globalEmotesPromise =
       twitchApi<GlobalEmotesResponse>("chat/emotes/global");
 
-    const [globalEmotes, channelEmotes] = await Promise.all([
-      globalEmotesPromise,
+    const [channelEmotes, globalEmotes] = await Promise.all([
       channelEmotesPromise,
+      globalEmotesPromise,
     ]);
 
-    const emotes = [...globalEmotes.data, ...channelEmotes.data];
-
-    return emotes;
+    return [...channelEmotes.data, ...globalEmotes.data];
   },
   { maxAge: 60 * 60 * 24 }
 );
