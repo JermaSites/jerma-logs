@@ -5,7 +5,6 @@ import timezone from "dayjs/plugin/timezone.js";
 import relativeTime from "dayjs/plugin/relativeTime";
 import advancedFormat from "dayjs/plugin/advancedFormat";
 import dynamicHue from "~/utils/dynamicHue";
-import type { Message } from "@/types";
 
 dayjs.extend(utc);
 dayjs.extend(timezone);
@@ -13,7 +12,14 @@ dayjs.extend(relativeTime);
 dayjs.extend(advancedFormat);
 
 type Props = {
-  message: Message;
+  sentAt: string;
+  displayName: string;
+  color: string;
+  message: string;
+  badges: {
+    name: string;
+    url: string;
+  }[];
 };
 
 const props = defineProps<Props>();
@@ -26,25 +32,25 @@ const { hideMessageTimestamps, colorModeValue, userTimezone } =
 dayjs.tz.setDefault(userTimezone.value);
 
 const messageSentAt = computed(() => {
-  return dayjs.tz(parseInt(props.message.sentAt)).format("MMM Do hh:mm A z");
+  return dayjs.tz(parseInt(props.sentAt)).format("MMM Do hh:mm A z");
 });
 
 const messageSentAtTimeAgo = computed(() => {
-  return dayjs.tz(parseInt(props.message.sentAt)).fromNow();
+  return dayjs.tz(parseInt(props.sentAt)).fromNow();
 });
 
 const messageColor = computed(() => {
-  const hex = props.message.color;
+  const hex = props.color;
   return dynamicHue(hex, colorModeValue.value);
 });
 
-const { parseEmotes } = useEmotes();
+// const { parseEmotes } = useEmotes();
 
-const parsedEmotes = computed(() => parseEmotes(props.message.message));
+// const parsedEmotes = computed(() => parseEmotes(props.message.message));
 
-const { parseBadges } = useBadges();
+// const { parseBadges } = useBadges();
 
-const badges = computed(() => parseBadges(props.message.badges));
+// const badges = computed(() => parseBadges(props.message.badges));
 </script>
 
 <template>
@@ -71,10 +77,10 @@ const badges = computed(() => parseBadges(props.message.badges));
         />
       </span>
       <span :style="{ color: messageColor }" class="font-bold">
-        {{ message.displayName }} </span
+        {{ displayName }} </span
       >:
     </div>
-    <div v-html="parsedEmotes"></div>
+    <div v-html="message"></div>
   </div>
 </template>
 

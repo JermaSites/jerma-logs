@@ -45,8 +45,8 @@ definePageMeta({
   },
 });
 
-const { fetchEmotes } = useEmotes();
-const { fetchBadges } = useBadges();
+const { fetchEmotes, parseEmotes } = useEmotes();
+const { fetchBadges, parseBadges } = useBadges();
 
 fetchEmotes();
 fetchBadges();
@@ -113,7 +113,13 @@ const sortedMessages = computed(() => {
     <div v-if="sortedMessages && sortedMessages.length !== 0">
       <SimpleList>
         <SimpleListItem v-for="message in sortedMessages" :key="message.id">
-          <Message :message="message" />
+          <Message
+            :sent-at="message.sentAt"
+            :display-name="message.displayName"
+            :color="message.color"
+            :message="parseEmotes(message.message)"
+            :badges="parseBadges(message.badges)"
+          />
         </SimpleListItem>
       </SimpleList>
     </div>
