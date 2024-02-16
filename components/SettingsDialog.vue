@@ -261,7 +261,7 @@ const { hideMessageTimestamps } = storeToRefs(settingsStore);
                       v-model="susNotifications"
                       :disabled="notificationPermissoinDenied"
                       :class="[
-                        messageNotifications ? 'bg-blue-500' : 'bg-slate-400',
+                        susNotifications ? 'bg-blue-500' : 'bg-slate-400',
                         { 'cursor-not-allowed': notificationPermissoinDenied },
                       ]"
                       class="relative inline-flex h-7 w-14 items-center rounded-full"
