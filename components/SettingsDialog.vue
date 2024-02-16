@@ -37,6 +37,10 @@ const notificationPermission = usePermission("notifications");
 const { messageNotifications, susNotifications, testNotifications } =
   storeToRefs(settingsStore);
 
+const notificationPermissoinDenied = computed(() => {
+  return notificationPermission.value === "denied";
+});
+
 // set all notification settings to false if permission is denied
 watchEffect(() => {
   if (
@@ -116,20 +120,53 @@ onMounted(async () => {
 });
 
 // sub/unsub tokens on page load and when notification settings changes
-watchEffect(async () => {
+// watchEffect(async () => {
+//   if (!messaging.value) return;
+
+//   if (messageNotifications.value) {
+//     getTokenAndSubscribeToTopic(messaging.value, "message");
+//   } else if (notificationPermission.value === "granted") {
+//     getTokenAndUnsubscribeToTopic(messaging.value, "message");
+//   }
+
+//   if (susNotifications.value) {
+//     getTokenAndSubscribeToTopic(messaging.value, "sus");
+//   } else if (notificationPermission.value === "granted") {
+//     getTokenAndUnsubscribeToTopic(messaging.value, "sus");
+//   }
+
+//   if (testNotifications.value) {
+//     getTokenAndSubscribeToTopic(messaging.value, "test");
+//   } else if (notificationPermission.value === "granted") {
+//     getTokenAndUnsubscribeToTopic(messaging.value, "test");
+//   }
+// });
+
+watch(messageNotifications, async () => {
   if (!messaging.value) return;
+  console.log("Message Notifications");
+  console.log(notificationPermission.value);
+  console.log(notificationPermissoinDenied.value);
 
   if (messageNotifications.value) {
     getTokenAndSubscribeToTopic(messaging.value, "message");
   } else if (notificationPermission.value === "granted") {
     getTokenAndUnsubscribeToTopic(messaging.value, "message");
   }
+});
+
+watch(susNotifications, async () => {
+  if (!messaging.value) return;
 
   if (susNotifications.value) {
     getTokenAndSubscribeToTopic(messaging.value, "sus");
   } else if (notificationPermission.value === "granted") {
     getTokenAndUnsubscribeToTopic(messaging.value, "sus");
   }
+});
+
+watch(testNotifications, async () => {
+  if (!messaging.value) return;
 
   if (testNotifications.value) {
     getTokenAndSubscribeToTopic(messaging.value, "test");
@@ -190,9 +227,11 @@ const { hideMessageTimestamps } = storeToRefs(settingsStore);
                   <div class="flex items-center">
                     <HeadlessSwitch
                       v-model="messageNotifications"
-                      :class="
-                        messageNotifications ? 'bg-blue-500' : 'bg-slate-400'
-                      "
+                      :disabled="notificationPermissoinDenied"
+                      :class="[
+                        messageNotifications ? 'bg-blue-500' : 'bg-slate-400',
+                        { 'cursor-not-allowed': notificationPermissoinDenied },
+                      ]"
                       class="relative inline-flex h-7 w-14 shrink-0 items-center rounded-full"
                     >
                       <span class="sr-only">
@@ -220,7 +259,11 @@ const { hideMessageTimestamps } = storeToRefs(settingsStore);
                   <div class="flex items-center">
                     <HeadlessSwitch
                       v-model="susNotifications"
-                      :class="susNotifications ? 'bg-blue-500' : 'bg-slate-400'"
+                      :disabled="notificationPermissoinDenied"
+                      :class="[
+                        messageNotifications ? 'bg-blue-500' : 'bg-slate-400',
+                        { 'cursor-not-allowed': notificationPermissoinDenied },
+                      ]"
                       class="relative inline-flex h-7 w-14 items-center rounded-full"
                     >
                       <span class="sr-only">
@@ -246,9 +289,10 @@ const { hideMessageTimestamps } = storeToRefs(settingsStore);
                   <div class="flex items-center" v-if="false">
                     <HeadlessSwitch
                       v-model="testNotifications"
-                      :class="
-                        testNotifications ? 'bg-blue-500' : 'bg-slate-400'
-                      "
+                      :class="[
+                        messageNotifications ? 'bg-blue-500' : 'bg-slate-400',
+                        { 'cursor-not-allowed': notificationPermissoinDenied },
+                      ]"
                       class="relative inline-flex h-7 w-14 items-center rounded-full"
                     >
                       <span class="sr-only">
