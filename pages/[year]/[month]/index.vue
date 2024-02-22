@@ -98,7 +98,7 @@ const sortStore = useSortStore();
 const { sortOrder } = storeToRefs(sortStore);
 
 const sortedMessages = computed(() => {
-  return messages?.value?.sort((a, b) => {
+  return messages?.value?.toSorted((a, b) => {
     if (sortOrder.value.message === "asc") {
       return parseInt(a.sentAt) - parseInt(b.sentAt);
     }
