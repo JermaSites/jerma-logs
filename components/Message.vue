@@ -40,17 +40,8 @@ const messageSentAtTimeAgo = computed(() => {
 });
 
 const messageColor = computed(() => {
-  const hex = props.color;
-  return dynamicHue(hex, colorModeValue.value);
+  return dynamicHue(props.color, colorModeValue.value);
 });
-
-// const { parseEmotes } = useEmotes();
-
-// const parsedEmotes = computed(() => parseEmotes(props.message.message));
-
-// const { parseBadges } = useBadges();
-
-// const badges = computed(() => parseBadges(props.message.badges));
 </script>
 
 <template>

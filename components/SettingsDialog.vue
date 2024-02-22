@@ -119,29 +119,6 @@ onMounted(async () => {
   });
 });
 
-// sub/unsub tokens on page load and when notification settings changes
-// watchEffect(async () => {
-//   if (!messaging.value) return;
-
-//   if (messageNotifications.value) {
-//     getTokenAndSubscribeToTopic(messaging.value, "message");
-//   } else if (notificationPermission.value === "granted") {
-//     getTokenAndUnsubscribeToTopic(messaging.value, "message");
-//   }
-
-//   if (susNotifications.value) {
-//     getTokenAndSubscribeToTopic(messaging.value, "sus");
-//   } else if (notificationPermission.value === "granted") {
-//     getTokenAndUnsubscribeToTopic(messaging.value, "sus");
-//   }
-
-//   if (testNotifications.value) {
-//     getTokenAndSubscribeToTopic(messaging.value, "test");
-//   } else if (notificationPermission.value === "granted") {
-//     getTokenAndUnsubscribeToTopic(messaging.value, "test");
-//   }
-// });
-
 watch(messageNotifications, async () => {
   if (!messaging.value) return;
   console.log("Message Notifications");
