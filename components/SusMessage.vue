@@ -42,7 +42,9 @@ const parsedSusMessage = computed(() => parseEmotes(formattedSusMessage.value));
   <div class="text-center">
     <div class="bg-slate-300 px-4 py-2 dark:bg-slate-900">
       <h1 class="font-meduim text-xl">!SUS Message</h1>
-      <h2 class="text-lg text-slate-400">{{ susMessageTimeFromNow }}</h2>
+      <h2 class="text-lg text-slate-400">
+        Set by {{ data?.displayName }} {{ susMessageTimeFromNow }}
+      </h2>
     </div>
     <div class="bg-slate-200 p-4 dark:bg-slate-800">
       <p v-html="parsedSusMessage"></p>
