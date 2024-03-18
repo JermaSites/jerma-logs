@@ -1,6 +1,6 @@
 {
   "name": "jerma-logs",
-  "version": "1.0.12",
+  "version": "1.0.13",
   "private": false,
   "type": "module",
   "scripts": {
