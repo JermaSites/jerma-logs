@@ -9,10 +9,8 @@ import {
   where,
   type Unsubscribe,
 } from "firebase/firestore";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc.js";
 
-dayjs.extend(utc);
+const dayjs = useDayjs();
 
 const route = useRoute();
 

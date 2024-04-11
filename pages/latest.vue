@@ -6,11 +6,10 @@ import {
   where,
   type Unsubscribe,
 } from "firebase/firestore";
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc.js";
+
 import type { Breadcrumb, Message } from "@/types";
 
-dayjs.extend(utc);
+const dayjs = useDayjs();
 
 useServerSeoMeta({
   title: "Jerma Logs | Latest",

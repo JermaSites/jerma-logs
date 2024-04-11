@@ -2,6 +2,7 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
+    "dayjs-nuxt",
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
     "@nuxtjs/tailwindcss",
@@ -17,6 +18,11 @@ export default defineNuxtConfig({
         lang: "en",
       },
     },
+  },
+  dayjs: {
+    plugins: ["utc", "timezone", "relativeTime", "advancedFormat"],
+    defaultLocale: "en",
+    defaultTimezone: "America/New_York",
   },
   image: {
     format: ["avif", "webp", "png"],

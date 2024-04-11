@@ -1,11 +1,7 @@
 <script setup lang="ts">
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc.js";
-import relativeTime from "dayjs/plugin/relativeTime";
 import type { Message } from "@/types";
 
-dayjs.extend(utc);
-dayjs.extend(relativeTime);
+const dayjs = useDayjs();
 
 const { fetchEmotes } = useEmotes();
 

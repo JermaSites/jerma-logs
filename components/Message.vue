@@ -1,15 +1,5 @@
 <script setup lang="ts">
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc.js";
-import timezone from "dayjs/plugin/timezone.js";
-import relativeTime from "dayjs/plugin/relativeTime";
-import advancedFormat from "dayjs/plugin/advancedFormat";
-import dynamicHue from "~/utils/dynamicHue";
-
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.extend(relativeTime);
-dayjs.extend(advancedFormat);
+const dayjs = useDayjs();
 
 type Props = {
   sentAt: string;
