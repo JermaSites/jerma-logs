@@ -24,7 +24,8 @@ export default function (hex: string): {
     h = ((g - b) / delta) % 6
   else if (cmax === g)
     h = (b - r) / delta + 2
-  else h = (r - g) / delta + 4
+  else
+    h = (r - g) / delta + 4
 
   h = Math.round(h * 60)
 
