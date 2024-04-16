@@ -1,40 +1,41 @@
+import process from 'node:process'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
   modules: [
-    "dayjs-nuxt",
-    "@pinia/nuxt",
-    "@pinia-plugin-persistedstate/nuxt",
-    "@nuxtjs/tailwindcss",
-    "nuxt-headlessui",
-    "@vueuse/nuxt",
-    "@nuxtjs/color-mode",
-    "@nuxtjs/robots",
-    "@nuxt/image",
+    'dayjs-nuxt',
+    '@pinia/nuxt',
+    '@pinia-plugin-persistedstate/nuxt',
+    '@nuxtjs/tailwindcss',
+    'nuxt-headlessui',
+    '@vueuse/nuxt',
+    '@nuxtjs/color-mode',
+    '@nuxtjs/robots',
+    '@nuxt/image',
   ],
   app: {
     head: {
       htmlAttrs: {
-        lang: "en",
+        lang: 'en',
       },
     },
   },
   dayjs: {
-    plugins: ["utc", "timezone", "relativeTime", "advancedFormat"],
-    defaultLocale: "en",
-    defaultTimezone: "America/New_York",
+    plugins: ['utc', 'timezone', 'relativeTime', 'advancedFormat'],
+    defaultLocale: 'en',
+    defaultTimezone: 'America/New_York',
   },
   image: {
-    format: ["avif", "webp", "png"],
+    format: ['avif', 'webp', 'png'],
   },
   piniaPersistedstate: {
     cookieOptions: {
-      sameSite: "strict",
+      sameSite: 'strict',
       maxAge: 1 * 60 * 60 * 24 * 400,
     },
   },
   colorMode: {
-    classSuffix: "",
+    classSuffix: '',
   },
   runtimeConfig: {
     public: {
@@ -48,4 +49,4 @@ export default defineNuxtConfig({
   typescript: {
     strict: true,
   },
-});
+})

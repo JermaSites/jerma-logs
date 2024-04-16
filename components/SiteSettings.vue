@@ -1,32 +1,32 @@
 <script setup lang="ts">
-const route = useRoute();
+const route = useRoute()
 
 const sort = computed(() => {
-  const routeName = route.name?.toString().split("-").at(-1);
+  const routeName = route.name?.toString().split('-').at(-1)
 
   switch (routeName) {
-    case "index":
-      return "year";
-    case "year":
-      return "month";
-    case "month":
-      return "message";
-    case "latest":
-      return "latest";
+    case 'index':
+      return 'year'
+    case 'year':
+      return 'month'
+    case 'month':
+      return 'message'
+    case 'latest':
+      return 'latest'
     default:
-      return "year";
+      return 'year'
   }
-});
+})
 
-const sortStore = useSortStore();
-const { sortOrder } = storeToRefs(sortStore);
+const sortStore = useSortStore()
+const { sortOrder } = storeToRefs(sortStore)
 </script>
 
 <template>
   <div class="flex">
     <SortButton
-      @click="sortStore.toggleSortOrder(sort)"
       :sort-order="sortOrder[sort]"
+      @click="sortStore.toggleSortOrder(sort)"
     />
     <SettingsDialog>
       <template #activator>

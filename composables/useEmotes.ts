@@ -1,36 +1,33 @@
-import type { EmoteMap } from "@/types";
-import linkifyHtml from "linkify-html";
+import linkifyHtml from 'linkify-html'
+import type { EmoteMap } from '@/types'
 
-const emoteMap = reactive<EmoteMap>(new Map());
-
-function escapeRegExp(string: string) {
-  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-}
+const emoteMap = reactive<EmoteMap>(new Map())
 
 export function useEmotes() {
   const fetchEmotes = async (): Promise<EmoteMap> => {
-    const { data: emotes } = await useFetch("/api/emotes");
+    const { data: emotes } = await useFetch('/api/emotes')
 
     emotes.value?.forEach((emote) => {
-      emoteMap.set(emote.code, emote);
-    });
+      emoteMap.set(emote.code, emote)
+    })
 
-    return emoteMap;
-  };
+    return emoteMap
+  }
 
   function parseEmotes(msg: string): string {
     return linkifyHtml(msg)
-      .split(" ")
+      .split(' ')
       .map((word) => {
-        const emote = emoteMap.get(word);
-        if (!emote) return word;
+        const emote = emoteMap.get(word)
+        if (!emote)
+          return word
 
-        const emoteName = emote.code;
-        const imgSrc = emote.urls.at(0)?.url;
-        return `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="28" height="28" alt="${emoteName}" title="${emoteName}" loading="lazy">`;
+        const emoteName = emote.code
+        const imgSrc = emote.urls.at(0)?.url
+        return `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="28" height="28" alt="${emoteName}" title="${emoteName}" loading="lazy">`
       })
-      .join(" ");
+      .join(' ')
   }
 
-  return { fetchEmotes, parseEmotes };
+  return { fetchEmotes, parseEmotes }
 }

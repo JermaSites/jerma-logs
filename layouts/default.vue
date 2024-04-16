@@ -1,25 +1,25 @@
 <script setup lang="ts">
-const dayjs = useDayjs();
+const dayjs = useDayjs()
 
 useHead({
   bodyAttrs: {
     class:
-      "min-h-screen bg-slate-50 text-slate-950 dark:bg-slate-700 dark:text-slate-200",
+      'min-h-screen bg-slate-50 text-slate-950 dark:bg-slate-700 dark:text-slate-200',
   },
-});
+})
 
 useServerSeoMeta({
-  description: "Jerma985's twitch chat logs",
-  ogDescription: "Jerma985's twitch chat logs",
-  ogImage: "https://logs.jerma.io/logo.png",
-  twitterCard: "summary",
-});
+  description: 'Jerma985\'s twitch chat logs',
+  ogDescription: 'Jerma985\'s twitch chat logs',
+  ogImage: 'https://logs.jerma.io/logo.png',
+  twitterCard: 'summary',
+})
 
-const settingsStore = useSettingsStore();
+const settingsStore = useSettingsStore()
 
 onMounted(() => {
-  settingsStore.userTimezone = dayjs.tz.guess();
-});
+  settingsStore.userTimezone = dayjs.tz.guess()
+})
 </script>
 
 <template>

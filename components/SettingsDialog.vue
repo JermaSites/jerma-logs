@@ -1,165 +1,160 @@
 <script setup lang="ts">
-import { httpsCallable } from "firebase/functions";
+import { httpsCallable } from 'firebase/functions'
 import {
   getMessaging,
-  onMessage,
-  isSupported,
   getToken,
-} from "firebase/messaging";
-import { XCircleIcon } from "@heroicons/vue/24/solid";
-import type { Messaging } from "firebase/messaging";
+  isSupported,
+} from 'firebase/messaging'
+import { XCircleIcon } from '@heroicons/vue/24/solid'
+import type { Messaging } from 'firebase/messaging'
 
-const settingsStore = useSettingsStore();
+const settingsStore = useSettingsStore()
 
-const colorMode = useColorMode();
+const colorMode = useColorMode()
 
 const lightModeEnabled = computed({
   get() {
-    return colorMode.value === "light";
+    return colorMode.value === 'light'
   },
   set(enableLightMode) {
     enableLightMode
-      ? (colorMode.preference = "light")
-      : (colorMode.preference = "dark");
+      ? (colorMode.preference = 'light')
+      : (colorMode.preference = 'dark')
   },
-});
+})
 
-const { colorModeValue } = storeToRefs(settingsStore);
+const { colorModeValue } = storeToRefs(settingsStore)
 
 // set the color mode on client only
 watchEffect(() => {
-  if (colorMode.value !== "system") {
-    colorModeValue.value = colorMode.value;
-  }
-});
+  if (colorMode.value !== 'system')
+    colorModeValue.value = colorMode.value
+})
 
-const notificationPermission = usePermission("notifications");
-const { messageNotifications, susNotifications, testNotifications } =
-  storeToRefs(settingsStore);
+const notificationPermission = usePermission('notifications')
+const { messageNotifications, susNotifications, testNotifications }
+  = storeToRefs(settingsStore)
 
 const notificationPermissoinDenied = computed(() => {
-  return notificationPermission.value === "denied";
-});
+  return notificationPermission.value === 'denied'
+})
 
 // set all notification settings to false if permission is denied
 watchEffect(() => {
   if (
-    !notificationPermission.value ||
-    notificationPermission.value === "granted"
+    !notificationPermission.value
+    || notificationPermission.value === 'granted'
   )
-    return;
+    return
 
-  messageNotifications.value = false;
-  susNotifications.value = false;
-  testNotifications.value = false;
-});
+  messageNotifications.value = false
+  susNotifications.value = false
+  testNotifications.value = false
+})
 
 async function getFCMToken(messaging: Messaging) {
-  const vapidKey =
-    "BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8";
+  const vapidKey
+    = 'BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8'
 
   try {
-    return await getToken(messaging, { vapidKey: vapidKey });
-  } catch (error) {
-    console.error("Error getting FCM token:", error);
-    return "";
+    return await getToken(messaging, { vapidKey })
+  }
+  catch (error) {
+    console.error('Error getting FCM token:', error)
+    return ''
   }
 }
 
-const { functions } = useFirebase();
+const { functions } = useFirebase()
 
-const subscribeToTopic = httpsCallable(functions, "subscribeToTopic");
+const subscribeToTopic = httpsCallable(functions, 'subscribeToTopic')
 
-const unsubscribeFromTopic = httpsCallable(functions, "unsubscribeFromTopic");
+const unsubscribeFromTopic = httpsCallable(functions, 'unsubscribeFromTopic')
 
 async function getTokenAndSubscribeToTopic(
   messaging: Messaging,
-  topic: string
+  topic: string,
 ) {
   try {
-    const currentToken = await getFCMToken(messaging);
+    const currentToken = await getFCMToken(messaging)
 
     await subscribeToTopic({
       token: currentToken,
-      topic: topic,
-    });
-  } catch (error) {
-    console.error(`Error subscribing FCM token to topic "${topic}":`, error);
+      topic,
+    })
+  }
+  catch (error) {
+    console.error(`Error subscribing FCM token to topic "${topic}":`, error)
   }
 }
 
 async function getTokenAndUnsubscribeToTopic(
   messaging: Messaging,
-  topic: string
+  topic: string,
 ) {
   try {
-    const currentToken = await getFCMToken(messaging);
+    const currentToken = await getFCMToken(messaging)
 
     await unsubscribeFromTopic({
       token: currentToken,
-      topic: topic,
-    });
-  } catch (error) {
-    console.error(`Error unsubscribing FCM token to topic "${topic}":`, error);
+      topic,
+    })
+  }
+  catch (error) {
+    console.error(`Error unsubscribing FCM token to topic "${topic}":`, error)
   }
 }
 
-const messaging = ref<Messaging>();
-const { app } = useFirebase();
+const messaging = ref<Messaging>()
+const { app } = useFirebase()
 
 // check for FCM support
 onMounted(async () => {
-  const messageSupport = await isSupported();
-  if (!messageSupport) return;
+  const messageSupport = await isSupported()
+  if (!messageSupport)
+    return
 
-  messaging.value = getMessaging(app);
-
-  onMessage(messaging.value, (payload) => {
-    console.log("Message received. ", payload);
-  });
-});
+  messaging.value = getMessaging(app)
+})
 
 watch(messageNotifications, async () => {
-  if (!messaging.value) return;
-  console.log("Message Notifications");
-  console.log(notificationPermission.value);
-  console.log(notificationPermissoinDenied.value);
+  if (!messaging.value)
+    return
 
-  if (messageNotifications.value) {
-    getTokenAndSubscribeToTopic(messaging.value, "message");
-  } else if (notificationPermission.value === "granted") {
-    getTokenAndUnsubscribeToTopic(messaging.value, "message");
-  }
-});
+  if (messageNotifications.value)
+    getTokenAndSubscribeToTopic(messaging.value, 'message')
+  else if (notificationPermission.value === 'granted')
+    getTokenAndUnsubscribeToTopic(messaging.value, 'message')
+})
 
 watch(susNotifications, async () => {
-  if (!messaging.value) return;
+  if (!messaging.value)
+    return
 
-  if (susNotifications.value) {
-    getTokenAndSubscribeToTopic(messaging.value, "sus");
-  } else if (notificationPermission.value === "granted") {
-    getTokenAndUnsubscribeToTopic(messaging.value, "sus");
-  }
-});
+  if (susNotifications.value)
+    getTokenAndSubscribeToTopic(messaging.value, 'sus')
+  else if (notificationPermission.value === 'granted')
+    getTokenAndUnsubscribeToTopic(messaging.value, 'sus')
+})
 
 watch(testNotifications, async () => {
-  if (!messaging.value) return;
+  if (!messaging.value)
+    return
 
-  if (testNotifications.value) {
-    getTokenAndSubscribeToTopic(messaging.value, "test");
-  } else if (notificationPermission.value === "granted") {
-    getTokenAndUnsubscribeToTopic(messaging.value, "test");
-  }
-});
+  if (testNotifications.value)
+    getTokenAndSubscribeToTopic(messaging.value, 'test')
+  else if (notificationPermission.value === 'granted')
+    getTokenAndUnsubscribeToTopic(messaging.value, 'test')
+})
 
-const closeButtonRef = ref(null);
-const isOpen = ref(false);
+const closeButtonRef = ref(null)
+const isOpen = ref(false)
 
 function setIsOpen(value: boolean) {
-  isOpen.value = value;
+  isOpen.value = value
 }
 
-const { hideMessageTimestamps } = storeToRefs(settingsStore);
+const { hideMessageTimestamps } = storeToRefs(settingsStore)
 </script>
 
 <template>
@@ -168,10 +163,10 @@ const { hideMessageTimestamps } = storeToRefs(settingsStore);
   </div>
   <ClientOnly>
     <HeadlessDialog
-      :initialFocus="closeButtonRef"
+      :initial-focus="closeButtonRef"
       :open="isOpen"
-      @close="setIsOpen"
       class="relative z-50"
+      @close="setIsOpen"
     >
       <!-- The backdrop, rendered as a fixed sibling to the panel container -->
       <div class="fixed inset-0 backdrop-blur-sm" aria-hidden="true" />
@@ -188,16 +183,18 @@ const { hideMessageTimestamps } = storeToRefs(settingsStore);
             <div>
               <XCircleIcon
                 ref="closeButtonRef"
-                @click="setIsOpen(false)"
                 class="w-8 cursor-pointer text-blue-500"
+                @click="setIsOpen(false)"
               />
             </div>
           </HeadlessDialogTitle>
           <div class="p-4">
             <section class="mb-4">
               <div class="mb-4">
-                <h3 class="text-2xl font-medium">Notification settings</h3>
-                <hr class="border-slate-400" />
+                <h3 class="text-2xl font-medium">
+                  Notification settings
+                </h3>
+                <hr class="border-slate-400">
               </div>
               <HeadlessSwitchGroup>
                 <div class="flex flex-col gap-4">
@@ -227,7 +224,9 @@ const { hideMessageTimestamps } = storeToRefs(settingsStore);
                       />
                     </HeadlessSwitch>
                     <HeadlessSwitchLabel class="ml-4">
-                      <div class="text-lg">Enable message notifications</div>
+                      <div class="text-lg">
+                        Enable message notifications
+                      </div>
                       <div class="text-md text-slate-500">
                         Get notified when Jerma sends a message in twitch chat
                       </div>
@@ -257,13 +256,15 @@ const { hideMessageTimestamps } = storeToRefs(settingsStore);
                       />
                     </HeadlessSwitch>
                     <HeadlessSwitchLabel class="ml-4">
-                      <div class="text-lg">Enable SUS! notifications</div>
+                      <div class="text-lg">
+                        Enable SUS! notifications
+                      </div>
                       <div class="text-md text-slate-500">
                         Get notified when the sus is updated
                       </div>
                     </HeadlessSwitchLabel>
                   </div>
-                  <div class="flex items-center" v-if="false">
+                  <div v-if="false" class="flex items-center">
                     <HeadlessSwitch
                       v-model="testNotifications"
                       :class="[
@@ -283,7 +284,9 @@ const { hideMessageTimestamps } = storeToRefs(settingsStore);
                       />
                     </HeadlessSwitch>
                     <HeadlessSwitchLabel class="ml-4">
-                      <div class="text-lg">Enable test notifications</div>
+                      <div class="text-lg">
+                        Enable test notifications
+                      </div>
                       <div class="text-md text-slate-500">
                         Get notified when a test message is sent
                       </div>
@@ -295,8 +298,10 @@ const { hideMessageTimestamps } = storeToRefs(settingsStore);
 
             <section>
               <div class="mb-4">
-                <h3 class="text-2xl font-medium">Other settings</h3>
-                <hr class="border-slate-400" />
+                <h3 class="text-2xl font-medium">
+                  Other settings
+                </h3>
+                <hr class="border-slate-400">
               </div>
               <HeadlessSwitchGroup>
                 <div class="flex flex-col gap-4">
@@ -324,7 +329,9 @@ const { hideMessageTimestamps } = storeToRefs(settingsStore);
                       />
                     </HeadlessSwitch>
                     <HeadlessSwitchLabel class="ml-4">
-                      <div class="text-lg">Hide message timestamps</div>
+                      <div class="text-lg">
+                        Hide message timestamps
+                      </div>
                       <div class="text-md text-slate-500">
                         Hide the timestamps next to messages
                       </div>
@@ -351,7 +358,9 @@ const { hideMessageTimestamps } = storeToRefs(settingsStore);
                       />
                     </HeadlessSwitch>
                     <HeadlessSwitchLabel class="ml-4">
-                      <div class="text-lg">Enable light mode</div>
+                      <div class="text-lg">
+                        Enable light mode
+                      </div>
                       <div class="text-md text-slate-500">
                         Sets the sites theme to a lighter color
                       </div>

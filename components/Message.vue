@@ -1,37 +1,37 @@
 <script setup lang="ts">
-const dayjs = useDayjs();
+const props = defineProps<Props>()
 
-type Props = {
-  sentAt: string;
-  displayName: string;
-  color: string;
-  message: string;
+const dayjs = useDayjs()
+
+interface Props {
+  sentAt: string
+  displayName: string
+  color: string
+  message: string
   badges: {
-    name: string;
-    url: string;
-  }[];
-};
+    name: string
+    url: string
+  }[]
+}
 
-const props = defineProps<Props>();
+const settingsStore = useSettingsStore()
 
-const settingsStore = useSettingsStore();
+const { hideMessageTimestamps, colorModeValue, userTimezone }
+  = storeToRefs(settingsStore)
 
-const { hideMessageTimestamps, colorModeValue, userTimezone } =
-  storeToRefs(settingsStore);
-
-dayjs.tz.setDefault(userTimezone.value);
+dayjs.tz.setDefault(userTimezone.value)
 
 const messageSentAt = computed(() => {
-  return dayjs.tz(parseInt(props.sentAt)).format("MMM Do hh:mm A z");
-});
+  return dayjs.tz(Number.parseInt(props.sentAt)).format('MMM Do hh:mm A z')
+})
 
 const messageSentAtTimeAgo = computed(() => {
-  return dayjs.tz(parseInt(props.sentAt)).fromNow();
-});
+  return dayjs.tz(Number.parseInt(props.sentAt)).fromNow()
+})
 
 const messageColor = computed(() => {
-  return dynamicHue(props.color, colorModeValue.value);
-});
+  return dynamicHue(props.color, colorModeValue.value)
+})
 </script>
 
 <template>
@@ -58,10 +58,9 @@ const messageColor = computed(() => {
         />
       </span>
       <span :style="{ color: messageColor }" class="font-bold">
-        {{ displayName }} </span
-      >:
+        {{ displayName }} </span>:
     </div>
-    <div v-html="message"></div>
+    <div v-html="message" />
   </div>
 </template>
 

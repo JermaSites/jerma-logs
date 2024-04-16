@@ -1,105 +1,100 @@
 <script setup lang="ts">
 import {
-  collection,
-  query,
-  onSnapshot,
-  where,
   type Unsubscribe,
-} from "firebase/firestore";
+  collection,
+  onSnapshot,
+  query,
+  where,
+} from 'firebase/firestore'
 
-import type { Breadcrumb, Message } from "@/types";
+import type { Breadcrumb, Message } from '@/types'
 
-const dayjs = useDayjs();
+const dayjs = useDayjs()
 
 useServerSeoMeta({
-  title: "Jerma Logs | Latest",
-  ogTitle: "Jerma Logs",
-});
+  title: 'Jerma Logs | Latest',
+  ogTitle: 'Jerma Logs',
+})
 
 useSeoMeta({
-  title: "Jerma Logs | Latest",
-  ogTitle: "Jerma Logs",
-});
+  title: 'Jerma Logs | Latest',
+  ogTitle: 'Jerma Logs',
+})
 
 definePageMeta({
   breadcrumb: [
     {
-      label: "Home",
-      to: { name: "index" },
+      label: 'Home',
+      to: { name: 'index' },
     },
     {
-      label: "Latest",
+      label: 'Latest',
     },
   ] as Breadcrumb[],
-});
+})
 
-const { fetchEmotes, parseEmotes } = useEmotes();
-const { fetchBadges, parseBadges } = useBadges();
+const { fetchEmotes, parseEmotes } = useEmotes()
+const { fetchBadges, parseBadges } = useBadges()
 
-fetchEmotes();
-fetchBadges();
+fetchEmotes()
+fetchBadges()
 
-const { data: messages } = await useFetch<Message[]>("/api/messages/latest");
+const { data: messages } = await useFetch<Message[]>('/api/messages/latest')
 
-const sortStore = useSortStore();
-const { sortOrder } = storeToRefs(sortStore);
+const sortStore = useSortStore()
+const { sortOrder } = storeToRefs(sortStore)
 
 const sortedMessages = computed(() => {
-  return messages?.value?.sort((a, b) => {
-    if (sortOrder.value.latest === "asc") {
-      return parseInt(a.sentAt) - parseInt(b.sentAt);
-    }
+  return messages?.value?.toSorted((a, b) => {
+    if (sortOrder.value.latest === 'asc')
+      return Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt)
 
-    return parseInt(b.sentAt) - parseInt(a.sentAt);
-  });
-});
+    return Number.parseInt(b.sentAt) - Number.parseInt(a.sentAt)
+  })
+})
 
-const { db } = useFirebase();
-const { twitchUsername } = useRuntimeConfig().public;
-const unsub = ref<Unsubscribe>();
+const { db } = useFirebase()
+const { twitchUsername } = useRuntimeConfig().public
+const unsub = ref<Unsubscribe>()
 
 onMounted(async () => {
-  const latestMessage = messages.value?.at(-1);
+  const latestMessage = messages.value?.at(-1)
 
-  if (!latestMessage) return;
+  if (!latestMessage)
+    return
 
   const dayOfLatestMessage = dayjs
-    .utc(parseInt(latestMessage.sentAt))
-    .subtract(1, "day")
+    .utc(Number.parseInt(latestMessage.sentAt))
+    .subtract(1, 'day')
     .valueOf()
-    .toString();
+    .toString()
 
   const latestMessagesQuery = query(
-    collection(db, "messages"),
-    where("username", "==", twitchUsername),
-    where("sentAt", ">=", dayOfLatestMessage)
-  );
+    collection(db, 'messages'),
+    where('username', '==', twitchUsername),
+    where('sentAt', '>=', dayOfLatestMessage),
+  )
 
   unsub.value = onSnapshot(latestMessagesQuery, (querySnapshot) => {
-    messages.value = querySnapshot.docs.map((doc) => doc.data() as Message);
-  });
-});
+    messages.value = querySnapshot.docs.map(doc => doc.data() as Message)
+  })
+})
 
 onUnmounted(() => {
-  if (!unsub.value) return;
-  unsub.value();
-});
+  if (!unsub.value)
+    return
+  unsub.value()
+})
 </script>
 
 <template>
   <section>
-    <div
-      v-if="sortedMessages && sortedMessages.length !== 0"
-      class="flex flex-col"
-    >
+    <div v-if="sortedMessages && sortedMessages.length !== 0" class="flex flex-col">
       <SimpleList>
         <SimpleListItem v-for="message in sortedMessages" :key="message.id">
           <Message
-            :sent-at="message.sentAt"
-            :display-name="message.displayName"
-            :color="message.color"
-            :message="parseEmotes(message.message)"
-            :badges="parseBadges(message.badges)"
+            :sent-at="message.sentAt" :display-name="message.displayName" :color="message.color"
+            :message="parseEmotes(message.message)" :badges="parseBadges(message.badges)"
           />
         </SimpleListItem>
       </SimpleList>

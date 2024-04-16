@@ -12,7 +12,9 @@
           preload
         />
 
-        <h1 class="ml-6 text-5xl">Jerma Logs</h1>
+        <h1 class="ml-6 text-5xl">
+          Jerma Logs
+        </h1>
       </NuxtLink>
     </div>
   </header>

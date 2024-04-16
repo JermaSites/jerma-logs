@@ -1,14 +1,14 @@
 export const useSettingsStore = defineStore(
-  "settings",
+  'settings',
   () => {
-    const messageNotifications = ref(false);
-    const susNotifications = ref(false);
-    const testNotifications = ref(false);
-    const hideMessageTimestamps = ref(false);
-    const colorModeValue = ref("light");
-    const userTimezone = ref("America/New_York");
+    const messageNotifications = ref(false)
+    const susNotifications = ref(false)
+    const testNotifications = ref(false)
+    const hideMessageTimestamps = ref(false)
+    const colorModeValue = ref('light')
+    const userTimezone = ref('America/New_York')
 
-    const updateCookieExperation = ref(false);
+    const updateCookieExperation = ref(false)
 
     return {
       messageNotifications,
@@ -18,7 +18,7 @@ export const useSettingsStore = defineStore(
       userTimezone,
       colorModeValue,
       updateCookieExperation,
-    };
+    }
   },
-  { persist: true }
-);
+  { persist: true },
+)

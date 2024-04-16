@@ -1,26 +1,26 @@
 <script setup lang="ts">
-import type { Breadcrumb, BreadcrumbFunction } from "@/types";
+import type { Breadcrumb, BreadcrumbFunction } from '@/types'
 
 useServerSeoMeta({
-  title: "Jerma Logs",
-  ogTitle: "Jerma Logs",
-});
+  title: 'Jerma Logs',
+  ogTitle: 'Jerma Logs',
+})
 
 useSeoMeta({
-  title: "Jerma Logs",
-  ogTitle: "Jerma Logs",
-});
+  title: 'Jerma Logs',
+  ogTitle: 'Jerma Logs',
+})
 
 definePageMeta({
   breadcrumb: [
     {
-      label: "Home",
+      label: 'Home',
     },
   ] as Breadcrumb[] | BreadcrumbFunction,
-});
+})
 
-const sortStore = useSortStore();
-const { sortOrder } = storeToRefs(sortStore);
+const sortStore = useSortStore()
+const { sortOrder } = storeToRefs(sortStore)
 </script>
 
 <template>

@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { capitalize } from "vue";
-import type { Breadcrumb, Message } from "@/types";
-import type { RouteLocationNormalizedLoaded } from "#vue-router";
+import { capitalize } from 'vue'
 import {
-  collection,
-  query,
-  onSnapshot,
-  where,
   type Unsubscribe,
-} from "firebase/firestore";
+  collection,
+  onSnapshot,
+  query,
+  where,
+} from 'firebase/firestore'
+import type { Breadcrumb, Message } from '@/types'
+import type { RouteLocationNormalizedLoaded } from '#vue-router'
 
-const dayjs = useDayjs();
+const dayjs = useDayjs()
 
-const route = useRoute();
+const route = useRoute()
 
 useServerSeoMeta({
   title: `Jerma Logs | ${capitalize(route.params.month as string)} ${
@@ -21,7 +21,7 @@ useServerSeoMeta({
   ogTitle: `Jerma Logs | ${capitalize(route.params.month as string)} ${
     route.params.year
   }`,
-});
+})
 
 useSeoMeta({
   title: `Jerma Logs | ${capitalize(route.params.month as string)} ${
@@ -30,80 +30,82 @@ useSeoMeta({
   ogTitle: `Jerma Logs | ${capitalize(route.params.month as string)} ${
     route.params.year
   }`,
-});
+})
 
 definePageMeta({
   breadcrumb(route: RouteLocationNormalizedLoaded): Breadcrumb[] {
-    const { year, month } = route.params as { year: string; month: string };
+    const { year, month } = route.params as { year: string, month: string }
     return [
-      { label: "Home", to: { name: "index" } },
-      { label: year, to: { name: "year", params: { year: year } } },
+      { label: 'Home', to: { name: 'index' } },
+      { label: year, to: { name: 'year', params: { year } } },
       { label: month },
-    ];
+    ]
   },
-});
+})
 
-const { fetchEmotes, parseEmotes } = useEmotes();
-const { fetchBadges, parseBadges } = useBadges();
+const { fetchEmotes, parseEmotes } = useEmotes()
+const { fetchBadges, parseBadges } = useBadges()
 
-fetchEmotes();
-fetchBadges();
+fetchEmotes()
+fetchBadges()
 
-const { year, month } = route.params as { year: string; month: string };
+const { year, month } = route.params as { year: string, month: string }
 
 const isCurrentMonth = computed(() => {
-  const currentDate = dayjs.utc();
-  const date = dayjs.utc(`${year}-${capitalize(month)}-01`, "YYYY-MMMM-DD");
-  const endTime = date.endOf("month");
+  const currentDate = dayjs.utc()
+  const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
+  const endTime = date.endOf('month')
 
-  return endTime.isAfter(currentDate);
-});
+  return endTime.isAfter(currentDate)
+})
 
 const { data: messages } = await useFetch<Message[]>(
-  `/api/messages/${year}/${month}`
-);
+  `/api/messages/${year}/${month}`,
+)
 
-const { twitchUsername } = useRuntimeConfig().public;
-const { db } = useFirebase();
-const unsub = ref<Unsubscribe>();
+const { twitchUsername } = useRuntimeConfig().public
+const { db } = useFirebase()
+const unsub = ref<Unsubscribe>()
 
 onMounted(async () => {
-  const date = dayjs.utc(`${year}-${capitalize(month)}-01`, "YYYY-MMMM-DD");
-  const startTime = date.startOf("month").valueOf().toString();
-  const endTime = date.endOf("month").valueOf().toString();
+  const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
+  const startTime = date.startOf('month').valueOf().toString()
+  const endTime = date.endOf('month').valueOf().toString()
 
-  if (!isCurrentMonth.value) return;
+  if (!isCurrentMonth.value)
+    return
 
   const q = query(
-    collection(db, "messages"),
-    where("sentAt", ">=", startTime),
-    where("sentAt", "<=", endTime),
-    where("username", "==", twitchUsername)
-  );
+    collection(db, 'messages'),
+    where('sentAt', '>=', startTime),
+    where('sentAt', '<=', endTime),
+    where('username', '==', twitchUsername),
+  )
 
   unsub.value = onSnapshot(q, (querySnapshot) => {
-    if (querySnapshot.docs.length === 0) return;
-    messages.value = querySnapshot.docs.map((doc) => doc.data() as Message);
-  });
-});
+    if (querySnapshot.docs.length === 0)
+      return
+    messages.value = querySnapshot.docs.map(doc => doc.data() as Message)
+  })
+})
 
 onUnmounted(() => {
-  if (!unsub.value) return;
-  unsub.value();
-});
+  if (!unsub.value)
+    return
+  unsub.value()
+})
 
-const sortStore = useSortStore();
-const { sortOrder } = storeToRefs(sortStore);
+const sortStore = useSortStore()
+const { sortOrder } = storeToRefs(sortStore)
 
 const sortedMessages = computed(() => {
   return messages?.value?.toSorted((a, b) => {
-    if (sortOrder.value.message === "asc") {
-      return parseInt(a.sentAt) - parseInt(b.sentAt);
-    }
+    if (sortOrder.value.message === 'asc')
+      return Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt)
 
-    return parseInt(b.sentAt) - parseInt(a.sentAt);
-  });
-});
+    return Number.parseInt(b.sentAt) - Number.parseInt(a.sentAt)
+  })
+})
 </script>
 
 <template>

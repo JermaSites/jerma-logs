@@ -1,24 +1,23 @@
 <script setup lang="ts">
-import { capitalize } from "vue";
-import type { Breadcrumb, BreadcrumbFunction } from "@/types";
+import { capitalize } from 'vue'
+import type { Breadcrumb, BreadcrumbFunction } from '@/types'
 
-const route = useRoute();
+const route = useRoute()
 
 const breadcrumbs = computed(() => {
-  const breadcrumb = route.meta.breadcrumb as Breadcrumb[] | BreadcrumbFunction;
+  const breadcrumb = route.meta.breadcrumb as Breadcrumb[] | BreadcrumbFunction
 
-  if (typeof breadcrumb === "function") {
-    return breadcrumb(route);
-  }
+  if (typeof breadcrumb === 'function')
+    return breadcrumb(route)
 
-  return breadcrumb;
-});
+  return breadcrumb
+})
 
 const linkedBreadcrumbs = computed(() => {
-  const linkedBreadcrumbs = [...breadcrumbs.value];
-  linkedBreadcrumbs.pop();
-  return linkedBreadcrumbs;
-});
+  const linkedBreadcrumbs = [...breadcrumbs.value]
+  linkedBreadcrumbs.pop()
+  return linkedBreadcrumbs
+})
 </script>
 
 <template>

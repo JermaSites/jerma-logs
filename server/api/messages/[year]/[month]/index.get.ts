@@ -1,39 +1,39 @@
-import dayjs from "dayjs";
-import utc from "dayjs/plugin/utc.js";
-import { capitalize } from "vue";
-import { parse } from "firestore-rest-parser";
-import type { MessagesResponse } from "@/types";
+import dayjs from 'dayjs'
+import utc from 'dayjs/plugin/utc.js'
+import { capitalize } from 'vue'
+import { parse } from 'firestore-rest-parser'
+import type { MessagesResponse } from '@/types'
 
-dayjs.extend(utc);
+dayjs.extend(utc)
 
 export default cachedEventHandler(
   async (event) => {
-    const { twitchUsername } = useRuntimeConfig().public;
-    const { year, month } = getRouterParams(event);
-    const date = dayjs(`${year}-${capitalize(month)}-01`, "YYYY-MMMM-DD");
-    const startTime = date.startOf("month").valueOf().toString();
-    const endTime = date.endOf("month").valueOf().toString();
+    const { twitchUsername } = useRuntimeConfig().public
+    const { year, month } = getRouterParams(event)
+    const date = dayjs(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
+    const startTime = date.startOf('month').valueOf().toString()
+    const endTime = date.endOf('month').valueOf().toString()
 
-    const url = `https://firestore.googleapis.com/v1beta1/projects/jerma-logs/databases/(default)/documents:runQuery`;
+    const url = `https://firestore.googleapis.com/v1beta1/projects/jerma-logs/databases/(default)/documents:runQuery`
     const messagesQuery = await $fetch<MessagesResponse>(url, {
-      method: "POST",
+      method: 'POST',
       body: {
         structuredQuery: {
           from: [
             {
-              collectionId: "messages",
+              collectionId: 'messages',
             },
           ],
           where: {
             compositeFilter: {
-              op: "AND",
+              op: 'AND',
               filters: [
                 {
                   fieldFilter: {
                     field: {
-                      fieldPath: "username",
+                      fieldPath: 'username',
                     },
-                    op: "EQUAL",
+                    op: 'EQUAL',
                     value: {
                       stringValue: twitchUsername,
                     },
@@ -42,18 +42,18 @@ export default cachedEventHandler(
                 {
                   fieldFilter: {
                     field: {
-                      fieldPath: "sentAt",
+                      fieldPath: 'sentAt',
                     },
-                    op: "LESS_THAN_OR_EQUAL",
+                    op: 'LESS_THAN_OR_EQUAL',
                     value: { stringValue: endTime },
                   },
                 },
                 {
                   fieldFilter: {
                     field: {
-                      fieldPath: "sentAt",
+                      fieldPath: 'sentAt',
                     },
-                    op: "GREATER_THAN_OR_EQUAL",
+                    op: 'GREATER_THAN_OR_EQUAL',
                     value: { stringValue: startTime },
                   },
                 },
@@ -63,34 +63,35 @@ export default cachedEventHandler(
           orderBy: [
             {
               field: {
-                fieldPath: "sentAt",
+                fieldPath: 'sentAt',
               },
-              direction: "DESCENDING",
+              direction: 'DESCENDING',
             },
           ],
         },
       },
-    });
+    })
 
-    if (messagesQuery.length <= 1) return [];
+    if (messagesQuery.length <= 1)
+      return []
 
     const messages = messagesQuery.map((doc) => {
-      return parse(doc.document);
-    });
+      return parse(doc.document)
+    })
 
-    return messages;
+    return messages
   },
   {
     maxAge: 60 * 60 * 24,
     shouldInvalidateCache(event) {
-      return true;
-      const { year, month } = getRouterParams(event);
-      const date = dayjs.utc(`${year}-${month}`, "YYYY-MMMM");
+      return true
+      const { year, month } = getRouterParams(event)
+      const date = dayjs.utc(`${year}-${month}`, 'YYYY-MMMM')
 
-      const endTime = date.endOf("month").valueOf();
-      const currentDate = dayjs.utc().valueOf();
+      const endTime = date.endOf('month').valueOf()
+      const currentDate = dayjs.utc().valueOf()
 
-      return endTime > currentDate;
+      return endTime > currentDate
     },
-  }
-);
+  },
+)
