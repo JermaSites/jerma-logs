@@ -10,8 +10,7 @@ const years = computed(() => {
   const currentYear = new Date().getFullYear()
 
   const years: number[] = []
-  for (let i = startYear; i <= currentYear; i++)
-    years.push(i)
+  for (let i = startYear; i <= currentYear; i++) years.push(i)
 
   return years
 })
