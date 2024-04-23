@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     '@nuxtjs/color-mode',
     '@nuxtjs/robots',
     '@nuxt/image',
+    "@nuxt/fonts"
   ],
   app: {
     head: {

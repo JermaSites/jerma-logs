@@ -37,4 +37,8 @@ onMounted(() => {
   <SiteFooter />
 </template>
 
-<style></style>
+<style>
+:root {
+  font-family: "Roboto", sans-serif;
+}
+</style>
