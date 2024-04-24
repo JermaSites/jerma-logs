@@ -4,9 +4,7 @@ const badges = reactive<BadgeMap>(new Map())
 
 export function useBadges() {
   const fetchBadges = async (): Promise<void> => {
-    const { data } = await useFetch<Badge[]>('/api/badges', {
-      lazy: true,
-    })
+    const { data } = await useFetch<Badge[]>('/api/badges')
 
     data.value?.forEach((badge) => {
       const badgeVersionsMap = new Map(badge.versions.map(v => [v.id, v]))
