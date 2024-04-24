@@ -5,7 +5,9 @@ const emoteMap = reactive<EmoteMap>(new Map())
 
 export function useEmotes() {
   const fetchEmotes = async (): Promise<EmoteMap> => {
-    const { data: emotes } = await useFetch('/api/emotes')
+    const { data: emotes } = await useFetch('/api/emotes', {
+      lazy: true,
+    })
 
     emotes.value?.forEach((emote) => {
       emoteMap.set(emote.code, emote)

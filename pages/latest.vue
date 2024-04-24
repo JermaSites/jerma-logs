@@ -39,7 +39,9 @@ const { fetchBadges, parseBadges } = useBadges()
 fetchEmotes()
 fetchBadges()
 
-const { data: messages } = await useFetch<Message[]>('/api/messages/latest')
+const { data: messages } = await useFetch<Message[]>('/api/messages/latest', {
+  lazy: true,
+})
 
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)

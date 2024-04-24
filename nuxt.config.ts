@@ -6,13 +6,13 @@ export default defineNuxtConfig({
     'dayjs-nuxt',
     '@pinia/nuxt',
     '@pinia-plugin-persistedstate/nuxt',
-    '@nuxtjs/tailwindcss',
     'nuxt-headlessui',
     '@vueuse/nuxt',
     '@nuxtjs/color-mode',
     '@nuxtjs/robots',
     '@nuxt/image',
-    "@nuxt/fonts"
+    '@nuxt/fonts',
+    '@nuxt/ui',
   ],
   app: {
     head: {
