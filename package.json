@@ -31,7 +31,7 @@
     "@vueuse/core": "^10.9.0",
     "@vueuse/nuxt": "^10.9.0",
     "dayjs-nuxt": "^2.1.9",
-    "eslint": "8",
+    "eslint": "^8.57.0",
     "nuxt": "^3.11.2",
     "nuxt-headlessui": "^1.2.0",
     "vue": "^3.4.26",

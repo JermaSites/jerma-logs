@@ -58,7 +58,7 @@ importers:
         specifier: ^2.1.9
         version: 2.1.9(rollup@4.17.2)
       eslint:
-        specifier: '8'
+        specifier: ^8.57.0
         version: 8.57.0
       nuxt:
         specifier: ^3.11.2
@@ -322,8 +322,8 @@ packages:
   '@capsizecss/metrics@2.2.0':
     resolution: {integrity: sha512-DkFIser1KbGxWyG2hhQQeCit72TnOQDx5pr9bkA7+XlIy7qv+4lYtslH3bidVxm2qkY2guAgypSIPYuQQuk70A==}
 
-  '@capsizecss/unpack@2.1.0':
-    resolution: {integrity: sha512-k+wAZylHNaBwfcGGeKV+tTf6G0Zd4SyiTMmzlVFKkkBVV70DzwC7KOtmV/ojLbjwRT4QSPcMvjmiws309CSPgQ==}
+  '@capsizecss/unpack@2.2.0':
+    resolution: {integrity: sha512-IBBiVmEFSTt+wMkhy063mboZvIvqkndVYu+l62iwOcOW4nf0VJa8+reZ4RgL1FcyfjVIjMkBwKIhydgZHPILCQ==}
 
   '@clack/core@0.3.4':
     resolution: {integrity: sha512-H4hxZDXgHtWTwV3RAVenqcC4VbJZNegbBjlPvzOzCouXtS2y3sDvlO3IsbrPNWuLWPPlYVYPghQdSF64683Ldw==}
@@ -5671,7 +5671,7 @@ snapshots:
 
   '@capsizecss/metrics@2.2.0': {}
 
-  '@capsizecss/unpack@2.1.0(encoding@0.1.13)':
+  '@capsizecss/unpack@2.2.0(encoding@0.1.13)':
     dependencies:
       blob-to-buffer: 1.2.9
       cross-fetch: 3.1.8(encoding@0.1.13)
@@ -9013,7 +9013,7 @@ snapshots:
   fontaine@0.5.0(encoding@0.1.13):
     dependencies:
       '@capsizecss/metrics': 2.2.0
-      '@capsizecss/unpack': 2.1.0(encoding@0.1.13)
+      '@capsizecss/unpack': 2.2.0(encoding@0.1.13)
       magic-regexp: 0.8.0
       magic-string: 0.30.10
       pathe: 1.1.2
