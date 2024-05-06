@@ -22,7 +22,7 @@ const { hideMessageTimestamps, colorModeValue, userTimezone }
 dayjs.tz.setDefault(userTimezone.value)
 
 const messageSentAt = computed(() => {
-  return dayjs.tz(Number.parseInt(props.sentAt)).format('MMM Do hh:mm A z')
+  return dayjs.tz(Number.parseInt(props.sentAt)).format('MMM DD hh:mm A z')
 })
 
 const messageSentAtTimeAgo = computed(() => {
@@ -36,7 +36,7 @@ const messageColor = computed(() => {
 
 <template>
   <div
-    class="grid w-full gap-1 p-4 md:grid-cols-[max-content_max-content_auto]"
+    class="md:grid gap-1 grid-cols-[max-content_max-content_auto] p-4"
   >
     <div :title="messageSentAtTimeAgo" class="font-mono">
       <span v-show="!hideMessageTimestamps">[{{ messageSentAt }}]</span>
