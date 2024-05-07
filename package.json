@@ -24,9 +24,9 @@
     "pinia": "^2.1.7"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.16.1",
+    "@antfu/eslint-config": "^2.16.2",
     "@nuxt/fonts": "^0.7.0",
-    "@nuxt/ui": "^2.15.2",
+    "@nuxt/ui": "^2.16.0",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
     "@vueuse/core": "^10.9.0",
     "@vueuse/nuxt": "^10.9.0",
@@ -34,7 +34,7 @@
     "eslint": "^8.57.0",
     "nuxt": "^3.11.2",
     "nuxt-headlessui": "^1.2.0",
-    "vue": "^3.4.26",
+    "vue": "^3.4.27",
     "vue-router": "^4.3.2"
   }
 }
