@@ -24,7 +24,7 @@
     "pinia": "^2.1.7"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^2.18.0",
+    "@antfu/eslint-config": "^2.18.1",
     "@nuxt/fonts": "^0.7.0",
     "@nuxt/ui": "^2.16.0",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
