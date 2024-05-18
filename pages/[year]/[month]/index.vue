@@ -128,15 +128,7 @@ const sortedMessages = computed(() => {
     </div>
 
     <div v-else-if="pending">
-      <SimpleList>
-        <SimpleListItem v-for="i in 10" :key="i" class="h-14 p-5">
-          <div class="flex gap-1">
-            <USkeleton class="h-4 w-[200px]" :ui="{ background: 'bg-slate-400 dark:bg-slate-600' }" />
-            <USkeleton class="h-4 w-[150px]" :ui="{ background: 'bg-slate-400 dark:bg-slate-600' }" />
-            <USkeleton class="h-4 w-full" :ui="{ background: 'bg-slate-400 dark:bg-slate-600' }" />
-          </div>
-        </SimpleListItem>
-      </SimpleList>
+      <SimpleListSkeleton :rows="15" />
     </div>
 
     <div v-else-if="sortedMessages && sortedMessages.length === 0" class="p-8 text-center text-5xl md:text-8xl">

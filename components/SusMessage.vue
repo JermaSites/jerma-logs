@@ -29,7 +29,7 @@ const susMessageDate = computed(() => {
   return dayjs.utc(Number.parseInt(sentAt)).format('MMM D, YYYY')
 })
 
-const susRegExp = /^!(commands\s+edit|editcom)\s+(-cd=\d+\s+)?(!sus)\s+(-cd=\d+\s+)?(?<susMessage>.+)$/
+const susRegExp = /^!(commands\s+edit|editcom)\s+(-cd=\d+\s+)?(!sus)\s(-cd=\d+\s)?(?<susMessage>.+)$/
 
 const formattedSusMessage = computed(() => {
   const sus = data.value?.message?.match(susRegExp)?.groups?.susMessage

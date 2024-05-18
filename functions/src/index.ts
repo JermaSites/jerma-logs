@@ -56,7 +56,7 @@ exports.sendSusNotification = onDocumentCreated(
     if (username !== 'jerma985' && !mod)
       return
 
-    const susRegExp = /^!(commands\s+edit|editcom)\s+(-cd=\d+\s+)?(!sus)\s+(-cd=\d+\s+)?(?<susMessage>.+)$/
+    const susRegExp = /^!(commands\s+edit|editcom)\s+(-cd=\d+\s+)?(!sus)\s(-cd=\d+\s)?(?<susMessage>.+)$/
 
     const sus = message.match(susRegExp)?.groups?.susMessage
 

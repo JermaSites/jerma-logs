@@ -39,7 +39,7 @@ const { fetchBadges, parseBadges } = useBadges()
 fetchEmotes()
 fetchBadges()
 
-const { data: messages } = await useFetch<Message[]>('/api/messages/latest', {
+const { data: messages, pending } = await useFetch<Message[]>('/api/messages/latest', {
   lazy: true,
 })
 
@@ -100,6 +100,10 @@ onUnmounted(() => {
           />
         </SimpleListItem>
       </SimpleList>
+    </div>
+
+    <div v-else-if="pending">
+      <SimpleListSkeleton :rows="10" />
     </div>
 
     <div v-else class="p-8 text-center text-5xl md:text-8xl">
