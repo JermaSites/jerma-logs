@@ -28,6 +28,8 @@
     "@nuxt/fonts": "^0.7.0",
     "@nuxt/ui": "^2.16.0",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
+    "@playwright/test": "^1.44.0",
+    "@types/node": "^20.12.12",
     "@vueuse/core": "^10.9.0",
     "@vueuse/nuxt": "^10.9.0",
     "dayjs-nuxt": "^2.1.9",

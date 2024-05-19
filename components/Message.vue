@@ -57,10 +57,10 @@ const messageColor = computed(() => {
           placeholder
         />
       </span>
-      <span :style="{ color: messageColor }" class="font-bold">
+      <span :style="{ color: messageColor }" class="font-bold" data-testid="display-name">
         {{ displayName }} </span>:
     </div>
-    <div v-html="message" />
+    <div data-testid="message" v-html="message" />
   </div>
 </template>
 
