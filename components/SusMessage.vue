@@ -51,7 +51,7 @@ const parsedSusMessage = computed(() => parseEmotes(formattedSusMessage.value))
       <h1 class="font-meduim text-xl">
         !SUS Message
       </h1>
-      <h2 class="text-lg text-slate-400" :title="susMessageDate">
+      <h2 class="text-lg text-slate-600 dark:text-slate-300" :title="susMessageDate">
         Set by {{ data?.displayName }} {{ susMessageTimeFromNow }}
       </h2>
     </div>

@@ -172,11 +172,11 @@ const { hideMessageTimestamps } = storeToRefs(settingsStore)
       <!-- Full-screen container to center the panel -->
       <div class="fixed inset-0 flex w-screen items-center justify-center">
         <HeadlessDialogPanel
-          class="h-full w-full transform overflow-hidden bg-slate-50 shadow-xl transition-all dark:bg-slate-900 md:h-auto md:max-w-3xl"
+          class="h-full w-full transform overflow-hidden bg-slate-50 shadow-2xl transition-all dark:bg-slate-800 md:h-auto md:max-w-3xl"
         >
           <HeadlessDialogTitle
             as="h2"
-            class="flex items-center justify-between bg-slate-300 p-4 text-4xl font-medium dark:bg-slate-800"
+            class="flex items-center justify-between bg-slate-300 p-4 text-4xl font-medium dark:bg-slate-900"
           >
             <div>Settings</div>
             <div>
