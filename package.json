@@ -29,7 +29,7 @@
     "@nuxt/ui": "^2.16.0",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
     "@playwright/test": "^1.44.1",
-    "@types/node": "^20.12.13",
+    "@types/node": "^20.13.0",
     "@vueuse/core": "^10.10.0",
     "@vueuse/nuxt": "^10.10.0",
     "dayjs-nuxt": "^2.1.9",
