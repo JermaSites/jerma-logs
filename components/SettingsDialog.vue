@@ -44,7 +44,9 @@ watchEffect(() => {
   if (
     !notificationPermission.value
     || notificationPermission.value === 'granted'
-  ) return
+  ) {
+    return
+  }
 
   messageNotifications.value = false
   susNotifications.value = false
