@@ -12,7 +12,7 @@ FROM base as build
 
 COPY --link package.json package-lock.json ./
 
-RUN npm install --production=false
+RUN npm ci --include=dev
 
 COPY --link . .
 
