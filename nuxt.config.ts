@@ -2,6 +2,7 @@ import process from 'node:process'
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
+
   modules: [
     'dayjs-nuxt',
     '@pinia/nuxt',
@@ -14,6 +15,7 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/ui',
   ],
+
   app: {
     head: {
       htmlAttrs: {
@@ -21,23 +23,28 @@ export default defineNuxtConfig({
       },
     },
   },
+
   dayjs: {
     plugins: ['utc', 'timezone', 'relativeTime', 'advancedFormat'],
     defaultLocale: 'en',
     defaultTimezone: 'America/New_York',
   },
+
   image: {
     format: ['avif', 'webp', 'png'],
   },
+
   piniaPersistedstate: {
     cookieOptions: {
       sameSite: 'strict',
       maxAge: 1 * 60 * 60 * 24 * 400,
     },
   },
+
   colorMode: {
     classSuffix: '',
   },
+
   runtimeConfig: {
     public: {
       twitchUsername: process.env.NUXT_TWITCH_USERNAME,
@@ -47,7 +54,10 @@ export default defineNuxtConfig({
     twitchClientId: process.env.NUXT_TWITCH_CLIENT_ID,
     twitchClientSecret: process.env.NUXT_TWITCH_CLIENT_SECRET,
   },
+
   typescript: {
     strict: true,
   },
+
+  compatibilityDate: '2024-07-07',
 })
