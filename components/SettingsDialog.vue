@@ -8,10 +8,10 @@ import {
 import { XCircleIcon } from '@heroicons/vue/24/solid'
 import type { Messaging } from 'firebase/messaging'
 
-const testInputValue = ref('')
+const route = useRoute()
 
 const isDev = computed(() => {
-  return testInputValue.value === 'test'
+  return route.query.test === '1'
 })
 
 const settingsStore = useSettingsStore()
