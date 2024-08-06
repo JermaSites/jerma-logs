@@ -8,8 +8,16 @@ import {
 import { XCircleIcon } from '@heroicons/vue/24/solid'
 import type { Messaging } from 'firebase/messaging'
 
+const testInputValue = ref('')
+
+onMounted(() => {
+  window.addEventListener('keydown', (e) => {
+    testInputValue.value += e.key
+  })
+})
+
 const isDev = computed(() => {
-  return process.env.NODE_ENV === 'development'
+  return testInputValue.value === 'test'
 })
 
 const settingsStore = useSettingsStore()
