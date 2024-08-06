@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { capitalize } from 'vue'
 import {
   type Unsubscribe,
   collection,
@@ -11,7 +10,7 @@ import type { Breadcrumb, Message } from '@/types'
 import type { RouteLocationNormalizedLoaded } from '#vue-router'
 
 const dayjs = useDayjs()
-
+const { capitalize } = useCapitalize()
 const route = useRoute()
 
 useServerSeoMeta({
@@ -33,6 +32,27 @@ useSeoMeta({
 })
 
 definePageMeta({
+  validate(route) {
+    if (typeof route.params.month !== 'string')
+      return false
+
+    const month = route.params.month.toLowerCase()
+    const months = [
+      'january',
+      'february',
+      'march',
+      'april',
+      'may',
+      'june',
+      'july',
+      'august',
+      'september',
+      'october',
+      'november',
+      'december',
+    ]
+    return months.includes(month)
+  },
   breadcrumb(route: RouteLocationNormalizedLoaded): Breadcrumb[] {
     const { year, month } = route.params as { year: string, month: string }
     return [
@@ -59,7 +79,7 @@ const isCurrentMonth = computed(() => {
   return endTime.isAfter(currentDate)
 })
 
-const { data: messages, pending } = await useFetch<Message[]>(
+const { data: messages, status } = await useFetch<Message[]>(
   `/api/messages/${year}/${month}`,
   {
     lazy: true,
@@ -127,7 +147,7 @@ const sortedMessages = computed(() => {
       </SimpleList>
     </div>
 
-    <div v-else-if="pending">
+    <div v-else-if="status === 'pending'">
       <SimpleListSkeleton :rows="15" />
     </div>
 

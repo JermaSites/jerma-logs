@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { capitalize } from 'vue'
 import type { Breadcrumb, BreadcrumbFunction } from '@/types'
 
 const route = useRoute()
+const { capitalize } = useCapitalize()
 
 const breadcrumbs = computed(() => {
   const breadcrumb = route.meta.breadcrumb as Breadcrumb[] | BreadcrumbFunction

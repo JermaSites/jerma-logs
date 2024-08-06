@@ -1,10 +1,12 @@
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc.js'
-import { capitalize } from 'vue'
 import { parse } from 'firestore-rest-parser'
+import { useCapitalize } from '~/composables/useCapitalize.js'
 import type { MessagesResponse } from '@/types'
 
 dayjs.extend(utc)
+
+const { capitalize } = useCapitalize()
 
 export default cachedEventHandler(
   async (event) => {
