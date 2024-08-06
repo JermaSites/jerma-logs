@@ -37,7 +37,7 @@ exports.sendMessageNotification = onDocumentCreated(
         title: 'Jerma in Twitch chat',
         body: message,
         icon: '/logo.png',
-        clickAction: '/Latest',
+        clickAction: '/latest',
       },
     }
 
@@ -64,7 +64,7 @@ exports.sendSusNotification = onDocumentCreated(
     const payload = {
       notification: {
         tag: 'sus',
-        title: 'You cast SUS!',
+        title: `${username} update the SUS`,
         body: sus,
         icon: '/logo.png',
         clickAction: '/',
@@ -91,6 +91,9 @@ exports.sendTestNotification = onDocumentWritten(
         body: message,
         icon: '/logo.png',
         clickAction: '/Test',
+      },
+      data: {
+        url: 'https://logs.jerma.io/latest',
       },
     }
 

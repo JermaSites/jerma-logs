@@ -8,6 +8,10 @@ import {
 import { XCircleIcon } from '@heroicons/vue/24/solid'
 import type { Messaging } from 'firebase/messaging'
 
+const isDev = computed(() => {
+  return process.env.NODE_ENV === 'development'
+})
+
 const settingsStore = useSettingsStore()
 
 const colorMode = useColorMode()
@@ -17,9 +21,7 @@ const lightModeEnabled = computed({
     return colorMode.value === 'light'
   },
   set(enableLightMode) {
-    enableLightMode
-      ? (colorMode.preference = 'light')
-      : (colorMode.preference = 'dark')
+    colorMode.preference = enableLightMode ? 'light' : 'dark'
   },
 })
 
@@ -265,11 +267,11 @@ const { hideMessageTimestamps } = storeToRefs(settingsStore)
                       </div>
                     </HeadlessSwitchLabel>
                   </div>
-                  <div v-if="false" class="flex items-center">
+                  <div v-if="isDev" class="flex items-center">
                     <HeadlessSwitch
                       v-model="testNotifications"
                       :class="[
-                        messageNotifications ? 'bg-blue-500' : 'bg-slate-400',
+                        testNotifications ? 'bg-blue-500' : 'bg-slate-400',
                         { 'cursor-not-allowed': notificationPermissoinDenied },
                       ]"
                       class="relative inline-flex h-7 w-14 items-center rounded-full"
