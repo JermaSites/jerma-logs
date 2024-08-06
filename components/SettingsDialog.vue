@@ -11,7 +11,7 @@ import type { Messaging } from 'firebase/messaging'
 const route = useRoute()
 
 const isDev = computed(() => {
-  return route.query.test === '1'
+  return Object.hasOwn(route.query, 'test')
 })
 
 const settingsStore = useSettingsStore()

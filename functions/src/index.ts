@@ -90,10 +90,12 @@ exports.sendTestNotification = onDocumentWritten(
         title: 'Test Message',
         body: message,
         icon: '/logo.png',
-        clickAction: '/Test',
+        click_action: '/',
       },
-      data: {
-        url: 'https://logs.jerma.io/latest',
+      webpush: {
+        fcmOptions: {
+          link: 'breakingnews.html',
+        },
       },
     }
 

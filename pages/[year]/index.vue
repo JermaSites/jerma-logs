@@ -15,6 +15,12 @@ useSeoMeta({
 })
 
 definePageMeta({
+  validate(route) {
+    if (typeof route.params.year !== 'string')
+      return false
+    const year = Number.parseInt(route.params.year)
+    return year >= 2020 && year <= new Date().getFullYear()
+  },
   breadcrumb(route: RouteLocationNormalizedLoaded): Breadcrumb[] {
     const year = route.params.year as string
     return [
