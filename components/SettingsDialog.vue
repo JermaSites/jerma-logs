@@ -11,6 +11,8 @@ import type { Messaging } from 'firebase/messaging'
 const testInputValue = ref('')
 
 onMounted(() => {
+  if (!window)
+    return
   window.addEventListener('keydown', (e) => {
     testInputValue.value += e.key
   })
