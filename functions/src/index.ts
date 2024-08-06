@@ -37,7 +37,7 @@ exports.sendMessageNotification = onDocumentCreated(
         title: 'Jerma in Twitch chat',
         body: message,
         icon: '/logo.png',
-        clickAction: '/latest',
+        click_action: '/latest',
       },
     }
 
@@ -67,7 +67,7 @@ exports.sendSusNotification = onDocumentCreated(
         title: `${username} update the SUS`,
         body: sus,
         icon: '/logo.png',
-        clickAction: '/',
+        click_action: '/',
       },
     }
 
@@ -91,11 +91,6 @@ exports.sendTestNotification = onDocumentWritten(
         body: message,
         icon: '/logo.png',
         click_action: '/',
-      },
-      webpush: {
-        fcmOptions: {
-          link: 'breakingnews.html',
-        },
       },
     }
 
