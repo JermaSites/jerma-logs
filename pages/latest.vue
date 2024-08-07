@@ -13,12 +13,7 @@ const dayjs = useDayjs()
 
 useServerSeoMeta({
   title: 'Jerma Logs | Latest',
-  ogTitle: 'Jerma Logs',
-})
-
-useSeoMeta({
-  title: 'Jerma Logs | Latest',
-  ogTitle: 'Jerma Logs',
+  ogTitle: 'Jerma Logs | Latest',
 })
 
 definePageMeta({

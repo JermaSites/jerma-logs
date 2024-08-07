@@ -16,14 +16,6 @@ export default defineNuxtConfig({
     '@nuxt/ui',
   ],
 
-  app: {
-    head: {
-      htmlAttrs: {
-        lang: 'en',
-      },
-    },
-  },
-
   dayjs: {
     plugins: ['utc', 'timezone', 'relativeTime', 'advancedFormat'],
     defaultLocale: 'en',

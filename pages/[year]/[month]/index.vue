@@ -13,19 +13,8 @@ const dayjs = useDayjs()
 const { capitalize } = useCapitalize()
 const route = useRoute()
 
-useServerSeoMeta({
-  title: `Jerma Logs | ${capitalize(route.params.month as string)} ${
-    route.params.year
-  }`,
-  ogTitle: `Jerma Logs | ${capitalize(route.params.month as string)} ${
-    route.params.year
-  }`,
-})
-
 useSeoMeta({
-  title: `Jerma Logs | ${capitalize(route.params.month as string)} ${
-    route.params.year
-  }`,
+  title: `Jerma Logs | ${route.params.year} | ${capitalize(route.params.month as string)}`,
   ogTitle: `Jerma Logs | ${capitalize(route.params.month as string)} ${
     route.params.year
   }`,

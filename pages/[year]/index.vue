@@ -4,11 +4,6 @@ import type { RouteLocationNormalizedLoaded } from '#vue-router'
 
 const route = useRoute()
 
-useServerSeoMeta({
-  title: `Jerma Logs | ${route.params.year}`,
-  ogTitle: `Jerma Logs | ${route.params.year}`,
-})
-
 useSeoMeta({
   title: `Jerma Logs | ${route.params.year}`,
   ogTitle: `Jerma Logs | ${route.params.year}`,

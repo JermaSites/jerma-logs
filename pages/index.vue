@@ -1,16 +1,6 @@
 <script setup lang="ts">
 import type { Breadcrumb, BreadcrumbFunction } from '@/types'
 
-useServerSeoMeta({
-  title: 'Jerma Logs',
-  ogTitle: 'Jerma Logs',
-})
-
-useSeoMeta({
-  title: 'Jerma Logs',
-  ogTitle: 'Jerma Logs',
-})
-
 definePageMeta({
   breadcrumb: [
     {
