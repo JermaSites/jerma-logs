@@ -19,3 +19,9 @@
     </div>
   </header>
 </template>
+
+<style scoped>
+h1 {
+  font-family: Permanent Marker, sans-serif;
+}
+</style>
