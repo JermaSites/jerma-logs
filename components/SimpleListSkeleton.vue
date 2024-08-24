@@ -1,9 +1,7 @@
 <script setup lang="ts">
-defineProps<Props>()
-
-interface Props {
+defineProps<{
   rows: number
-}
+}>()
 </script>
 
 <template>

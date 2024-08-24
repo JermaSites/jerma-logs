@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { BarsArrowDownIcon, BarsArrowUpIcon } from '@heroicons/vue/24/solid'
 
-interface Props {
+defineProps<{
   sortOrder: 'asc' | 'desc'
-}
-
-defineProps<Props>()
+}>()
 </script>
 
 <template>

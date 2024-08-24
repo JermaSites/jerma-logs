@@ -1,9 +1,7 @@
 <script setup lang="ts">
-interface Props {
+const props = defineProps<{
   sortOrder: 'asc' | 'desc'
-}
-
-const props = defineProps<Props>()
+}>()
 
 const years = computed(() => {
   const startYear = 2020

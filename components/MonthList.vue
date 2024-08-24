@@ -1,18 +1,11 @@
 <script setup lang="ts">
-interface Props {
+const props = defineProps<{
   sortOrder: 'asc' | 'desc'
-}
-
-interface Month {
-  name: string
-  id: number
-}
-
-const props = defineProps<Props>()
+}>()
 
 const route = useRoute()
 
-const months: Month[] = [
+const months = [
   { name: 'January', id: 0 },
   { name: 'February', id: 1 },
   { name: 'March', id: 2 },

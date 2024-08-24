@@ -1,9 +1,5 @@
 <script setup lang="ts">
-const props = defineProps<Props>()
-
-const dayjs = useDayjs()
-
-interface Props {
+const props = defineProps<{
   sentAt: string
   displayName: string
   color: string
@@ -12,7 +8,9 @@ interface Props {
     name: string
     url: string
   }[]
-}
+}>()
+
+const dayjs = useDayjs()
 
 const settingsStore = useSettingsStore()
 
