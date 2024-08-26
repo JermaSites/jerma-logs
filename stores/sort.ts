@@ -1,9 +1,11 @@
 interface SortOrder {
-  year: 'asc' | 'desc'
-  month: 'asc' | 'desc'
-  message: 'asc' | 'desc'
-  latest: 'asc' | 'desc'
+  year: SortType
+  month: SortType
+  message: SortType
+  latest: SortType
 }
+
+type SortType = 'asc' | 'desc'
 
 export const useSortStore = defineStore(
   'sort',
@@ -16,9 +18,9 @@ export const useSortStore = defineStore(
     })
 
     function toggleSortOrder(id: keyof typeof sortOrder) {
-      sortOrder[id] === 'asc'
-        ? (sortOrder[id] = 'desc')
-        : (sortOrder[id] = 'asc')
+      sortOrder[id] = sortOrder[id] === 'asc'
+        ? 'desc'
+        : 'asc'
     }
 
     const updateCookieExperation = ref(false)
