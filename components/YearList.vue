@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import type { SortOrder } from '~/types'
+
 const props = defineProps<{
-  sortOrder: 'asc' | 'desc'
+  sortOrder: SortOrder
 }>()
 
 const years = computed(() => {

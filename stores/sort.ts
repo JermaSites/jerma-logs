@@ -1,16 +1,9 @@
-interface SortOrder {
-  year: SortType
-  month: SortType
-  message: SortType
-  latest: SortType
-}
-
-type SortType = 'asc' | 'desc'
+import type { SortableCategories } from '~/types'
 
 export const useSortStore = defineStore(
   'sort',
   () => {
-    const sortOrder = reactive<SortOrder>({
+    const sortOrder = reactive<SortableCategories>({
       year: 'asc',
       month: 'asc',
       message: 'asc',

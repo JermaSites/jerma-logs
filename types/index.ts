@@ -2,6 +2,13 @@ import type { RouteLocationNormalizedLoaded } from '#vue-router'
 
 export type SortOrder = 'asc' | 'desc'
 
+export interface SortableCategories {
+  year: SortOrder
+  month: SortOrder
+  message: SortOrder
+  latest: SortOrder
+}
+
 export interface Emote {
   code: string
   urls: { size: string, url: string }[]
