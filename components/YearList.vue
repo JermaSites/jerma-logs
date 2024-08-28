@@ -9,10 +9,12 @@ const years = computed(() => {
   const startYear = 2020
   const currentYear = new Date().getFullYear()
 
-  const years: number[] = []
-  for (let i = startYear; i <= currentYear; i++) years.push(i)
+  const year: number[] = []
+  for (let i = startYear; i <= currentYear; i++) {
+    year.push(i)
+  }
 
-  return years
+  return year
 })
 
 const sortedYears = computed(() => {
