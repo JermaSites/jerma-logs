@@ -26,13 +26,13 @@ export default defineNuxtConfig({
     format: ['avif', 'webp', 'png'],
   },
 
-  piniaPersistedstate: {
-    cookieOptions: {
-      sameSite: 'strict',
-      maxAge: 1 * 60 * 60 * 24 * 400,
-    },
-    storage: 'cookies',
-  },
+  // piniaPersistedstate: {
+  //   cookieOptions: {
+  //     sameSite: 'strict',
+  //     maxAge: 1 * 60 * 60 * 24 * 400,
+  //   },
+  //   storage: 'cookies',
+  // },
 
   colorMode: {
     classSuffix: '',
