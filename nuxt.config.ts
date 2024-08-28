@@ -31,6 +31,7 @@ export default defineNuxtConfig({
       sameSite: 'strict',
       maxAge: 1 * 60 * 60 * 24 * 400,
     },
+    storage: 'cookies',
   },
 
   colorMode: {

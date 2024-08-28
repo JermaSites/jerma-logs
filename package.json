@@ -14,7 +14,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "firebase": "^10.12.5"
+    "firebase": "10.12.5"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^2.21.0",
