@@ -2,11 +2,9 @@
 import { BarsArrowDownIcon, BarsArrowUpIcon } from '@heroicons/vue/24/solid'
 import type { SortOrder } from '~/types'
 
-const props = defineProps<{
+defineProps<{
   sortOrder: SortOrder
 }>()
-
-console.log('sort button prop:', props.sortOrder)
 </script>
 
 <template>
