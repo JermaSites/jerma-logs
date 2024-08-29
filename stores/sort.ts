@@ -11,10 +11,11 @@ export const useSortStore = defineStore(
     })
 
     function toggleSortOrder(id: keyof typeof sortOrder) {
-      console.log('toggle:', sortOrder[id])
+      console.log('toggle before:', sortOrder[id])
       sortOrder[id] = sortOrder[id] === 'asc'
         ? 'desc'
         : 'asc'
+      console.log('toggle after:', sortOrder[id])
     }
 
     const updateCookieExperation = ref(false)
