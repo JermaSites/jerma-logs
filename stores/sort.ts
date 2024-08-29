@@ -11,6 +11,7 @@ export const useSortStore = defineStore(
     })
 
     function toggleSortOrder(id: keyof typeof sortOrder) {
+      console.log('toggle:', sortOrder[id])
       sortOrder[id] = sortOrder[id] === 'asc'
         ? 'desc'
         : 'asc'

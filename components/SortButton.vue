@@ -5,6 +5,8 @@ import type { SortOrder } from '~/types'
 defineProps<{
   sortOrder: SortOrder
 }>()
+
+console.log('sort button prop:', sortOrder)
 </script>
 
 <template>

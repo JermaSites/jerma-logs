@@ -18,6 +18,7 @@ const sortId = computed(() => {
 
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
+console.log('Settings sort order:', sortOrder.value[sortId.value], sortId.value)
 </script>
 
 <template>
