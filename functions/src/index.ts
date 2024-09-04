@@ -32,16 +32,22 @@ exports.sendMessageNotification = onDocumentCreated(
 
     // Notification details.
     const payload = {
-      notification: {
-        tag: 'message',
-        title: 'Jerma in Twitch chat',
-        body: message,
-        icon: '/logo.png',
-        click_action: '/latest',
+      topic: 'message',
+      webpush: {
+        notification: {
+          title: 'Jerma in Twitch chat',
+          body: message,
+          icon: '/logo.png',
+          tag: 'message',
+          renotify: false,
+        },
+        fcmOptions: {
+          link: 'https://logs.jerma.io/latest',
+        },
       },
     }
 
-    return messaging().sendToTopic('message', payload)
+    return messaging().send(payload)
   },
 )
 
@@ -62,16 +68,22 @@ exports.sendSusNotification = onDocumentCreated(
 
     // Notification details.
     const payload = {
-      notification: {
-        tag: 'sus',
-        title: `${username} update the SUS`,
-        body: sus,
-        icon: '/logo.png',
-        click_action: '/',
+      topic: 'sus',
+      webpush: {
+        notification: {
+          title: `${username} update the SUS`,
+          body: sus,
+          icon: '/logo.png',
+          tag: 'sus',
+          renotify: false,
+        },
+        fcmOptions: {
+          link: 'https://logs.jerma.io/',
+        },
       },
     }
 
-    return messaging().sendToTopic('sus', payload)
+    return messaging().send(payload)
   },
 )
 
@@ -84,16 +96,23 @@ exports.sendTestNotification = onDocumentWritten(
     const { message } = event.data.after.data() as Message
 
     // Notification details.
+    // https://firebase.google.com/docs/reference/admin/node/firebase-admin.messaging.webpushnotification.md#webpushnotification_interface
     const payload = {
-      notification: {
-        tag: 'test',
-        title: 'Test Message',
-        body: message,
-        icon: '/logo.png',
-        click_action: '/',
+      topic: 'test',
+      webpush: {
+        notification: {
+          title: 'Test Message',
+          body: message,
+          icon: '/logo.png',
+          tag: 'test',
+          renotify: false,
+        },
+        fcmOptions: {
+          link: 'https://logs.jerma.io/',
+        },
       },
     }
 
-    return messaging().sendToTopic('test', payload)
+    return messaging().send(payload)
   },
 )
