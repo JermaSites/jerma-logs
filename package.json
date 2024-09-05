@@ -33,7 +33,7 @@
     "firestore-rest-parser": "^1.1.1",
     "linkify-html": "^4.1.3",
     "linkifyjs": "^4.1.3",
-    "nuxt": "^3.13.0",
+    "nuxt": "^3.13.1",
     "nuxt-headlessui": "^1.2.0",
     "pinia": "^2.2.2",
     "typescript": "^5.5.4",
