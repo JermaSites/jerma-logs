@@ -1,11 +1,11 @@
 <script setup lang="ts">
+import { XCircleIcon } from '@heroicons/vue/24/solid'
 import { httpsCallable } from 'firebase/functions'
 import {
   getMessaging,
   getToken,
   isSupported,
 } from 'firebase/messaging'
-import { XCircleIcon } from '@heroicons/vue/24/solid'
 import type { Messaging } from 'firebase/messaging'
 
 const route = useRoute()

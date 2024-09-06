@@ -1,10 +1,10 @@
-import { initializeApp } from 'firebase-admin/app'
 import { messaging } from 'firebase-admin'
-import { onCall } from 'firebase-functions/v2/https'
+import { initializeApp } from 'firebase-admin/app'
 import {
   onDocumentCreated,
   onDocumentWritten,
 } from 'firebase-functions/v2/firestore'
+import { onCall } from 'firebase-functions/v2/https'
 import type { Message } from './types'
 
 initializeApp()

@@ -6,8 +6,8 @@ import {
   query,
   where,
 } from 'firebase/firestore'
-import type { Breadcrumb, Message } from '@/types'
 import type { RouteLocationNormalizedLoaded } from '#vue-router'
+import type { Breadcrumb, Message } from '@/types'
 
 const dayjs = useDayjs()
 const { capitalize } = useCapitalize()

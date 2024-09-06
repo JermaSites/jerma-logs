@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Breadcrumb } from '@/types'
 import type { RouteLocationNormalizedLoaded } from '#vue-router'
+import type { Breadcrumb } from '@/types'
 
 const route = useRoute()
 
