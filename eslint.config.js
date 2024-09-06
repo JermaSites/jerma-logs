@@ -4,5 +4,6 @@ export default antfu({
   lessOpinionated: false,
   ignores: [
     'functions/lib',
+    'public',
   ],
 })
