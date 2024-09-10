@@ -16,6 +16,17 @@ export default defineNuxtConfig({
     '@nuxt/ui',
   ],
 
+  app: {
+    head: {
+      htmlAttrs: {
+        lang: 'en',
+      },
+      link: [
+        { rel: 'icon', type: 'image/png', href: '/logo.png' },
+      ],
+    },
+  },
+
   dayjs: {
     plugins: ['utc', 'timezone', 'relativeTime', 'advancedFormat'],
     defaultLocale: 'en',
