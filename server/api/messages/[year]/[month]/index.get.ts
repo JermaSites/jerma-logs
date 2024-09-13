@@ -1,6 +1,7 @@
 import type { MessagesResponse } from '@/types'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc.js'
+import { limit } from 'firebase/firestore'
 import { parse } from 'firestore-rest-parser'
 import { useCapitalize } from '~/composables/useCapitalize.js'
 
@@ -16,7 +17,7 @@ export default cachedEventHandler(
     const startTime = date.startOf('month').valueOf().toString()
     const endTime = date.endOf('month').valueOf().toString()
 
-    const url = `https://firestore.googleapis.com/v1beta1/projects/jerma-logs/databases/(default)/documents:runQuery`
+    const url = `https://firestore.googleapis.com/v1/projects/jerma-logs/databases/(default)/documents:runQuery`
     const messagesQuery = await $fetch<MessagesResponse>(url, {
       method: 'POST',
       body: {
@@ -70,6 +71,7 @@ export default cachedEventHandler(
               direction: 'DESCENDING',
             },
           ],
+          limit: 12,
         },
       },
     })
@@ -84,7 +86,7 @@ export default cachedEventHandler(
     return messages
   },
   {
-    maxAge: 60 * 60 * 24,
+    maxAge: 1, // 60 * 60 * 24,
     shouldInvalidateCache(event) {
       const { year, month } = getRouterParams(event)
       const date = dayjs.utc(`${year}-${month}`, 'YYYY-MMMM')
