@@ -86,7 +86,6 @@ export default cachedEventHandler(
   {
     maxAge: 60 * 60 * 24,
     shouldInvalidateCache(event) {
-      return true
       const { year, month } = getRouterParams(event)
       const date = dayjs.utc(`${year}-${month}`, 'YYYY-MMMM')
 
