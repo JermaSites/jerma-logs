@@ -17,12 +17,12 @@
     "firebase": "10.13.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.5.1",
+    "@antfu/eslint-config": "^3.6.0",
     "@heroicons/vue": "^2.1.5",
-    "@nuxt/fonts": "^0.7.2",
+    "@nuxt/fonts": "^0.8.0",
     "@nuxt/image": "1.8.0",
     "@nuxt/ui": "^2.18.4",
-    "@nuxtjs/robots": "^4.1.6",
+    "@nuxtjs/robots": "^4.1.7",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.1",
     "@pinia/nuxt": "^0.5.4",
     "@playwright/test": "^1.47.0",
