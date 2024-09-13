@@ -8,7 +8,7 @@ dayjs.extend(utc)
 
 export default defineEventHandler(async () => {
   const { twitchUsername } = useRuntimeConfig().public
-  const url = `https://firestore.googleapis.com/v1beta1/projects/jerma-logs/databases/(default)/documents:runQuery`
+  const url = `https://firestore.googleapis.com/v1/projects/jerma-logs/databases/(default)/documents:runQuery`
   const latestMessageQuery = await $fetch<MessagesResponse>(url, {
     method: 'POST',
     body: {

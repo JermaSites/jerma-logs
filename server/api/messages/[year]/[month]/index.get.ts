@@ -16,7 +16,7 @@ export default cachedEventHandler(
     const startTime = date.startOf('month').valueOf().toString()
     const endTime = date.endOf('month').valueOf().toString()
 
-    const url = `https://firestore.googleapis.com/v1beta1/projects/jerma-logs/databases/(default)/documents:runQuery`
+    const url = `https://firestore.googleapis.com/v1/projects/jerma-logs/databases/(default)/documents:runQuery`
     const messagesQuery = await $fetch<MessagesResponse>(url, {
       method: 'POST',
       body: {
