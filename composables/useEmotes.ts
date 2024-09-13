@@ -1,5 +1,5 @@
-import linkifyHtml from 'linkify-html'
 import type { EmoteMap } from '@/types'
+import linkifyHtml from 'linkify-html'
 
 const emoteMap = reactive<EmoteMap>(new Map())
 

@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Breadcrumb, Message } from '@/types'
+
 import {
   collection,
   onSnapshot,
@@ -6,8 +8,6 @@ import {
   type Unsubscribe,
   where,
 } from 'firebase/firestore'
-
-import type { Breadcrumb, Message } from '@/types'
 
 const dayjs = useDayjs()
 

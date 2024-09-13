@@ -1,8 +1,8 @@
+import type { MessagesResponse } from '@/types'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc.js'
-import { parse } from 'firestore-rest-parser'
 
-import type { MessagesResponse } from '@/types'
+import { parse } from 'firestore-rest-parser'
 
 dayjs.extend(utc)
 

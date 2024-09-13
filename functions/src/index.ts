@@ -1,3 +1,4 @@
+import type { Message } from './types'
 import { messaging } from 'firebase-admin'
 import { initializeApp } from 'firebase-admin/app'
 import {
@@ -5,7 +6,6 @@ import {
   onDocumentWritten,
 } from 'firebase-functions/v2/firestore'
 import { onCall } from 'firebase-functions/v2/https'
-import type { Message } from './types'
 
 initializeApp()
 
