@@ -129,8 +129,8 @@ const sortedMessages = computed(() => {
             :sent-at="message.sentAt"
             :display-name="message.displayName"
             :color="message.color"
-            :message="parseEmotes(message.message)"
-            :badges="parseBadges(message.badges)"
+            :message="message.message"
+            :badges="[]"
           />
         </SimpleListItem>
       </SimpleList>
