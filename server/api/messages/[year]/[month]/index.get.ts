@@ -71,7 +71,6 @@ export default cachedEventHandler(
               direction: 'DESCENDING',
             },
           ],
-          limit: 12,
         },
       },
     })

@@ -111,12 +111,13 @@ const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
 
 const sortedMessages = computed(() => {
-  return messages?.value?.toSorted((a, b) => {
-    if (sortOrder.value.message === 'asc')
-      return Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt)
+  return messages.value
+  // return messages?.value?.toSorted((a, b) => {
+  //   if (sortOrder.value.message === 'asc')
+  //     return Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt)
 
-    return Number.parseInt(b.sentAt) - Number.parseInt(a.sentAt)
-  })
+  //   return Number.parseInt(b.sentAt) - Number.parseInt(a.sentAt)
+  // })
 })
 </script>
 
