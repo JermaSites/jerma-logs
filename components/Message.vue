@@ -42,7 +42,7 @@ const messageColor = computed(() => {
 
     <div>
       <span>
-        <!-- <NuxtImg
+        <NuxtImg
           v-for="badge in badges"
           :key="badge.name"
           :src="badge.url"
@@ -53,7 +53,7 @@ const messageColor = computed(() => {
           height="18"
           loading="lazy"
           placeholder
-        /> -->
+        />
       </span>
       <span :style="{ color: messageColor }" class="font-bold" data-testid="display-name">
         {{ displayName }} </span>:

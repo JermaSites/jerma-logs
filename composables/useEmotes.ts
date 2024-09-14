@@ -4,10 +4,6 @@ import linkifyHtml from 'linkify-html'
 const emoteMap = reactive<EmoteMap>(new Map())
 
 async function fetchEmotes() {
-  if (emoteMap.size) {
-    return emoteMap
-  }
-
   const { data: emotes } = await useFetch('/api/emotes')
 
   emotes.value?.forEach((emote) => {

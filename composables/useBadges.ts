@@ -3,9 +3,6 @@ import type { Badge, BadgeInfo, BadgeMap } from '@/types'
 const badges = reactive<BadgeMap>(new Map())
 
 async function fetchBadges() {
-  if (badges.size)
-    return
-
   const { data } = await useFetch<Badge[]>('/api/badges')
 
   data.value?.forEach((badge) => {
