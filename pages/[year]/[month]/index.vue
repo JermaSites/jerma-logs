@@ -72,6 +72,7 @@ const { data: messages, status } = await useFetch<Message[]>(
   `/api/messages/${year}/${month}`,
   {
     lazy: true,
+    server: false,
   },
 )
 
