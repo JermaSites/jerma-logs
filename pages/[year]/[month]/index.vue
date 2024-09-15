@@ -9,6 +9,12 @@ import {
   where,
 } from 'firebase/firestore'
 
+const msgJSON = { badgesRaw: 'broadcaster/1,subscriber/24,partner/1', subscriber: true, mod: false, color: '#00FF7F', displayName: 'Jerma985', turbo: false, emotesRaw: null, flags: null, sentAt: '1590270162775', message: 'ill be around, ill tty all lata', userID: '23936415', roomID: '23936415', badges: { subscriber: '24', broadcaster: '1', partner: '1' }, badgeInfoRaw: 'subscriber/55', messageType: 'chat', emotes: null, badgeInfo: { subscriber: '55' }, id: 'fee40dca-b771-4244-b985-ef33c5efce02', userType: null, username: 'jerma985' }
+const msgs = []
+for (let i = 0; i < 1; i++) {
+  msgs.push(msgJSON)
+}
+
 const route = useRoute()
 const { capitalize } = useCapitalize()
 
@@ -57,7 +63,7 @@ const { data: messages, status } = await useFetch<Message[]>(
   `/api/messages/${year}/${month}`,
   {
     lazy: true,
-    server: false,
+    server: true,
   },
 )
 
@@ -69,13 +75,13 @@ fetchBadges()
 
 const dayjs = useDayjs()
 
-const isCurrentMonth = computed(() => {
+function isCurrentMonth() {
   const currentDate = dayjs.utc()
   const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
   const endTime = date.endOf('month')
 
   return endTime.isAfter(currentDate)
-})
+}
 
 const { twitchUsername } = useRuntimeConfig().public
 const { db } = useFirebase()
@@ -86,7 +92,7 @@ onMounted(async () => {
   const startTime = date.startOf('month').valueOf().toString()
   const endTime = date.endOf('month').valueOf().toString()
 
-  if (!isCurrentMonth.value)
+  if (!isCurrentMonth())
     return
 
   const q = query(
@@ -136,7 +142,7 @@ const isLoading = computed(() => status.value === 'pending' || status.value === 
 
     <div v-else-if="messagesFound">
       <SimpleList>
-        <SimpleListItem v-for="message in sortedMessages" :key="message.id">
+        <SimpleListItem v-for="message in msgs" :key="message.id">
           <Message
             :sent-at="message.sentAt"
             :display-name="message.displayName"
