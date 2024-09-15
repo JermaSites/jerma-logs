@@ -9,12 +9,6 @@ import {
   where,
 } from 'firebase/firestore'
 
-const msgJSON = { badgesRaw: 'broadcaster/1,subscriber/24,partner/1', subscriber: true, mod: false, color: '#00FF7F', displayName: 'Jerma985', turbo: false, emotesRaw: null, flags: null, sentAt: '1590270162775', message: 'ill be around, ill tty all lata', userID: '23936415', roomID: '23936415', badges: { subscriber: '24', broadcaster: '1', partner: '1' }, badgeInfoRaw: 'subscriber/55', messageType: 'chat', emotes: null, badgeInfo: { subscriber: '55' }, id: 'fee40dca-b771-4244-b985-ef33c5efce02', userType: null, username: 'jerma985' }
-const msgs = []
-for (let i = 0; i < 1; i++) {
-  msgs.push(msgJSON)
-}
-
 const route = useRoute()
 const { capitalize } = useCapitalize()
 
@@ -141,8 +135,9 @@ const isLoading = computed(() => status.value === 'pending' || status.value === 
     </div>
 
     <div v-else-if="messagesFound">
-      <SimpleList>
-        <SimpleListItem v-for="message in msgs" :key="message.id">
+      {{ sortedMessages }}
+      <!-- <SimpleList>
+        <SimpleListItem v-for="message in sortedMessages" :key="message.id">
           <Message
             :sent-at="message.sentAt"
             :display-name="message.displayName"
@@ -151,7 +146,7 @@ const isLoading = computed(() => status.value === 'pending' || status.value === 
             :badges="parseBadges(message.badges)"
           />
         </SimpleListItem>
-      </SimpleList>
+      </SimpleList> -->
     </div>
 
     <div v-else class="p-8 text-center text-5xl md:text-8xl">
