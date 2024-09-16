@@ -68,14 +68,23 @@ const hasMessages = computed(() => {
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
 
-const sortedMessages = computed(() => {
-  return messages?.value?.toSorted((a, b) => {
-    if (sortOrder.value.message === 'asc')
-      return Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt)
-
-    return Number.parseInt(b.sentAt) - Number.parseInt(a.sentAt)
-  })
+watchEffect(() => {
+  if (sortOrder.value.message === 'asc') {
+    messages.value?.sort((a, b) => Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt))
+  }
+  else {
+    messages.value?.sort((a, b) => Number.parseInt(b.sentAt) - Number.parseInt(a.sentAt))
+  }
 })
+
+// const sortedMessages = computed(() => {
+//   if (sortOrder.value.message === 'asc') {
+//     messages.value?.sort((a, b) => Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt))
+//   }
+//   else {
+//     messages.value?.sort((a, b) => Number.parseInt(b.sentAt) - Number.parseInt(a.sentAt))
+//   }
+// })
 
 const { fetchEmotes, parseEmotes } = useEmotes()
 const { fetchBadges, parseBadges } = useBadges()
@@ -134,7 +143,7 @@ onUnmounted(() => {
 
     <div v-else-if="hasMessages">
       <SimpleList>
-        <SimpleListItem v-for="message in sortedMessages" :key="message.id">
+        <SimpleListItem v-for="message in messages" :key="message.id">
           <Message
             :sent-at="message.sentAt"
             :display-name="message.displayName"
