@@ -4,6 +4,7 @@ import type { Breadcrumb, Message } from '@/types'
 import {
   collection,
   onSnapshot,
+  orderBy,
   query,
   type Unsubscribe,
   where,
@@ -51,22 +52,16 @@ definePageMeta({
   },
 })
 
+const sortStore = useSortStore()
+const { sortOrder } = storeToRefs(sortStore)
+
 const { year, month } = route.params as { year: string, month: string }
 
 const { data: messages, status } = await useFetch<Message[]>(`/api/messages/${year}/${month}`, {
   query: {
-    limit: 24,
+    order: sortOrder.value.message,
   },
   lazy: true,
-})
-
-onMounted(async () => {
-  console.log('onMounted')
-  const data = await $fetch<Message[]>(`/api/messages/${year}/${month}`)
-  console.log('onMounted 2')
-
-  console.log(data)
-  messages.value = data
 })
 
 const isLoading = computed(() => {
@@ -77,10 +72,7 @@ const hasMessages = computed(() => {
   return messages.value != null && messages.value.length !== 0
 })
 
-const sortStore = useSortStore()
-const { sortOrder } = storeToRefs(sortStore)
-
-watchEffect(() => {
+watch(() => sortOrder.value.message, (value) => {
   if (sortOrder.value.message === 'asc') {
     messages.value?.sort((a, b) => Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt))
   }
@@ -89,15 +81,6 @@ watchEffect(() => {
   }
 })
 
-// const sortedMessages = computed(() => {
-//   if (sortOrder.value.message === 'asc') {
-//     messages.value?.sort((a, b) => Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt))
-//   }
-//   else {
-//     messages.value?.sort((a, b) => Number.parseInt(b.sentAt) - Number.parseInt(a.sentAt))
-//   }
-// })
-
 const { fetchEmotes, parseEmotes } = useEmotes()
 const { fetchBadges, parseBadges } = useBadges()
 
@@ -105,32 +88,25 @@ fetchEmotes()
 fetchBadges()
 
 const dayjs = useDayjs()
-
-function isCurrentMonth() {
-  const currentDate = dayjs.utc()
-  const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
-  const endTime = date.endOf('month')
-
-  return endTime.isAfter(currentDate)
-}
-
-const { twitchUsername } = useRuntimeConfig().public
 const { db } = useFirebase()
+const { twitchUsername } = useRuntimeConfig().public
 const unsub = ref<Unsubscribe>()
 
 onMounted(async () => {
   const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
-  const startTime = date.startOf('month').valueOf().toString()
-  const endTime = date.endOf('month').valueOf().toString()
+  const currentDate = dayjs.utc()
+  const startTime = date.startOf('month')
+  const endTime = date.endOf('month')
 
-  if (!isCurrentMonth())
+  if (endTime.isBefore(currentDate))
     return
 
   const q = query(
     collection(db, 'messages'),
-    where('sentAt', '>=', startTime),
-    where('sentAt', '<=', endTime),
+    where('sentAt', '>=', startTime.valueOf().toString()),
+    where('sentAt', '<=', endTime.valueOf().toString()),
     where('username', '==', twitchUsername),
+    orderBy('sentAt', sortOrder.value.message),
   )
 
   unsub.value = onSnapshot(q, (querySnapshot) => {

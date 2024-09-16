@@ -12,7 +12,7 @@ const { firebaseApiUrl, twitchUsername } = useRuntimeConfig().public
 export default defineEventHandler(
   async (event) => {
     const { year, month } = getRouterParams(event)
-    const { limit } = getQuery(event)
+    const { order } = getQuery(event)
 
     const date = dayjs(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
     const startTime = date.startOf('month').valueOf().toString()
@@ -67,22 +67,16 @@ export default defineEventHandler(
             field: {
               fieldPath: 'sentAt',
             },
-            direction: 'DESCENDING',
+            direction: order === 'asc' ? 'ASCENDING' : 'DESCENDING',
           },
         ],
       },
-    }
-
-    if (limit) {
-      queryData.structuredQuery.limit = limit
     }
 
     const messagesQuery = await $fetch<MessagesResponse>(firebaseApiUrl, {
       method: 'POST',
       body: queryData,
     })
-
-    console.log(messagesQuery.length)
 
     if (messagesQuery.length <= 1)
       return []
