@@ -53,7 +53,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      firebaseApiUrl: 'https://firestore.googleapis.com/v1/projects/jerma-logs/databases/(default)/documents:runQuery',
+      firebaseApiUrl: 'https://firestore.googleapis.com/v1beta1/projects/jerma-logs/databases/(default)/documents:runQuery',
       twitchUsername: process.env.NUXT_TWITCH_USERNAME,
       twitchId: process.env.NUXT_TWITCH_ID,
     },

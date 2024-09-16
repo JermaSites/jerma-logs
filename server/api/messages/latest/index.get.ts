@@ -8,109 +8,108 @@ dayjs.extend(utc)
 
 const { firebaseApiUrl, twitchUsername } = useRuntimeConfig().public
 
-export default defineCachedEventHandler(async () => {
-  try {
-    const latestMessageQuery = await $fetch<MessagesResponse>(firebaseApiUrl, {
-      method: 'POST',
-      body: {
-        structuredQuery: {
-          from: [
-            {
-              collectionId: 'messages',
-            },
-          ],
-          where: {
-            fieldFilter: {
-              field: {
-                fieldPath: 'username',
-              },
-              op: 'EQUAL',
-              value: {
-                stringValue: twitchUsername,
-              },
-            },
+export default defineEventHandler(async () => {
+  const latestMessageQueryData = {
+    structuredQuery: {
+      from: [
+        {
+          collectionId: 'messages',
+        },
+      ],
+      where: {
+        fieldFilter: {
+          field: {
+            fieldPath: 'username',
           },
-          orderBy: [
-            {
-              field: {
-                fieldPath: 'sentAt',
-              },
-              direction: 'DESCENDING',
-            },
-          ],
-          limit: 1,
+          op: 'EQUAL',
+          value: {
+            stringValue: twitchUsername,
+          },
         },
       },
-    })
-
-    const latestMessage = latestMessageQuery
-      .map(doc => parse(doc.document))
-      .pop()
-
-    if (!latestMessage)
-      return []
-
-    const dayOfLatestMessage = dayjs
-      .utc(Number.parseInt(latestMessage.sentAt))
-      .subtract(1, 'day')
-      .valueOf()
-      .toString()
-
-    const latestMessagesQuery = await $fetch<MessagesResponse>(firebaseApiUrl, {
-      method: 'POST',
-      body: {
-        structuredQuery: {
-          from: [
-            {
-              collectionId: 'messages',
-            },
-          ],
-          where: {
-            compositeFilter: {
-              op: 'AND',
-              filters: [
-                {
-                  fieldFilter: {
-                    field: {
-                      fieldPath: 'username',
-                    },
-                    op: 'EQUAL',
-                    value: {
-                      stringValue: twitchUsername,
-                    },
-                  },
-                },
-                {
-                  fieldFilter: {
-                    field: {
-                      fieldPath: 'sentAt',
-                    },
-                    op: 'GREATER_THAN_OR_EQUAL',
-                    value: { stringValue: dayOfLatestMessage },
-                  },
-                },
-              ],
-            },
+      orderBy: [
+        {
+          field: {
+            fieldPath: 'sentAt',
           },
-          orderBy: [
+          direction: 'DESCENDING',
+        },
+      ],
+      limit: 1,
+    },
+  }
+
+  const latestMessageQuery = await $fetch<MessagesResponse>(firebaseApiUrl, {
+    method: 'POST',
+    body: latestMessageQueryData,
+  })
+
+  const latestMessage = latestMessageQuery
+    .map(doc => parse(doc.document))
+    .pop()
+
+  if (!latestMessage)
+    return []
+
+  const dayOfLatestMessage = dayjs
+    .utc(Number.parseInt(latestMessage.sentAt))
+    .subtract(1, 'day')
+    .valueOf()
+    .toString()
+
+  const latestMessagesQueryData = {
+    structuredQuery: {
+      from: [
+        {
+          collectionId: 'messages',
+        },
+      ],
+      where: {
+        compositeFilter: {
+          op: 'AND',
+          filters: [
             {
-              field: {
-                fieldPath: 'sentAt',
+              fieldFilter: {
+                field: {
+                  fieldPath: 'username',
+                },
+                op: 'EQUAL',
+                value: {
+                  stringValue: twitchUsername,
+                },
               },
-              direction: 'DESCENDING',
+            },
+            {
+              fieldFilter: {
+                field: {
+                  fieldPath: 'sentAt',
+                },
+                op: 'GREATER_THAN_OR_EQUAL',
+                value: { stringValue: dayOfLatestMessage },
+              },
             },
           ],
         },
       },
-    })
-
-    const messages = latestMessagesQuery.map((doc) => {
-      return parse(doc.document)
-    })
-
-    return messages
+      orderBy: [
+        {
+          field: {
+            fieldPath: 'sentAt',
+          },
+          direction: 'DESCENDING',
+        },
+      ],
+    },
   }
-  catch (error) {
-    return error
-  }
+
+  const latestMessagesQuery = await $fetch<MessagesResponse>(firebaseApiUrl, {
+    method: 'POST',
+    body: latestMessagesQueryData,
+  })
+
+  const messages = latestMessagesQuery.map((doc) => {
+    return parse(doc.document)
+  })
+
+  return messages
 })

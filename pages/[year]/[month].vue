@@ -53,65 +53,17 @@ definePageMeta({
 
 const { year, month } = route.params as { year: string, month: string }
 
-const { data: messages, status } = await useFetch<Message[]>(
-  `/api/messages/${year}/${month}`,
-  {
-    lazy: true,
-    server: true,
-  },
-)
+const { data: messages, status } = await useFetch<Message[]>(`/api/messages/${year}/${month}`, {
+  lazy: true,
+})
 
 const isLoading = computed(() => {
   return status.value === 'pending'
 })
 
-const { fetchEmotes, parseEmotes } = useEmotes()
-const { fetchBadges, parseBadges } = useBadges()
-
-fetchEmotes()
-fetchBadges()
-
-// const dayjs = useDayjs()
-
-// function isCurrentMonth() {
-//   const currentDate = dayjs.utc()
-//   const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
-//   const endTime = date.endOf('month')
-
-//   return endTime.isAfter(currentDate)
-// }
-
-// const { twitchUsername } = useRuntimeConfig().public
-// const { db } = useFirebase()
-// const unsub = ref<Unsubscribe>()
-
-// onMounted(async () => {
-//   const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
-//   const startTime = date.startOf('month').valueOf().toString()
-//   const endTime = date.endOf('month').valueOf().toString()
-
-//   if (!isCurrentMonth())
-//     return
-
-//   const q = query(
-//     collection(db, 'messages'),
-//     where('sentAt', '>=', startTime),
-//     where('sentAt', '<=', endTime),
-//     where('username', '==', twitchUsername),
-//   )
-
-//   unsub.value = onSnapshot(q, (querySnapshot) => {
-//     if (querySnapshot.docs.length === 0)
-//       return
-//     messages.value = querySnapshot.docs.map(doc => doc.data() as Message)
-//   })
-// })
-
-// onUnmounted(() => {
-//   if (!unsub.value)
-//     return
-//   unsub.value()
-// })
+const hasMessages = computed(() => {
+  return messages.value != null && messages.value.length !== 0
+})
 
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
@@ -124,28 +76,63 @@ const sortedMessages = computed(() => {
     return Number.parseInt(b.sentAt) - Number.parseInt(a.sentAt)
   })
 })
+
+const { fetchEmotes, parseEmotes } = useEmotes()
+const { fetchBadges, parseBadges } = useBadges()
+
+fetchEmotes()
+fetchBadges()
+
+const dayjs = useDayjs()
+
+function isCurrentMonth() {
+  const currentDate = dayjs.utc()
+  const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
+  const endTime = date.endOf('month')
+
+  return endTime.isAfter(currentDate)
+}
+
+const { twitchUsername } = useRuntimeConfig().public
+const { db } = useFirebase()
+const unsub = ref<Unsubscribe>()
+
+onMounted(async () => {
+  const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
+  const startTime = date.startOf('month').valueOf().toString()
+  const endTime = date.endOf('month').valueOf().toString()
+
+  if (!isCurrentMonth())
+    return
+
+  const q = query(
+    collection(db, 'messages'),
+    where('sentAt', '>=', startTime),
+    where('sentAt', '<=', endTime),
+    where('username', '==', twitchUsername),
+  )
+
+  unsub.value = onSnapshot(q, (querySnapshot) => {
+    if (querySnapshot.docs.length === 0)
+      return
+    messages.value = querySnapshot.docs.map(doc => doc.data() as Message)
+  })
+})
+
+onUnmounted(() => {
+  if (!unsub.value)
+    return
+  unsub.value()
+})
 </script>
 
 <template>
   <section>
-    <div v-for="{ id, message } in messages" :key="id">
-      {{ message }}
-    </div>
-
     <div v-if="isLoading">
       <SimpleListSkeleton :rows="15" />
     </div>
 
-    <Message
-      v-for="msg in messages" :key="msg.id"
-      :sent-at="msg.sentAt"
-      :display-name="msg.displayName"
-      :color="msg.color"
-      :message="parseEmotes(msg.message)"
-      :badges="parseBadges(msg.badges)"
-    />
-
-    <!-- <div v-else>
+    <div v-else-if="hasMessages">
       <SimpleList>
         <SimpleListItem v-for="message in sortedMessages" :key="message.id">
           <Message
@@ -157,11 +144,11 @@ const sortedMessages = computed(() => {
           />
         </SimpleListItem>
       </SimpleList>
-    </div> -->
+    </div>
 
-    <!-- <div v-else class="p-8 text-center text-5xl md:text-8xl">
+    <div v-else class="p-8 text-center text-5xl md:text-8xl">
       <h1>No Messages Found</h1>
-    </div> -->
+    </div>
   </section>
 </template>
 
