@@ -54,7 +54,19 @@ definePageMeta({
 const { year, month } = route.params as { year: string, month: string }
 
 const { data: messages, status } = await useFetch<Message[]>(`/api/messages/${year}/${month}`, {
+  query: {
+    limit: 24,
+  },
   lazy: true,
+})
+
+onMounted(async () => {
+  console.log('onMounted')
+  const data = await $fetch<Message[]>(`/api/messages/${year}/${month}`)
+  console.log('onMounted 2')
+
+  console.log(data)
+  messages.value = data
 })
 
 const isLoading = computed(() => {
