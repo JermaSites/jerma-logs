@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { Messaging } from 'firebase/messaging'
-import { XCircleIcon } from '@heroicons/vue/24/solid'
 import { httpsCallable } from 'firebase/functions'
 import {
   getMessaging,
@@ -186,8 +185,9 @@ const { hideMessageTimestamps } = storeToRefs(settingsStore)
           >
             <div>Settings</div>
             <div>
-              <XCircleIcon
+              <Icon
                 ref="closeButtonRef"
+                name="heroicons-solid:x-circle"
                 class="w-8 cursor-pointer text-blue-500"
                 @click="setIsOpen(false)"
               />
