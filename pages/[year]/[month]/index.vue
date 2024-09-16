@@ -53,19 +53,23 @@ definePageMeta({
 
 const { year, month } = route.params as { year: string, month: string }
 
-const { data: messages } = await useFetch<Message[]>(
+const { data: messages, status } = await useFetch<Message[]>(
   `/api/messages/${year}/${month}`,
   {
-    lazy: false,
+    lazy: true,
     server: true,
   },
 )
 
-// const { fetchEmotes, parseEmotes } = useEmotes()
-// const { fetchBadges, parseBadges } = useBadges()
+const isLoading = computed(() => {
+  return status.value === 'pending'
+})
 
-// fetchEmotes()
-// fetchBadges()
+const { fetchEmotes, parseEmotes } = useEmotes()
+const { fetchBadges, parseBadges } = useBadges()
+
+fetchEmotes()
+fetchBadges()
 
 // const dayjs = useDayjs()
 
@@ -109,23 +113,17 @@ const { data: messages } = await useFetch<Message[]>(
 //   unsub.value()
 // })
 
-// const sortStore = useSortStore()
-// const { sortOrder } = storeToRefs(sortStore)
+const sortStore = useSortStore()
+const { sortOrder } = storeToRefs(sortStore)
 
-// const sortedMessages = computed(() => {
-//   return messages?.value?.toSorted((a, b) => {
-//     if (sortOrder.value.message === 'asc')
-//       return Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt)
+const sortedMessages = computed(() => {
+  return messages?.value?.toSorted((a, b) => {
+    if (sortOrder.value.message === 'asc')
+      return Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt)
 
-//     return Number.parseInt(b.sentAt) - Number.parseInt(a.sentAt)
-//   })
-// })
-
-// const messagesFound = computed(() => {
-//   return (Boolean(messages.value) && messages.value?.length !== 0)
-// })
-
-// const isLoading = computed(() => status.value === 'pending' || status.value === 'idle')
+    return Number.parseInt(b.sentAt) - Number.parseInt(a.sentAt)
+  })
+})
 </script>
 
 <template>
@@ -134,11 +132,20 @@ const { data: messages } = await useFetch<Message[]>(
       {{ message }}
     </div>
 
-    <!-- <div v-if="isLoading">
+    <div v-if="isLoading">
       <SimpleListSkeleton :rows="15" />
     </div>
 
-    <div v-else-if="messagesFound">
+    <Message
+      v-for="msg in messages" :key="msg.id"
+      :sent-at="msg.sentAt"
+      :display-name="msg.displayName"
+      :color="msg.color"
+      :message="parseEmotes(msg.message)"
+      :badges="parseBadges(msg.badges)"
+    />
+
+    <!-- <div v-else>
       <SimpleList>
         <SimpleListItem v-for="message in sortedMessages" :key="message.id">
           <Message
@@ -150,9 +157,9 @@ const { data: messages } = await useFetch<Message[]>(
           />
         </SimpleListItem>
       </SimpleList>
-    </div>
+    </div> -->
 
-    <div v-else class="p-8 text-center text-5xl md:text-8xl">
+    <!-- <div v-else class="p-8 text-center text-5xl md:text-8xl">
       <h1>No Messages Found</h1>
     </div> -->
   </section>
