@@ -14,7 +14,7 @@ async function fetchEmotes() {
 }
 
 function parseEmotes(msg: string): string {
-  return linkifyHtml(msg).replace(/\b\w+\b/g, (word) => {
+  return linkifyHtml(msg).replace(/\b\S+\b/g, (word) => {
     const emote = emoteMap.get(word)
 
     if (!emote || !emote.urls?.[0]?.url)

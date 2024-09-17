@@ -55,11 +55,26 @@ definePageMeta({
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
 
+const { fetchEmotes, parseEmotes } = useEmotes()
+const { fetchBadges, parseBadges } = useBadges()
+
+fetchEmotes()
+fetchBadges()
+
 const { year, month } = route.params as { year: string, month: string }
 
 const { data: messages, status } = await useFetch<Message[]>(`/api/messages/${year}/${month}`, {
   query: {
     order: sortOrder.value.message,
+  },
+  transform(data) {
+    return data.map((msg) => {
+      return {
+        ...msg,
+        message: parseEmotes(msg.message),
+        badges: parseBadges(msg.badges),
+      }
+    })
   },
   lazy: true,
 })
@@ -80,12 +95,6 @@ watch(() => sortOrder.value.message, (value) => {
     messages.value?.sort((a, b) => Number.parseInt(b.sentAt) - Number.parseInt(a.sentAt))
   }
 })
-
-const { fetchEmotes, parseEmotes } = useEmotes()
-const { fetchBadges, parseBadges } = useBadges()
-
-fetchEmotes()
-fetchBadges()
 
 const dayjs = useDayjs()
 const { db } = useFirebase()
@@ -136,8 +145,8 @@ onUnmounted(() => {
             :sent-at="message.sentAt"
             :display-name="message.displayName"
             :color="message.color"
-            :message="parseEmotes(message.message)"
-            :badges="parseBadges(message.badges)"
+            :message="message.message"
+            :badges="message.badges"
           />
         </SimpleListItem>
       </SimpleList>
