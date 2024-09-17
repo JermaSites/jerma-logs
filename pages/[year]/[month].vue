@@ -73,7 +73,7 @@ const hasMessages = computed(() => {
 })
 
 watch(() => sortOrder.value.message, (value) => {
-  if (sortOrder.value.message === 'asc') {
+  if (value === 'asc') {
     messages.value?.sort((a, b) => Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt))
   }
   else {
