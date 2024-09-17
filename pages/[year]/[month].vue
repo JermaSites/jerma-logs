@@ -72,7 +72,7 @@ const { data: messages, status } = await useFetch<Message[]>(`/api/messages/${ye
       return {
         ...msg,
         message: parseEmotes(msg.message),
-        badges: parseBadges(msg.badges),
+        badgesArray: parseBadges(msg.badges),
       }
     })
   },
@@ -146,7 +146,7 @@ onUnmounted(() => {
             :display-name="message.displayName"
             :color="message.color"
             :message="message.message"
-            :badges="message.badges"
+            :badges="message.badgesArray"
           />
         </SimpleListItem>
       </SimpleList>
