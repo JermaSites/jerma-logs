@@ -22,15 +22,19 @@ const { sortOrder } = storeToRefs(sortStore)
 
 <template>
   <div class="flex">
-    <SortButton
-      :sort-order="sortOrder[sortId]"
-      @click="sortStore.toggleSortOrder(sortId)"
-    />
-    <SettingsDialog>
-      <template #activator>
-        <SettingsButton />
-      </template>
-    </SettingsDialog>
+    <div>
+      <SortButton
+        :sort-order="sortOrder[sortId]"
+        @click="sortStore.toggleSortOrder(sortId)"
+      />
+    </div>
+    <div>
+      <SettingsDialog>
+        <template #activator>
+          <SettingsButton />
+        </template>
+      </SettingsDialog>
+    </div>
   </div>
 </template>
 

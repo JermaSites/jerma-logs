@@ -1,35 +1,35 @@
 import type { MessagesResponse } from '@/types'
 import { parse } from 'firestore-rest-parser'
 
-export default cachedEventHandler(
+const { firebaseApiUrl } = useRuntimeConfig().public
+
+export default defineEventHandler(
   async () => {
-    const url = `https://firestore.googleapis.com/v1/projects/jerma-logs/databases/(default)/documents:runQuery`
-    const sus = await $fetch<MessagesResponse>(url, {
+    const queryData = {
+      structuredQuery: {
+        from: [
+          {
+            collectionId: 'sus',
+          },
+        ],
+        orderBy: [
+          {
+            field: {
+              fieldPath: 'sentAt',
+            },
+            direction: 'DESCENDING',
+          },
+        ],
+        limit: 1,
+      },
+    }
+
+    const sus = await $fetch<MessagesResponse>(firebaseApiUrl, {
       method: 'POST',
 
-      body: {
-        structuredQuery: {
-          from: [
-            {
-              collectionId: 'sus',
-            },
-          ],
-          orderBy: [
-            {
-              field: {
-                fieldPath: 'sentAt',
-              },
-              direction: 'DESCENDING',
-            },
-          ],
-          limit: 1,
-        },
-      },
+      body: queryData,
     })
 
     return sus.map(doc => parse(doc.document)).pop()
-  },
-  {
-    maxAge: 60 * 60,
   },
 )

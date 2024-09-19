@@ -7,7 +7,7 @@ const { fetchEmotes } = useEmotes()
 
 fetchEmotes()
 
-const { data } = await useFetch<Message>('/api/messages/sus', {
+const { data, status } = await useFetch<Message>('/api/messages/sus', {
   lazy: true,
 })
 
@@ -55,7 +55,11 @@ const parsedSusMessage = computed(() => parseEmotes(formattedSusMessage.value))
         Set by {{ data?.displayName }} {{ susMessageTimeFromNow }}
       </h2>
     </div>
-    <div class="bg-slate-200 p-4 dark:bg-slate-800">
+    <div v-if="status === 'pending'">
+      <SimpleListSkeleton :rows="1" />
+    </div>
+
+    <div v-else class="bg-slate-200 p-4 dark:bg-slate-800">
       <p v-html="parsedSusMessage" />
     </div>
   </div>

@@ -4,14 +4,14 @@ import type { Breadcrumb, Message } from '@/types'
 import {
   collection,
   onSnapshot,
+  orderBy,
   query,
   type Unsubscribe,
   where,
 } from 'firebase/firestore'
 
-const dayjs = useDayjs()
-const { capitalize } = useCapitalize()
 const route = useRoute()
+const { capitalize } = useCapitalize()
 
 useSeoMeta({
   title: `Jerma Logs | ${route.params.year} | ${capitalize(route.params.month as string)}`,
@@ -58,40 +58,56 @@ const { fetchBadges, parseBadges } = useBadges()
 fetchEmotes()
 fetchBadges()
 
+const sortStore = useSortStore()
+const { sortOrder } = storeToRefs(sortStore)
+
 const { year, month } = route.params as { year: string, month: string }
 
-const isCurrentMonth = computed(() => {
-  const currentDate = dayjs.utc()
-  const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
-  const endTime = date.endOf('month')
-
-  return endTime.isAfter(currentDate)
+const { data: messages, status } = await useFetch<Message[]>(`/api/messages/${year}/${month}`, {
+  query: {
+    order: sortOrder.value.message,
+  },
+  server: false,
+  lazy: true,
 })
 
-const { data: messages, status } = await useFetch<Message[]>(
-  `/api/messages/${year}/${month}`,
-  {
-    lazy: true,
-  },
-)
+const isLoading = computed(() => {
+  return messages.value == null || status.value === 'pending'
+})
 
-const { twitchUsername } = useRuntimeConfig().public
+const hasMessages = computed(() => {
+  return messages.value != null && messages.value.length !== 0
+})
+
+watch(() => sortOrder.value.message, (value) => {
+  if (value === 'asc') {
+    messages.value?.sort((a, b) => Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt))
+  }
+  else {
+    messages.value?.sort((a, b) => Number.parseInt(b.sentAt) - Number.parseInt(a.sentAt))
+  }
+})
+
+const dayjs = useDayjs()
 const { db } = useFirebase()
+const { twitchUsername } = useRuntimeConfig().public
 const unsub = ref<Unsubscribe>()
 
 onMounted(async () => {
   const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
-  const startTime = date.startOf('month').valueOf().toString()
-  const endTime = date.endOf('month').valueOf().toString()
+  const currentDate = dayjs.utc()
+  const startTime = date.startOf('month')
+  const endTime = date.endOf('month')
 
-  if (!isCurrentMonth.value)
+  if (endTime.isBefore(currentDate))
     return
 
   const q = query(
     collection(db, 'messages'),
-    where('sentAt', '>=', startTime),
-    where('sentAt', '<=', endTime),
+    where('sentAt', '>=', startTime.valueOf().toString()),
+    where('sentAt', '<=', endTime.valueOf().toString()),
     where('username', '==', twitchUsername),
+    orderBy('sentAt', sortOrder.value.message),
   )
 
   unsub.value = onSnapshot(q, (querySnapshot) => {
@@ -106,25 +122,17 @@ onUnmounted(() => {
     return
   unsub.value()
 })
-
-const sortStore = useSortStore()
-const { sortOrder } = storeToRefs(sortStore)
-
-const sortedMessages = computed(() => {
-  return messages?.value?.toSorted((a, b) => {
-    if (sortOrder.value.message === 'asc')
-      return Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt)
-
-    return Number.parseInt(b.sentAt) - Number.parseInt(a.sentAt)
-  })
-})
 </script>
 
 <template>
   <section>
-    <div v-if="sortedMessages && sortedMessages.length !== 0">
+    <div v-if="isLoading">
+      <SimpleListSkeleton :rows="15" />
+    </div>
+
+    <div v-else-if="hasMessages">
       <SimpleList>
-        <SimpleListItem v-for="message in sortedMessages" :key="message.id">
+        <SimpleListItem v-for="message in messages" :key="message.id">
           <Message
             :sent-at="message.sentAt"
             :display-name="message.displayName"
@@ -136,11 +144,7 @@ const sortedMessages = computed(() => {
       </SimpleList>
     </div>
 
-    <div v-else-if="status === 'pending'">
-      <SimpleListSkeleton :rows="15" />
-    </div>
-
-    <div v-else-if="sortedMessages && sortedMessages.length === 0" class="p-8 text-center text-5xl md:text-8xl">
+    <div v-else class="p-8 text-center text-5xl md:text-8xl">
       <h1>No Messages Found</h1>
     </div>
   </section>

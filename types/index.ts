@@ -54,6 +54,10 @@ export interface Message {
   userID: string
   roomID: string
   badges: BadgeInfo
+  badgesArray?: {
+    name: string
+    url: string
+  }[]
   badgeInfoRaw: string
   messageType: string
   emotes: string | null

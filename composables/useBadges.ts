@@ -3,9 +3,6 @@ import type { Badge, BadgeInfo, BadgeMap } from '@/types'
 const badges = reactive<BadgeMap>(new Map())
 
 async function fetchBadges() {
-  if (badges.size)
-    return
-
   const { data } = await useFetch<Badge[]>('/api/badges')
 
   data.value?.forEach((badge) => {
@@ -14,51 +11,27 @@ async function fetchBadges() {
   })
 }
 
+function getBadgeRank(badge: string): number {
+  switch (badge) {
+    case 'broadcaster': return 0
+    case 'subscriber': return 1
+    default: return 2
+  }
+}
+
 function parseBadges(badgeInfo: BadgeInfo) {
   if (!badgeInfo)
     return []
 
-  const sortedKeys = (Object.keys(badgeInfo) as Array<keyof typeof badgeInfo>)
-    .sort((a, b) => {
-      let aValue: number
-      let bValue: number
-      switch (a) {
-        case 'broadcaster':
-          aValue = 0
-          break
-        case 'subscriber':
-          aValue = 1
-          break
-        default:
-          aValue = 2
-          break
+  return Object.entries(badgeInfo)
+    .sort(([a], [b]) => getBadgeRank(a) - getBadgeRank(b))
+    .map(([name, version]) => {
+      const badgeURL = badges?.get(name)?.get(version)?.image_url_1x
+      return {
+        name,
+        url: badgeURL || 'https://placehold.co/18x18',
       }
-      switch (b) {
-        case 'broadcaster':
-          bValue = 0
-          break
-        case 'subscriber':
-          bValue = 1
-          break
-        default:
-          bValue = 2
-          break
-      }
-      return aValue - bValue
     })
-    .reduce((prev, next) => {
-      prev[next] = badgeInfo[next]
-      return prev
-    }, {} as BadgeInfo)
-
-  return Object.entries(sortedKeys).map((badge) => {
-    const badgeURL = badges?.get(badge[0])?.get(badge[1])?.image_url_1x
-    const name = badge[0]
-    return {
-      name,
-      url: badgeURL || 'https://placehold.co/18x18',
-    }
-  })
 }
 
 export function useBadges() {
