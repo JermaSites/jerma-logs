@@ -86,7 +86,11 @@ onUnmounted(() => {
 
 <template>
   <section>
-    <div v-if="sortedMessages && sortedMessages.length !== 0" class="flex flex-col">
+    <div v-if="status === 'pending'">
+      <SimpleListSkeleton :rows="10" />
+    </div>
+
+    <div v-else-if="sortedMessages && sortedMessages.length !== 0" class="flex flex-col">
       <SimpleList>
         <SimpleListItem v-for="message in sortedMessages" :key="message.id">
           <Message
@@ -95,10 +99,6 @@ onUnmounted(() => {
           />
         </SimpleListItem>
       </SimpleList>
-    </div>
-
-    <div v-else-if="status === 'pending'">
-      <SimpleListSkeleton :rows="10" />
     </div>
 
     <div v-else class="p-8 text-center text-5xl md:text-8xl">
