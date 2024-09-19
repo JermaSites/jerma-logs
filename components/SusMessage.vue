@@ -11,10 +11,6 @@ const { data, status } = await useFetch<Message>('/api/messages/sus', {
   lazy: true,
 })
 
-const isLoading = computed(() => {
-  return status.value === 'pending'
-})
-
 const susMessageTimeFromNow = computed(() => {
   const sentAt = data.value?.sentAt
 
