@@ -4,7 +4,7 @@ const props = defineProps<{
   displayName: string
   color: string
   message: string
-  badges?: {
+  badges: {
     name: string
     url: string
   }[]

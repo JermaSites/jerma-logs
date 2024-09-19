@@ -52,14 +52,14 @@ definePageMeta({
   },
 })
 
-const sortStore = useSortStore()
-const { sortOrder } = storeToRefs(sortStore)
-
 const { fetchEmotes, parseEmotes } = useEmotes()
 const { fetchBadges, parseBadges } = useBadges()
 
 fetchEmotes()
 fetchBadges()
+
+const sortStore = useSortStore()
+const { sortOrder } = storeToRefs(sortStore)
 
 const { year, month } = route.params as { year: string, month: string }
 
@@ -67,20 +67,12 @@ const { data: messages, status } = await useFetch<Message[]>(`/api/messages/${ye
   query: {
     order: sortOrder.value.message,
   },
-  transform(data) {
-    return data.map((msg) => {
-      return {
-        ...msg,
-        message: parseEmotes(msg.message),
-        badgesArray: parseBadges(msg.badges),
-      }
-    })
-  },
+  server: false,
   lazy: true,
 })
 
 const isLoading = computed(() => {
-  return status.value === 'pending'
+  return messages.value == null || status.value === 'pending'
 })
 
 const hasMessages = computed(() => {
@@ -145,8 +137,8 @@ onUnmounted(() => {
             :sent-at="message.sentAt"
             :display-name="message.displayName"
             :color="message.color"
-            :message="message.message"
-            :badges="message.badgesArray"
+            :message="parseEmotes(message.message)"
+            :badges="parseBadges(message.badges)"
           />
         </SimpleListItem>
       </SimpleList>
