@@ -5,7 +5,7 @@ import { version } from '../package.json'
 <template>
   <footer>
     <div class="p-6 text-center">
-      Message me on Discord for any issues
+      Message me on Discord for any issues or suggestions
       <div class="inline-block">
         <a
           href="https://discordapp.com/users/178211447350886401"
