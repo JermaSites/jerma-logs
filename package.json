@@ -1,7 +1,7 @@
 {
   "name": "jerma-logs",
   "type": "module",
-  "version": "1.0.24",
+  "version": "1.1.0",
   "private": false,
   "scripts": {
     "build": "nuxt build",
