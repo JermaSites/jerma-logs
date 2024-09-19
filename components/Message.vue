@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import type { RendererElement, RendererNode } from 'vue'
+
 const props = defineProps<{
   sentAt: string
   displayName: string
   color: string
-  message: string
+  message: (string | VNode<RendererNode, RendererElement, { [key: string]: any }>)[]
   badges: {
     name: string
     url: string
@@ -58,7 +60,14 @@ const messageColor = computed(() => {
       <span :style="{ color: messageColor }" class="font-bold" data-testid="display-name">
         {{ displayName }} </span>:
     </div>
-    <div data-testid="message" v-html="message" />
+    <!-- <div data-testid="message" v-html="message" /> -->
+    <div>
+      <span v-for="(token, index) in message" :key="index">
+        <!-- Check if token is a string or a component -->
+        <template v-if="typeof token === 'string'">{{ token }}</template>
+        <template v-else><component :is="token" /></template>
+      </span>
+    </div>
   </div>
 </template>
 
