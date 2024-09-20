@@ -146,7 +146,6 @@ function update(startIndex: number, endIndex: number, visibleStartIndex: number,
       <DynamicScroller
         list-tag="ul"
         item-tag="li"
-        item-class="odd:bg-slate-300 even:bg-slate-200 dark:odd:bg-slate-900 dark:even:bg-slate-800"
         :items="messages"
         :min-item-size="56"
         key-field="id"
@@ -160,6 +159,7 @@ function update(startIndex: number, endIndex: number, visibleStartIndex: number,
             :item="item"
             :active="active"
             :data-index="index"
+            :class="{ 'dark:bg-slate-800 bg-slate-200': index % 2 !== 0, 'dark:bg-slate-900 bg-slate-300': index % 2 === 0 }"
           >
             <Message
               :sent-at="item.sentAt"
