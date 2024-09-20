@@ -122,16 +122,40 @@ onUnmounted(() => {
     return
   unsub.value()
 })
+
+const updateParts = reactive({ viewStartIdx: 0, viewEndIdx: 0, visibleStartIdx: 0, visibleEndIdx: 0 })
+
+function update(startIndex: number, endIndex: number, visibleStartIndex: number, visibleEndIndex: number) {
+  updateParts.viewStartIdx = startIndex
+  updateParts.viewEndIdx = endIndex
+  updateParts.visibleStartIdx = visibleStartIndex
+  updateParts.visibleEndIdx = visibleEndIndex
+}
 </script>
 
 <template>
-  <section>
+  <section class="relative">
     <div v-if="isLoading">
       <SimpleListSkeleton :rows="15" />
     </div>
 
     <div v-else-if="hasMessages">
-      <DynamicScroller list-tag="ul" item-tag="li" item-class="odd:bg-slate-300 even:bg-slate-200 dark:odd:bg-slate-900 dark:even:bg-slate-800" class="scroller" :items="messages" :min-item-size="56" key-field="id">
+      <div class="fixed top-0 left-0 z-20 bg-black p-2 rounded-2xl">
+        ({{ updateParts.viewStartIdx }} - [{{ updateParts.visibleStartIdx }} - {{ updateParts.visibleEndIdx }}] - {{ updateParts.viewEndIdx }})
+      </div>
+      <DynamicScroller
+        list-tag="ul"
+        item-tag="li"
+        item-class="odd:bg-slate-300 even:bg-slate-200 dark:odd:bg-slate-900 dark:even:bg-slate-800"
+        :items="messages"
+        :min-item-size="56"
+        key-field="id"
+        :buffer="1000"
+        :emit-update="true"
+        :prerender="25"
+        page-mode
+        @update="update"
+      >
         <template #default="{ item, index, active }">
           <DynamicScrollerItem
             :item="item"
