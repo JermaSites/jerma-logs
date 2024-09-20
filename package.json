@@ -14,7 +14,8 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "firebase": "10.13.2"
+    "firebase": "10.13.2",
+    "vue-virtual-scroller": "^2.0.0-beta.8"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.6.2",

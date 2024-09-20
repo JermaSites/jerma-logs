@@ -1,13 +1,13 @@
-import type { Badge, BadgeInfo, BadgeMap } from '@/types'
+import type { Badge, BadgeMap, Badges } from '@/types'
 
-const badges = reactive<BadgeMap>(new Map())
+const badgesMap = reactive<BadgeMap>(new Map())
 
 async function fetchBadges() {
   const { data } = await useFetch<Badge[]>('/api/badges')
 
   data.value?.forEach((badge) => {
     const badgeVersionsMap = new Map(badge.versions.map(v => [v.id, v]))
-    badges.set(badge.set_id, badgeVersionsMap)
+    badgesMap.set(badge.set_id, badgeVersionsMap)
   })
 }
 
@@ -19,14 +19,14 @@ function getBadgeRank(badge: string): number {
   }
 }
 
-function parseBadges(badgeInfo: BadgeInfo) {
-  if (!badgeInfo)
+function parseBadges(badges: Badges) {
+  if (!badges)
     return []
 
-  return Object.entries(badgeInfo)
+  return Object.entries(badges)
     .sort(([a], [b]) => getBadgeRank(a) - getBadgeRank(b))
     .map(([name, version]) => {
-      const badgeURL = badges?.get(name)?.get(version)?.image_url_1x
+      const badgeURL = badgesMap?.get(name)?.get(version)?.image_url_1x
       return {
         name,
         url: badgeURL || 'https://placehold.co/18x18',

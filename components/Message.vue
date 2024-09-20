@@ -1,15 +1,12 @@
 <script setup lang="ts">
-import type { RendererElement, RendererNode } from 'vue'
+import type { Badges } from '@/types'
 
 const props = defineProps<{
   sentAt: string
   displayName: string
   color: string
-  message: (string | VNode<RendererNode, RendererElement, { [key: string]: any }>)[]
-  badges: {
-    name: string
-    url: string
-  }[]
+  message: string
+  badges: Badges
 }>()
 
 const dayjs = useDayjs()
@@ -32,6 +29,12 @@ const messageSentAtTimeAgo = computed(() => {
 const messageColor = computed(() => {
   return dynamicHue(props.color, colorModeValue.value)
 })
+
+const { parseEmotes } = useEmotes()
+const { parseBadges } = useBadges()
+
+const computedEmotes = computed(() => parseEmotes(props.message))
+const computedBadges = computed(() => parseBadges(props.badges))
 </script>
 
 <template>
@@ -45,7 +48,7 @@ const messageColor = computed(() => {
     <div>
       <span>
         <NuxtImg
-          v-for="badge in badges"
+          v-for="badge in computedBadges"
           :key="badge.name"
           :src="badge.url"
           :alt="badge.name"
@@ -60,14 +63,15 @@ const messageColor = computed(() => {
       <span :style="{ color: messageColor }" class="font-bold" data-testid="display-name">
         {{ displayName }} </span>:
     </div>
-    <!-- <div data-testid="message" v-html="message" /> -->
-    <div>
-      <span v-for="(token, index) in message" :key="index">
-        <!-- Check if token is a string or a component -->
-        <template v-if="typeof token === 'string'">{{ token }}</template>
+    <div data-testid="message" v-html="computedEmotes" />
+    <!-- <div>
+      <span v-for="(token, index) in computedEmotes" :key="index">
+        <template v-if="typeof token === 'string'">
+          <span v-html="token" />
+        </template>
         <template v-else><component :is="token" /></template>
       </span>
-    </div>
+    </div> -->
   </div>
 </template>
 

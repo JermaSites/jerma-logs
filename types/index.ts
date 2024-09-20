@@ -34,7 +34,7 @@ export interface Badge {
 
 export type BadgeMap = Map<string, Map<string, BadgeVersion>>
 
-export interface BadgeInfo {
+export interface Badges {
   subscriber: string
   moments: string
   broadcaster: string
@@ -53,7 +53,7 @@ export interface Message {
   message: string
   userID: string
   roomID: string
-  badges: BadgeInfo
+  badges: Badges
   badgesArray?: {
     name: string
     url: string

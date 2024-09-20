@@ -52,8 +52,8 @@ definePageMeta({
   },
 })
 
-const { fetchEmotes, parseEmotes } = useEmotes()
-const { fetchBadges, parseBadges } = useBadges()
+const { fetchEmotes } = useEmotes()
+const { fetchBadges } = useBadges()
 
 fetchEmotes()
 fetchBadges()
@@ -131,17 +131,23 @@ onUnmounted(() => {
     </div>
 
     <div v-else-if="hasMessages">
-      <SimpleList>
-        <SimpleListItem v-for="message in messages" :key="message.id">
-          <Message
-            :sent-at="message.sentAt"
-            :display-name="message.displayName"
-            :color="message.color"
-            :message="parseEmotes(message.message)"
-            :badges="parseBadges(message.badges)"
-          />
-        </SimpleListItem>
-      </SimpleList>
+      <DynamicScroller list-tag="ul" item-tag="li" item-class="odd:bg-slate-300 even:bg-slate-200 dark:odd:bg-slate-900 dark:even:bg-slate-800" class="scroller" :items="messages" :min-item-size="56" key-field="id">
+        <template #default="{ item, index, active }">
+          <DynamicScrollerItem
+            :item="item"
+            :active="active"
+            :data-index="index"
+          >
+            <Message
+              :sent-at="item.sentAt"
+              :display-name="item.displayName"
+              :color="item.color"
+              :message="item.message"
+              :badges="item.badges"
+            />
+          </DynamicScrollerItem>
+        </template>
+      </DynamicScroller>
     </div>
 
     <div v-else class="p-8 text-center text-5xl md:text-8xl">
@@ -150,4 +156,15 @@ onUnmounted(() => {
   </section>
 </template>
 
-<style scoped></style>
+<style scoped>
+.scroller {
+  height: 100%;
+}
+
+.user {
+  height: 32%;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+}
+</style>
