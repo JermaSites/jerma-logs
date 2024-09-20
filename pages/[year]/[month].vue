@@ -150,7 +150,6 @@ function update(startIndex: number, endIndex: number, visibleStartIndex: number,
         :items="messages"
         :min-item-size="56"
         key-field="id"
-        :buffer="1000"
         :emit-update="true"
         :prerender="25"
         page-mode
