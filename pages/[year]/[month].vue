@@ -67,7 +67,7 @@ const { data: messages, status } = await useFetch<Message[]>(`/api/messages/${ye
   query: {
     order: sortOrder.value.message,
   },
-  server: false,
+  server: true,
   lazy: true,
 })
 
