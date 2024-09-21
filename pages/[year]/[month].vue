@@ -150,7 +150,7 @@ function update(startIndex: number, endIndex: number, visibleStartIndex: number,
         :min-item-size="56"
         key-field="id"
         :emit-update="true"
-        :prerender="25"
+        :prerender="15"
         page-mode
         @update="update"
       >
