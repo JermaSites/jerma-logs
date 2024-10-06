@@ -15,7 +15,12 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
     '@nuxt/ui',
     '@nuxt/icon',
+    'nuxt-gtag',
   ],
+
+  gtag: {
+    id: 'G-51G4MFGEP0',
+  },
 
   app: {
     head: {
