@@ -37,6 +37,6 @@ export default $fetch.create({
       await useStorage('twitch').setItem<AccessToken>('token', token)
     }
 
-    options.headers.authorization = `Bearer ${token.access_token}`
+    options.headers.set('authorization', `Bearer ${token.access_token}`)
   },
 })
