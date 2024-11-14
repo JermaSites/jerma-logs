@@ -17,15 +17,15 @@
     "firebase": "11.0.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.8.0",
+    "@antfu/eslint-config": "^3.9.1",
     "@iconify-json/heroicons-solid": "^1.2.0",
     "@nuxt/fonts": "^0.10.2",
-    "@nuxt/icon": "^1.6.1",
+    "@nuxt/icon": "^1.7.4",
     "@nuxt/image": "1.8.1",
     "@nuxt/ui": "^2.19.2",
     "@nuxtjs/robots": "^4.1.11",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.1",
-    "@pinia/nuxt": "^0.7.0",
+    "@pinia/nuxt": "^0.5.5",
     "@playwright/test": "^1.48.2",
     "@vueuse/core": "^11.2.0",
     "@vueuse/nuxt": "^11.2.0",
