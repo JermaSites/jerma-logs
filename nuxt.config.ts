@@ -29,6 +29,7 @@ export default defineNuxtConfig({
       },
       link: [
         { rel: 'icon', type: 'image/png', href: '/logo.png' },
+        { rel: 'manifest', href: '/manifest.json', crossorigin: 'use-credentials' },
       ],
     },
   },
