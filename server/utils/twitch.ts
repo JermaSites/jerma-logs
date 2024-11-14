@@ -28,7 +28,7 @@ export default $fetch.create({
   headers: {
     'Client-ID': twitchClientId,
   },
-  async onRequest({ options }: any) {
+  async onRequest({ options }) {
     let token = await useStorage('twitch').getItem<AccessToken>('token')
 
     if (!token || token.expires_in <= Date.now()) {
