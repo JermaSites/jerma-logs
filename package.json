@@ -14,7 +14,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "firebase": "11.0.1"
+    "firebase": "^11.0.2"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^3.9.1",
@@ -23,7 +23,7 @@
     "@nuxt/icon": "^1.7.4",
     "@nuxt/image": "1.8.1",
     "@nuxt/ui": "^2.19.2",
-    "@nuxtjs/robots": "^4.1.11",
+    "@nuxtjs/robots": "^5.0.0",
     "@pinia-plugin-persistedstate/nuxt": "^1.2.1",
     "@pinia/nuxt": "^0.5.5",
     "@playwright/test": "^1.48.2",
