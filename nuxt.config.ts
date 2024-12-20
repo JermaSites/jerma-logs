@@ -6,7 +6,7 @@ export default defineNuxtConfig({
   modules: [
     'dayjs-nuxt',
     '@pinia/nuxt',
-    '@pinia-plugin-persistedstate/nuxt',
+    'pinia-plugin-persistedstate/nuxt',
     'nuxt-headlessui',
     '@vueuse/nuxt',
     '@nuxtjs/color-mode',
@@ -44,7 +44,7 @@ export default defineNuxtConfig({
     format: ['avif', 'webp', 'png'],
   },
 
-  piniaPersistedstate: {
+  piniaPluginPersistedstate: {
     cookieOptions: {
       maxAge: 60 * 60 * 24 * 400,
       sameSite: 'none',
