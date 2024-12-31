@@ -18,29 +18,29 @@
     "pinia-plugin-persistedstate": "^4.2.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.12.0",
+    "@antfu/eslint-config": "^3.12.1",
     "@iconify-json/heroicons-solid": "^1.2.1",
     "@nuxt/fonts": "^0.10.3",
-    "@nuxt/icon": "^1.10.2",
+    "@nuxt/icon": "^1.10.3",
     "@nuxt/image": "1.8.1",
     "@nuxt/ui": "^2.20.0",
-    "@nuxtjs/robots": "^5.0.1",
+    "@nuxtjs/robots": "^5.1.0",
     "@pinia/nuxt": "^0.9.0",
     "@playwright/test": "^1.49.1",
-    "@vueuse/core": "^12.0.0",
-    "@vueuse/nuxt": "^12.0.0",
+    "@vueuse/core": "^12.2.0",
+    "@vueuse/nuxt": "^12.2.0",
     "dayjs-nuxt": "^2.1.11",
     "eslint": "^9.17.0",
     "firestore-rest-parser": "^1.1.1",
     "linkify-html": "^4.2.0",
     "linkifyjs": "^4.2.0",
-    "nuxt": "^3.14.1592",
+    "nuxt": "^3.15.0",
     "nuxt-gtag": "^3.0.2",
     "nuxt-headlessui": "^1.2.0",
     "pinia": "^2.3.0",
     "typescript": "^5.7.2",
     "vue": "^3.5.13",
     "vue-router": "^4.5.0",
-    "vue-tsc": "^2.1.10"
+    "vue-tsc": "^2.2.0"
   }
 }
