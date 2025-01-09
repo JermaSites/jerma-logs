@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { RendererElement, RendererNode } from 'vue'
+// import type { RendererElement, RendererNode } from 'vue'
 
 const props = defineProps<{
   sentAt: string
