@@ -1,7 +1,7 @@
 {
   "name": "jerma-logs",
   "type": "module",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "private": false,
   "scripts": {
     "build": "nuxt build",
@@ -14,7 +14,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "firebase": "^11.1.0",
+    "firebase": "^11.2.0",
     "pinia-plugin-persistedstate": "^4.2.0"
   },
   "devDependencies": {
@@ -34,7 +34,7 @@
     "firestore-rest-parser": "^1.1.1",
     "linkify-html": "^4.2.0",
     "linkifyjs": "^4.2.0",
-    "nuxt": "^3.15.1",
+    "nuxt": "^3.15.2",
     "nuxt-gtag": "^3.0.2",
     "nuxt-headlessui": "^1.2.0",
     "pinia": "^2.3.0",
