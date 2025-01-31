@@ -34,7 +34,7 @@
     "firestore-rest-parser": "^1.1.1",
     "linkify-html": "^4.2.0",
     "linkifyjs": "^4.2.0",
-    "nuxt": "^3.15.3",
+    "nuxt": "^3.15.4",
     "nuxt-gtag": "^3.0.2",
     "nuxt-headlessui": "^1.2.0",
     "pinia": "^2.3.1",
