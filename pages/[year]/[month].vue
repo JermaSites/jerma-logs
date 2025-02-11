@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import type { RouteLocationNormalizedLoaded } from '#vue-router'
 import type { Breadcrumb, Message } from '@/types'
+import type { Unsubscribe } from 'firebase/firestore'
 import {
   collection,
   onSnapshot,
   orderBy,
   query,
-  type Unsubscribe,
   where,
 } from 'firebase/firestore'
 

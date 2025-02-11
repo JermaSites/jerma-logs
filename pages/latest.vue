@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import type { Breadcrumb, Message } from '@/types'
-
+import type { Unsubscribe } from 'firebase/firestore'
 import {
   collection,
   onSnapshot,
   query,
-  type Unsubscribe,
   where,
 } from 'firebase/firestore'
 
