@@ -53,8 +53,11 @@ const { db } = useFirebase()
 const { twitchUsername } = useRuntimeConfig().public
 const unsub = ref<Unsubscribe>()
 
-onMounted(async () => {
-  const latestMessage = messages.value?.at(-1)
+watch(status, async (newStatus) => {
+  if (newStatus !== 'success')
+    return
+
+  const latestMessage = messages.value?.at(0)
 
   if (!latestMessage)
     return
@@ -74,7 +77,7 @@ onMounted(async () => {
   unsub.value = onSnapshot(latestMessagesQuery, (querySnapshot) => {
     messages.value = querySnapshot.docs.map(doc => doc.data() as Message)
   })
-})
+}, { immediate: true })
 
 onUnmounted(() => {
   if (!unsub.value)
