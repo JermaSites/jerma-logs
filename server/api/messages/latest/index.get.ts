@@ -53,7 +53,7 @@ export default defineEventHandler(async () => {
 
   const dayOfLatestMessage = dayjs
     .utc(Number.parseInt(latestMessage.sentAt))
-    .subtract(1, 'day')
+    .subtract(12, 'hours')
     .valueOf()
     .toString()
 
