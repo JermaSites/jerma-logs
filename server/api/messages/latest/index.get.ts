@@ -1,15 +1,12 @@
 import type { MessagesResponse } from '@/types'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc.js'
 
 import { parse } from 'firestore-rest-parser'
-
-dayjs.extend(utc)
+import { getDayOfLatestMessage } from '~/utils/latestMessageUtils'
 
 const { firebaseApiUrl, twitchUsername } = useRuntimeConfig().public
 
 export default defineEventHandler(async () => {
-  const latestMessageQueryData = {
+  const latestMessageQuery = {
     structuredQuery: {
       from: [
         {
@@ -39,25 +36,21 @@ export default defineEventHandler(async () => {
     },
   }
 
-  const latestMessageQuery = await $fetch<MessagesResponse>(firebaseApiUrl, {
+  const latestMessageData = await $fetch<MessagesResponse>(firebaseApiUrl, {
     method: 'POST',
-    body: latestMessageQueryData,
+    body: latestMessageQuery,
   })
 
-  const latestMessage = latestMessageQuery
+  const latestMessage = latestMessageData
     .map(doc => parse(doc.document))
     .pop()
 
   if (!latestMessage)
     return []
 
-  const dayOfLatestMessage = dayjs
-    .utc(Number.parseInt(latestMessage.sentAt))
-    .subtract(12, 'hours')
-    .valueOf()
-    .toString()
+  const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(latestMessage.sentAt))
 
-  const latestMessagesQueryData = {
+  const latestMessagesQuery = {
     structuredQuery: {
       from: [
         {
@@ -102,12 +95,12 @@ export default defineEventHandler(async () => {
     },
   }
 
-  const latestMessagesQuery = await $fetch<MessagesResponse>(firebaseApiUrl, {
+  const latestMessagesData = await $fetch<MessagesResponse>(firebaseApiUrl, {
     method: 'POST',
-    body: latestMessagesQueryData,
+    body: latestMessagesQuery,
   })
 
-  const messages = latestMessagesQuery.map((doc) => {
+  const messages = latestMessagesData.map((doc) => {
     return parse(doc.document)
   })
 

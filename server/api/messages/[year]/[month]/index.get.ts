@@ -19,7 +19,7 @@ export default defineEventHandler(
     const endTime = date.endOf('month').valueOf().toString()
 
     // https://firebase.google.com/docs/firestore/reference/rest/v1/StructuredQuery
-    const queryData = {
+    const messagesQuery = {
       structuredQuery: {
         from: [
           {
@@ -73,15 +73,15 @@ export default defineEventHandler(
       },
     }
 
-    const messagesQuery = await $fetch<MessagesResponse>(firebaseApiUrl, {
+    const messagesData = await $fetch<MessagesResponse>(firebaseApiUrl, {
       method: 'POST',
-      body: queryData,
+      body: messagesQuery,
     })
 
-    if (messagesQuery.length <= 1)
+    if (messagesData.length <= 1)
       return []
 
-    const messages = messagesQuery.map((doc) => {
+    const messages = messagesData.map((doc) => {
       return parse(doc.document)
     })
 

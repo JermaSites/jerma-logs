@@ -8,8 +8,6 @@ import {
   where,
 } from 'firebase/firestore'
 
-const dayjs = useDayjs()
-
 useServerSeoMeta({
   title: 'Jerma Logs | Latest',
   ogTitle: 'Jerma Logs | Latest',
@@ -62,11 +60,7 @@ watch(status, async (newStatus) => {
   if (!latestMessage)
     return
 
-  const dayOfLatestMessage = dayjs
-    .utc(Number.parseInt(latestMessage.sentAt))
-    .subtract(12, 'hours')
-    .valueOf()
-    .toString()
+  const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(latestMessage.sentAt))
 
   const latestMessagesQuery = query(
     collection(db, 'messages'),

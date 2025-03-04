@@ -138,26 +138,26 @@ export type MessagesResponse = [
     document: {
       name: string
       fields: {
-        mod: { [key: string]: any }
-        subscriber: { [key: string]: any }
-        badgesRaw: { [key: string]: any }
-        color: { [key: string]: any }
-        displayName: { [key: string]: any }
-        turbo: { [key: string]: any }
-        emotesRaw: { [key: string]: any }
-        flags: { [key: string]: any }
-        sentAt: { [key: string]: any }
-        message: { [key: string]: any }
-        userID: { [key: string]: any }
-        roomID: { [key: string]: any }
+        mod: { [key: string]: boolean }
+        subscriber: { [key: string]: boolean }
+        badgesRaw: { [key: string]: string }
+        color: { [key: string]: string }
+        displayName: { [key: string]: string }
+        turbo: { [key: string]: boolean }
+        emotesRaw: { [key: string]: string | null }
+        flags: { [key: string]: string | null }
+        sentAt: { [key: string]: string }
+        message: { [key: string]: string }
+        userID: { [key: string]: string }
+        roomID: { [key: string]: string }
         badges: { [key: string]: any }
-        badgeInfoRaw: { [key: string]: any }
-        messageType: { [key: string]: any }
-        emotes: { [key: string]: any }
-        badgeInfo: { [key: string]: any }
-        id: { [key: string]: any }
-        userType: { [key: string]: any }
-        username: { [key: string]: any }
+        badgeInfoRaw: { [key: string]: string }
+        messageType: { [key: string]: string }
+        emotes: { [key: string]: string[] }
+        badgeInfo: { [key: string]: string }
+        id: { [key: string]: string }
+        userType: { [key: string]: string | null }
+        username: { [key: string]: string }
       }
       createTime: string
       updateTime: string
