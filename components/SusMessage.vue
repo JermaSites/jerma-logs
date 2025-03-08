@@ -8,7 +8,7 @@ const { fetchEmotes } = useEmotes()
 fetchEmotes()
 
 const { data, status } = await useFetch<Message>('/api/messages/sus', {
-  lazy: true,
+  lazy: false,
 })
 
 const susMessageTimeFromNow = computed(() => {
