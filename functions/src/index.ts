@@ -71,7 +71,7 @@ exports.sendSusNotification = onDocumentCreated(
       topic: 'sus',
       webpush: {
         notification: {
-          title: `${username} update the SUS`,
+          title: `${username} updated the SUS`,
           body: sus,
           icon: '/logo.png',
           tag: 'sus',
