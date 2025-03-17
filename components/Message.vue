@@ -1,6 +1,10 @@
 <script setup lang="ts">
 // import type { RendererElement, RendererNode } from 'vue'
 
+import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import timezone from 'dayjs/plugin/timezone'
+
 const props = defineProps<{
   sentAt: string
   displayName: string
@@ -13,7 +17,8 @@ const props = defineProps<{
   }[]
 }>()
 
-const dayjs = useDayjs()
+dayjs.extend(relativeTime)
+dayjs.extend(timezone)
 
 const settingsStore = useSettingsStore()
 

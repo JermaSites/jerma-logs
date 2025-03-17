@@ -1,5 +1,8 @@
 <script setup lang="ts">
-const dayjs = useDayjs()
+import dayjs from 'dayjs'
+import timezone from 'dayjs/plugin/timezone'
+
+dayjs.extend(timezone)
 
 useHead({
   bodyAttrs: {

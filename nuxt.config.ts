@@ -4,7 +4,6 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   modules: [
-    'dayjs-nuxt',
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     'nuxt-headlessui',
@@ -32,12 +31,6 @@ export default defineNuxtConfig({
         { rel: 'manifest', href: '/manifest.json', crossorigin: 'use-credentials' },
       ],
     },
-  },
-
-  dayjs: {
-    plugins: ['utc', 'timezone', 'relativeTime', 'advancedFormat'],
-    defaultLocale: 'en',
-    defaultTimezone: 'America/New_York',
   },
 
   image: {
