@@ -17,9 +17,6 @@
     "firebase": "^11.4.0",
     "pinia-plugin-persistedstate": "^4.2.0"
   },
-  "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.35.0"
-  },
   "devDependencies": {
     "@antfu/eslint-config": "^4.4.0",
     "@iconify-json/heroicons-solid": "^1.2.1",
