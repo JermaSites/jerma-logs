@@ -2,6 +2,7 @@
 // import type { RendererElement, RendererNode } from 'vue'
 
 import dayjs from 'dayjs'
+import advancedFormat from 'dayjs/plugin/advancedFormat'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import timezone from 'dayjs/plugin/timezone'
 
@@ -17,6 +18,7 @@ const props = defineProps<{
   }[]
 }>()
 
+dayjs.extend(advancedFormat)
 dayjs.extend(relativeTime)
 dayjs.extend(timezone)
 
