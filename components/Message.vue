@@ -1,28 +1,17 @@
 <script setup lang="ts">
-// import type { RendererElement, RendererNode } from 'vue'
-
-import dayjs from 'dayjs'
-import advancedFormat from 'dayjs/plugin/advancedFormat'
-import relativeTime from 'dayjs/plugin/relativeTime'
-import timezone from 'dayjs/plugin/timezone'
-
 const props = defineProps<{
   sentAt: string
   displayName: string
   color: string
   message: string
-  // message: (string | VNode<RendererNode, RendererElement, { [key: string]: any }>)[]
   badges: {
     name: string
     url: string
   }[]
 }>()
 
-dayjs.extend(advancedFormat)
-dayjs.extend(relativeTime)
-dayjs.extend(timezone)
-
 const settingsStore = useSettingsStore()
+const dayjs = useDayjs()
 
 const { hideMessageTimestamps, colorModeValue, userTimezone }
   = storeToRefs(settingsStore)
@@ -69,12 +58,6 @@ const messageColor = computed(() => {
         {{ displayName }} </span>:
     </div>
     <div data-testid="message" v-html="message" />
-    <!-- <div>
-      <span v-for="(token, index) in message" :key="index">
-        <template v-if="typeof token === 'string'">{{ token }}</template>
-        <template v-else><component :is="token" /></template>
-      </span>
-    </div> -->
   </div>
 </template>
 

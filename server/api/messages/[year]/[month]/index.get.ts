@@ -1,11 +1,10 @@
 import type { MessagesResponse } from '@/types'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc.js'
+
 import { parse } from 'firestore-rest-parser'
-import { useCapitalize } from '~/composables/useCapitalize.js'
+import { useCapitalize } from '~/composables/useCapitalize'
+import useDayjs from '~/composables/useDayjs'
 
-dayjs.extend(utc)
-
+const dayjs = useDayjs()
 const { capitalize } = useCapitalize()
 const { firebaseApiUrl, twitchUsername } = useRuntimeConfig().public
 

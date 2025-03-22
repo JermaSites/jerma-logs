@@ -1,9 +1,4 @@
 <script setup lang="ts">
-import dayjs from 'dayjs'
-import timezone from 'dayjs/plugin/timezone'
-
-dayjs.extend(timezone)
-
 useHead({
   bodyAttrs: {
     class:
@@ -25,6 +20,8 @@ useSeoMeta({
 })
 
 const settingsStore = useSettingsStore()
+
+const dayjs = useDayjs()
 
 onMounted(() => {
   settingsStore.userTimezone = dayjs.tz.guess()

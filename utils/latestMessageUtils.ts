@@ -1,7 +1,6 @@
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc.js'
+import useDayjs from '~/composables/useDayjs'
 
-dayjs.extend(utc)
+const dayjs = useDayjs()
 
 export function getDayOfLatestMessage(sentAt: number): string {
   return dayjs.utc(sentAt).subtract(12, 'hour').valueOf().toString()

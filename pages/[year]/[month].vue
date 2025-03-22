@@ -2,8 +2,7 @@
 import type { RouteLocationNormalizedLoaded } from '#vue-router'
 import type { Breadcrumb, Message } from '@/types'
 import type { Unsubscribe } from 'firebase/firestore'
-import dayjs from 'dayjs'
-import utc from 'dayjs/plugin/utc'
+
 import {
   collection,
   onSnapshot,
@@ -90,10 +89,11 @@ watch(() => sortOrder.value.message, (value) => {
   }
 })
 
-dayjs.extend(utc)
 const { db } = useFirebase()
 const { twitchUsername } = useRuntimeConfig().public
 const unsub = ref<Unsubscribe>()
+
+const dayjs = useDayjs()
 
 onMounted(async () => {
   const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
