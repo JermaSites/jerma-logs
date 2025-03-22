@@ -32,18 +32,20 @@ onMounted(() => {
 </script>
 
 <template>
-  <NuxtLoadingIndicator />
+  <UApp>
+    <NuxtLoadingIndicator />
 
-  <SiteHeader class="mb-4" />
+    <SiteHeader class="mb-4" />
 
-  <main class="container mx-auto px-4 md:max-w-6xl">
-    <div class="flex justify-between">
-      <SiteBreadcrumb />
-      <SiteSettings />
-    </div>
-    <slot />
-  </main>
-  <SiteFooter />
+    <main class="container mx-auto px-4 md:max-w-6xl">
+      <div class="flex justify-between">
+        <SiteBreadcrumb />
+        <SiteSettings />
+      </div>
+      <slot />
+    </main>
+    <SiteFooter />
+  </UApp>
 </template>
 
 <style>

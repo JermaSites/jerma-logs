@@ -17,6 +17,8 @@ export default defineNuxtConfig({
     'nuxt-gtag',
   ],
 
+  css: ['~/assets/css/main.css'],
+
   gtag: {
     id: 'G-51G4MFGEP0',
   },
