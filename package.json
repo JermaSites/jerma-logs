@@ -15,25 +15,25 @@
   },
   "dependencies": {
     "dayjs": "^1.11.13",
-    "firebase": "^11.4.0",
+    "firebase": "^11.5.0",
     "pinia-plugin-persistedstate": "^4.2.0"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.35.0"
+    "@rollup/rollup-linux-x64-gnu": "4.36.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.4.0",
+    "@antfu/eslint-config": "^4.10.2",
     "@iconify-json/heroicons-solid": "^1.2.1",
     "@nuxt/fonts": "^0.11.0",
-    "@nuxt/icon": "^1.10.3",
+    "@nuxt/icon": "^1.11.0",
     "@nuxt/image": "1.10.0",
     "@nuxt/ui": "^2.21.0",
-    "@nuxtjs/robots": "^5.2.4",
+    "@nuxtjs/robots": "^5.2.8",
     "@pinia/nuxt": "^0.10.1",
-    "@playwright/test": "^1.50.1",
+    "@playwright/test": "^1.51.1",
     "@vueuse/core": "^13.0.0",
     "@vueuse/nuxt": "^13.0.0",
-    "eslint": "^9.21.0",
+    "eslint": "^9.23.0",
     "firestore-rest-parser": "^1.1.1",
     "linkify-html": "^4.2.0",
     "linkifyjs": "^4.2.0",
