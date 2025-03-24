@@ -9,7 +9,7 @@ defineProps<{
 <template>
   <button
     aria-label="Toggle Sort"
-    class="bg-slate-200 p-4 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-900 flex"
+    class="bg-slate-200 p-4 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-900 flex cursor-pointer"
   >
     <Icon
       v-if="sortOrder === 'asc'"

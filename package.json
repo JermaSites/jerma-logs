@@ -29,7 +29,6 @@
     "linkifyjs": "^4.2.0",
     "nuxt": "^3.16.1",
     "nuxt-gtag": "^3.0.2",
-    "nuxt-headlessui": "^1.2.0",
     "pinia": "^3.0.1",
     "pinia-plugin-persistedstate": "^4.2.0",
     "vue": "^3.5.13",

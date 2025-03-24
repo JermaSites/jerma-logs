@@ -6,9 +6,7 @@ export default defineNuxtConfig({
   modules: [
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
-    'nuxt-headlessui',
     '@vueuse/nuxt',
-    '@nuxtjs/color-mode',
     '@nuxtjs/robots',
     '@nuxt/image',
     '@nuxt/fonts',
@@ -47,10 +45,6 @@ export default defineNuxtConfig({
       httpOnly: false,
     },
     storage: 'cookies',
-  },
-
-  colorMode: {
-    classSuffix: '',
   },
 
   runtimeConfig: {
