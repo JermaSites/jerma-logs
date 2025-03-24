@@ -2,6 +2,8 @@
 import type { Messaging } from 'firebase/messaging'
 import { getMessaging, isSupported } from 'firebase/messaging'
 
+const emit = defineEmits<{ close: [boolean] }>()
+
 const settingsStore = useSettingsStore()
 
 const { messageNotifications, susNotifications } = storeToRefs(settingsStore)
@@ -70,10 +72,18 @@ const lightModeEnabled = computed({
 
 <template>
   <div class=" bg-slate-50 dark:bg-slate-800">
-    <div class="p-4 bg-slate-300  dark:bg-slate-900">
+    <div class="flex items-center justify-between p-4 bg-slate-300  dark:bg-slate-900">
       <h1 class="text-4xl font-medium">
         Settings
       </h1>
+
+      <div class="flex">
+        <UIcon
+          name="heroicons-solid:x-circle"
+          class="size-8 cursor-pointer text-blue-500"
+          @click="emit('close', true)"
+        />
+      </div>
     </div>
 
     <section class="p-4">

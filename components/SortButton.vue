@@ -11,11 +11,11 @@ defineProps<{
     aria-label="Toggle Sort"
     class="bg-slate-200 p-4 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-900 flex cursor-pointer"
   >
-    <Icon
+    <UIcon
       v-if="sortOrder === 'asc'"
       name="heroicons-solid:bars-arrow-down"
-      class="h-6 w-6 text-blue-500"
+      class="size-6 text-blue-500"
     />
-    <Icon v-else name="heroicons-solid:bars-arrow-up" class="h-6 w-6 text-blue-500" />
+    <UIcon v-else name="heroicons-solid:bars-arrow-up" class="size-6 text-blue-500" />
   </button>
 </template>

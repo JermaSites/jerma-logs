@@ -9,9 +9,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxtjs/robots',
     '@nuxt/image',
-    '@nuxt/fonts',
     '@nuxt/ui',
-    '@nuxt/icon',
     'nuxt-gtag',
   ],
 

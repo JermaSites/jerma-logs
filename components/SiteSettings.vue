@@ -20,6 +20,8 @@ const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
 
 const isMobileScreen = useMediaQuery('(max-width: 768px)')
+
+const open = ref(false)
 </script>
 
 <template>
@@ -31,11 +33,11 @@ const isMobileScreen = useMediaQuery('(max-width: 768px)')
       />
     </div>
     <div>
-      <UModal :fullscreen="isMobileScreen" title="settings" description="settings" :ui="{ content: 'max-w-3xl shadow-2xl', overlay: 'backdrop-blur-sm' }">
+      <UModal v-model:open="open" :fullscreen="isMobileScreen" title="settings" description="settings" :ui="{ content: 'max-w-3xl shadow-2xl', overlay: 'backdrop-blur-sm' }">
         <SettingsButton />
 
         <template #content>
-          <SettingsDialog />
+          <SettingsDialog @close="open = false" />
         </template>
       </UModal>
     </div>
