@@ -103,6 +103,7 @@ const lightModeEnabled = computed({
           label="Enable message notifications"
           description="Get notified when Jerma sends a message in twitch chat"
           class="mb-4"
+          :ui="{ base: 'data-[state=unchecked]:bg-slate-400' }"
         />
 
         <USwitch
@@ -113,6 +114,7 @@ const lightModeEnabled = computed({
           label="Enable SUS! notifications"
           description="Get notified when the sus is updated"
           class="mb-4"
+          :ui="{ base: 'data-[state=unchecked]:bg-slate-400' }"
         />
       </div>
 
@@ -131,6 +133,7 @@ const lightModeEnabled = computed({
           label="Hide message timestamps"
           description="Hide the timestamps next to messages"
           class="mb-4"
+          :ui="{ base: 'data-[state=unchecked]:bg-slate-400' }"
         />
 
         <USwitch
@@ -140,6 +143,7 @@ const lightModeEnabled = computed({
           label="Enable light mode"
           description="Sets the sites theme to a lighter color"
           class="mb-4"
+          :ui="{ base: 'data-[state=unchecked]:bg-slate-400' }"
         />
       </div>
     </section>
