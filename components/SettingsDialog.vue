@@ -6,7 +6,7 @@ const emit = defineEmits<{ close: [boolean] }>()
 
 const settingsStore = useSettingsStore()
 
-const { messageNotifications, susNotifications } = storeToRefs(settingsStore)
+const { messageNotifications, susNotifications, testNotifications } = storeToRefs(settingsStore)
 
 const notificationPermission = usePermission('notifications')
 
@@ -28,16 +28,6 @@ onMounted(async () => {
 
 const { getTokenAndSubscribeToTopic, getTokenAndUnsubscribeToTopic } = useFCM()
 
-watch(susNotifications, async () => {
-  if (!messaging.value)
-    return
-
-  if (susNotifications.value)
-    getTokenAndSubscribeToTopic(messaging.value, 'message')
-  else if (notificationPermission.value === 'granted')
-    getTokenAndUnsubscribeToTopic(messaging.value, 'message')
-})
-
 watch(messageNotifications, async () => {
   if (!messaging.value)
     return
@@ -46,6 +36,32 @@ watch(messageNotifications, async () => {
     getTokenAndSubscribeToTopic(messaging.value, 'message')
   else if (notificationPermission.value === 'granted')
     getTokenAndUnsubscribeToTopic(messaging.value, 'message')
+})
+
+watch(susNotifications, async () => {
+  if (!messaging.value)
+    return
+
+  if (susNotifications.value)
+    getTokenAndSubscribeToTopic(messaging.value, 'sus')
+  else if (notificationPermission.value === 'granted')
+    getTokenAndUnsubscribeToTopic(messaging.value, 'sus')
+})
+
+const route = useRoute()
+
+const isDev = computed(() => {
+  return Object.hasOwn(route.query, 'test')
+})
+
+watch(testNotifications, async () => {
+  if (!messaging.value)
+    return
+
+  if (testNotifications.value)
+    getTokenAndSubscribeToTopic(messaging.value, 'test')
+  else if (notificationPermission.value === 'granted')
+    getTokenAndUnsubscribeToTopic(messaging.value, 'test')
 })
 
 // set all notification settings to false if permission is denied
@@ -113,6 +129,18 @@ const lightModeEnabled = computed({
           size="xl"
           label="Enable SUS! notifications"
           description="Get notified when the sus is updated"
+          class="mb-4"
+          :ui="{ base: 'data-[state=unchecked]:bg-slate-400' }"
+        />
+
+        <USwitch
+          v-if="isDev"
+          v-model="testNotifications"
+          :disabled="notificationPermissoinDenied"
+          color="secondary"
+          size="xl"
+          label="Enable test notifications"
+          description="Get notified when a test message is sent"
           class="mb-4"
           :ui="{ base: 'data-[state=unchecked]:bg-slate-400' }"
         />
