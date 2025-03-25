@@ -7,11 +7,13 @@ const { messageNotifications, susNotifications, testNotifications } = storeToRef
 
 const notificationPermission = usePermission('notifications')
 
-const notificationPermissoinDenied = computed(() => {
-  return notificationPermission.value === 'denied'
-})
+const { isSupported, getTokenAndSubscribeToTopic, getTokenAndUnsubscribeToTopic } = useFCM()
 
-const { getTokenAndSubscribeToTopic, getTokenAndUnsubscribeToTopic } = useFCM()
+const isMessagingSupported = await isSupported()
+
+const notificationPermissoinDenied = computed(() => {
+  return notificationPermission.value === 'denied' || !isMessagingSupported
+})
 
 watch(messageNotifications, async () => {
   if (messageNotifications.value)

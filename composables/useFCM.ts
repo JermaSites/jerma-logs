@@ -1,5 +1,5 @@
 import { httpsCallable } from 'firebase/functions'
-import { getMessaging, getToken } from 'firebase/messaging'
+import { getMessaging, getToken, isSupported } from 'firebase/messaging'
 
 const { app, functions } = useFirebase()
 
@@ -48,5 +48,5 @@ async function getTokenAndUnsubscribeToTopic(topic: string) {
 }
 
 export function useFCM() {
-  return { getTokenAndSubscribeToTopic, getTokenAndUnsubscribeToTopic }
+  return { isSupported, getTokenAndSubscribeToTopic, getTokenAndUnsubscribeToTopic }
 }
