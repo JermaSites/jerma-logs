@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import type { Messaging } from 'firebase/messaging'
-import { getMessaging, isSupported } from 'firebase/messaging'
-
 const emit = defineEmits<{ close: [boolean] }>()
 
 const settingsStore = useSettingsStore()
@@ -14,38 +11,20 @@ const notificationPermissoinDenied = computed(() => {
   return notificationPermission.value === 'denied'
 })
 
-const messaging = ref<Messaging>()
-const { app } = useFirebase()
-
-// check for FCM support
-onMounted(async () => {
-  const messageSupport = await isSupported()
-  if (!messageSupport)
-    return
-
-  messaging.value = getMessaging(app)
-})
-
 const { getTokenAndSubscribeToTopic, getTokenAndUnsubscribeToTopic } = useFCM()
 
 watch(messageNotifications, async () => {
-  if (!messaging.value)
-    return
-
   if (messageNotifications.value)
-    getTokenAndSubscribeToTopic(messaging.value, 'message')
+    getTokenAndSubscribeToTopic('message')
   else if (notificationPermission.value === 'granted')
-    getTokenAndUnsubscribeToTopic(messaging.value, 'message')
+    getTokenAndUnsubscribeToTopic('message')
 })
 
 watch(susNotifications, async () => {
-  if (!messaging.value)
-    return
-
   if (susNotifications.value)
-    getTokenAndSubscribeToTopic(messaging.value, 'sus')
+    getTokenAndSubscribeToTopic('sus')
   else if (notificationPermission.value === 'granted')
-    getTokenAndUnsubscribeToTopic(messaging.value, 'sus')
+    getTokenAndUnsubscribeToTopic('sus')
 })
 
 const route = useRoute()
@@ -55,13 +34,10 @@ const isDev = computed(() => {
 })
 
 watch(testNotifications, async () => {
-  if (!messaging.value)
-    return
-
   if (testNotifications.value)
-    getTokenAndSubscribeToTopic(messaging.value, 'test')
+    getTokenAndSubscribeToTopic('test')
   else if (notificationPermission.value === 'granted')
-    getTokenAndUnsubscribeToTopic(messaging.value, 'test')
+    getTokenAndUnsubscribeToTopic('test')
 })
 
 // set all notification settings to false if permission is denied

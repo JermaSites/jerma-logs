@@ -1,18 +1,17 @@
-import type { Messaging } from 'firebase/messaging'
 import { httpsCallable } from 'firebase/functions'
-import { getToken } from 'firebase/messaging'
+import { getMessaging, getToken } from 'firebase/messaging'
 
-const { functions } = useFirebase()
+const { app, functions } = useFirebase()
 
 const subscribeToTopic = httpsCallable(functions, 'subscribeToTopic')
 
 const unsubscribeFromTopic = httpsCallable(functions, 'unsubscribeFromTopic')
 
-async function getFCMToken(messaging: Messaging) {
+async function getFCMToken() {
   const vapidKey = 'BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8'
 
   try {
-    return await getToken(messaging, { vapidKey })
+    return await getToken(getMessaging(app), { vapidKey })
   }
   catch (error) {
     console.error('Error getting FCM token:', error)
@@ -20,12 +19,9 @@ async function getFCMToken(messaging: Messaging) {
   }
 }
 
-async function getTokenAndSubscribeToTopic(
-  messaging: Messaging,
-  topic: string,
-) {
+async function getTokenAndSubscribeToTopic(topic: string) {
   try {
-    const currentToken = await getFCMToken(messaging)
+    const currentToken = await getFCMToken()
 
     await subscribeToTopic({
       token: currentToken,
@@ -37,12 +33,9 @@ async function getTokenAndSubscribeToTopic(
   }
 }
 
-async function getTokenAndUnsubscribeToTopic(
-  messaging: Messaging,
-  topic: string,
-) {
+async function getTokenAndUnsubscribeToTopic(topic: string) {
   try {
-    const currentToken = await getFCMToken(messaging)
+    const currentToken = await getFCMToken()
 
     await unsubscribeFromTopic({
       token: currentToken,
