@@ -15,39 +15,36 @@ const notificationPermissoinDenied = computed(() => {
   return notificationPermission.value === 'denied' || !isMessagingSupported
 })
 
-watch(messageNotifications, async () => {
-  if (messageNotifications.value)
-    getTokenAndSubscribeToTopic('message')
-  else if (notificationPermission.value === 'granted')
-    getTokenAndUnsubscribeToTopic('message')
-})
-
-watch(susNotifications, async () => {
-  if (susNotifications.value)
-    getTokenAndSubscribeToTopic('sus')
-  else if (notificationPermission.value === 'granted')
-    getTokenAndUnsubscribeToTopic('sus')
-})
-
 const route = useRoute()
 
 const isDev = computed(() => {
   return Object.hasOwn(route.query, 'test')
 })
 
-watch(testNotifications, async () => {
+// set all notification settings to false if permission is denied
+watchEffect(() => {
+  if (!!notificationPermission.value && notificationPermission.value !== 'granted') {
+    messageNotifications.value = false
+    susNotifications.value = false
+    testNotifications.value = false
+  }
+})
+
+watchEffect(async () => {
+  if (messageNotifications.value)
+    getTokenAndSubscribeToTopic('message')
+  else if (notificationPermission.value === 'granted')
+    getTokenAndUnsubscribeToTopic('message')
+
+  if (susNotifications.value)
+    getTokenAndSubscribeToTopic('sus')
+  else if (notificationPermission.value === 'granted')
+    getTokenAndUnsubscribeToTopic('sus')
+
   if (testNotifications.value)
     getTokenAndSubscribeToTopic('test')
   else if (notificationPermission.value === 'granted')
     getTokenAndUnsubscribeToTopic('test')
-})
-
-// set all notification settings to false if permission is denied
-watchEffect(() => {
-  if (!!notificationPermission.value && notificationPermission.value !== 'granted') {
-    susNotifications.value = false
-    messageNotifications.value = false
-  }
 })
 
 const { hideMessageTimestamps } = storeToRefs(settingsStore)
