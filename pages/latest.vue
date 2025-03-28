@@ -8,11 +8,6 @@ import {
   where,
 } from 'firebase/firestore'
 
-useServerSeoMeta({
-  title: 'Jerma Logs | Latest',
-  ogTitle: 'Jerma Logs | Latest',
-})
-
 definePageMeta({
   breadcrumb: [
     {

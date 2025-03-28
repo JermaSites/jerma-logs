@@ -5,8 +5,7 @@ import type { Breadcrumb } from '@/types'
 const route = useRoute()
 
 useSeoMeta({
-  title: `Jerma Logs | ${route.params.year}`,
-  ogTitle: `Jerma Logs | ${route.params.year}`,
+  title: `${route.params.year}`,
 })
 
 definePageMeta({

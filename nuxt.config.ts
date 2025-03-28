@@ -11,7 +11,15 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxt/ui',
     'nuxt-gtag',
+    '@nuxtjs/seo',
   ],
+
+  site: {
+    url: 'https://logs.jerma.io',
+    name: 'Jerma Logs',
+    description: 'Jerma985\'s twitch chat logs',
+    defaultLocale: 'en',
+  },
 
   css: ['~/assets/css/main.css'],
 

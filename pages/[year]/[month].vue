@@ -15,10 +15,7 @@ const route = useRoute()
 const { capitalize } = useCapitalize()
 
 useSeoMeta({
-  title: `Jerma Logs | ${route.params.year} | ${capitalize(route.params.month as string)}`,
-  ogTitle: `Jerma Logs | ${capitalize(route.params.month as string)} ${
-    route.params.year
-  }`,
+  title: `${capitalize(route.params.month as string)} | ${route.params.year}`,
 })
 
 definePageMeta({
