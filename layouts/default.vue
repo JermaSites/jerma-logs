@@ -8,6 +8,7 @@ useHead({
 
 useSeoMeta({
   ogImage: 'https://logs.jerma.io/logo.png',
+  twitterCard: 'summary',
 })
 
 const settingsStore = useSettingsStore()
