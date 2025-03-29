@@ -6,18 +6,9 @@ useHead({
   },
 })
 
-// useSeoMeta({
-//   // title: 'Jerma Logs',
-//   description: 'Jerma985\'s twitch chat logs',
-//   ogTitle: 'Jerma Logs',
-//   ogDescription: 'Jerma985\'s twitch chat logs',
-//   ogImage: 'https://logs.jerma.io/logo.png',
-//   ogUrl: 'https://logs.jerma.io',
-//   twitterTitle: 'Jerma Logs',
-//   twitterDescription: 'Jerma985\'s twitch chat logs',
-//   twitterImage: 'https://logs.jerma.io/logo.png',
-//   twitterCard: 'summary',
-// })
+useSeoMeta({
+  ogImage: 'https://logs.jerma.io/logo.png',
+})
 
 const settingsStore = useSettingsStore()
 
