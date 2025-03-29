@@ -29,7 +29,7 @@ onMounted(() => {
     <main class="container mx-auto px-4 md:max-w-6xl">
       <div class="flex justify-between">
         <SiteBreadcrumb />
-        <SiteSettings />
+        <LazySiteSettings hydrate-on-interaction="mouseover" />
       </div>
       <slot />
     </main>
