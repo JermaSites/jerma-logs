@@ -21,6 +21,10 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
   },
 
+  ogImage: {
+    enabled: false,
+  },
+
   css: ['~/assets/css/main.css'],
 
   gtag: {
