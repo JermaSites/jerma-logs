@@ -90,6 +90,14 @@ watchEffect(() => {
         <hr class="border-slate-400">
       </div>
 
+      <div v-if="notificationPermissoinDenied" class="mb-4 p-4 bg-red-500 dark:bg-red-900 rounded text-center text-white">
+        <h3 class="text-2xl">
+          Notifications are disabled or blocked
+        </h3>
+        <p>Please allow notifications in your web browser</p>
+        <p>If on iOS add to Home Screen to allow notifications</p>
+      </div>
+
       <div>
         <USwitch
           v-model="messageNotifications"
