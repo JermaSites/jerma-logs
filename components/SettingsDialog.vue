@@ -47,7 +47,7 @@ watchEffect(async () => {
     getTokenAndUnsubscribeToTopic('test')
 })
 
-const { hideMessageTimestamps } = storeToRefs(settingsStore)
+const { hideMessageTimestamps, colorModeValue } = storeToRefs(settingsStore)
 
 const colorMode = useColorMode()
 
@@ -58,6 +58,11 @@ const lightModeEnabled = computed({
   set(enableLightMode) {
     colorMode.preference = enableLightMode ? 'light' : 'dark'
   },
+})
+
+watchEffect(() => {
+  if (colorMode.value !== 'system')
+    colorModeValue.value = colorMode.value
 })
 </script>
 
