@@ -90,8 +90,8 @@ watchEffect(() => {
         <hr class="border-slate-400">
       </div>
 
-      <div v-if="notificationPermissoinDenied" class="mb-4 p-4 bg-red-500 dark:bg-red-900 rounded text-center text-white">
-        <h3 class="text-2xl">
+      <div v-if="notificationPermissoinDenied" class="mb-4 p-4 bg-red-500 dark:bg-red-900 rounded text-center text-xl text-white">
+        <h3 class="text-4xl mb-4">
           Notifications are disabled or blocked
         </h3>
         <p>Please allow notifications in your web browser</p>
