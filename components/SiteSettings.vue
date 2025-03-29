@@ -37,7 +37,7 @@ const open = ref(false)
         <SettingsButton />
 
         <template #content>
-          <SettingsDialog @close="open = false" />
+          <LazySettingsDialog @close="open = false" />
         </template>
       </UModal>
     </div>

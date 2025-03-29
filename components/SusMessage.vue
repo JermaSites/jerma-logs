@@ -61,11 +61,6 @@ const parsedSusMessage = computed(() => parseEmotes(formattedSusMessage.value))
 
     <div v-else class="bg-slate-200 p-4 dark:bg-slate-800">
       <p v-html="parsedSusMessage" />
-      <!-- <span v-for="(token, index) in parsedSusMessage" :key="index"> -->
-      <!-- Check if token is a string or a component -->
-      <!-- <template v-if="typeof token === 'string'">{{ token }}</template>
-        <template v-else><component :is="token" /></template>
-      </span> -->
     </div>
   </div>
 </template>
