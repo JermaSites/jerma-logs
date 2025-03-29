@@ -1,14 +1,4 @@
 <script setup lang="ts">
-import type { Breadcrumb, BreadcrumbFunction } from '@/types'
-
-definePageMeta({
-  breadcrumb: [
-    {
-      label: 'Home',
-    },
-  ] as Breadcrumb[] | BreadcrumbFunction,
-})
-
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
 </script>

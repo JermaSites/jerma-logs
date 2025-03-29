@@ -40,14 +40,6 @@ definePageMeta({
     ]
     return months.includes(month)
   },
-  breadcrumb(route: RouteLocationNormalizedLoaded): Breadcrumb[] {
-    const { year, month } = route.params as { year: string, month: string }
-    return [
-      { label: 'Home', to: { name: 'index' } },
-      { label: year, to: { name: 'year', params: { year } } },
-      { label: month },
-    ]
-  },
 })
 
 const { fetchEmotes, parseEmotes } = useEmotes()

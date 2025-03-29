@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Breadcrumb, Message } from '@/types'
+import type { Message } from '@/types'
 import type { Unsubscribe } from 'firebase/firestore'
 import {
   collection,
@@ -7,18 +7,6 @@ import {
   query,
   where,
 } from 'firebase/firestore'
-
-definePageMeta({
-  breadcrumb: [
-    {
-      label: 'Home',
-      to: { name: 'index' },
-    },
-    {
-      label: 'Latest',
-    },
-  ] as Breadcrumb[],
-})
 
 const { fetchEmotes, parseEmotes } = useEmotes()
 const { fetchBadges, parseBadges } = useBadges()
