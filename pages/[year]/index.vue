@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import type { RouteLocationNormalizedLoaded } from '#vue-router'
-import type { Breadcrumb } from '@/types'
-
 const route = useRoute()
 
 useSeoMeta({

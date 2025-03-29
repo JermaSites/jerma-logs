@@ -33,7 +33,7 @@ onMounted(() => {
       </div>
       <slot />
     </main>
-    <SiteFooter />
+    <LazySiteFooter hydrate-never />
   </UApp>
 </template>
 

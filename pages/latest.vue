@@ -66,7 +66,7 @@ onUnmounted(() => {
 <template>
   <section>
     <div v-if="status === 'pending'">
-      <SimpleListSkeleton :rows="10" />
+      <LazySimpleListSkeleton :rows="10" />
     </div>
 
     <div v-else-if="sortedMessages && sortedMessages.length !== 0" class="flex flex-col">

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { RouteLocationNormalizedLoaded } from '#vue-router'
-import type { Breadcrumb, Message } from '@/types'
+import type { Message } from '@/types'
 import type { Unsubscribe } from 'firebase/firestore'
 
 import {

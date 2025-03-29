@@ -10,7 +10,7 @@ const breadcrumbs = useBreadcrumbItems()
       </NuxtLink>
       /
     </div>
-    <span>{{ breadcrumbs.at(-1).label }}</span>
+    <span>{{ breadcrumbs.at(-1)?.label }}</span>
   </div>
 </template>
 
