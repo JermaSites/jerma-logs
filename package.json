@@ -22,11 +22,11 @@
     "@vueuse/core": "^13.0.0",
     "@vueuse/nuxt": "^13.0.0",
     "dayjs": "^1.11.13",
-    "firebase": "^11.5.0",
+    "firebase": "^11.6.0",
     "firestore-rest-parser": "^1.1.1",
     "linkify-html": "^4.2.0",
     "linkifyjs": "^4.2.0",
-    "nuxt": "^3.16.1",
+    "nuxt": "^3.16.2",
     "nuxt-gtag": "^3.0.2",
     "pinia": "^3.0.1",
     "pinia-plugin-persistedstate": "^4.2.0",
@@ -34,7 +34,7 @@
     "vue-router": "^4.5.0"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.37.0"
+    "@rollup/rollup-linux-x64-gnu": "4.38.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.11.0",
