@@ -17,7 +17,7 @@
     "@nuxt/image": "1.10.0",
     "@nuxt/ui": "^3.0.2",
     "@nuxtjs/robots": "^5.2.8",
-    "@nuxtjs/seo": "^3.0.1",
+    "@nuxtjs/seo": "^3.0.2",
     "@pinia/nuxt": "^0.10.1",
     "@vueuse/core": "^13.0.0",
     "@vueuse/nuxt": "^13.0.0",
@@ -34,7 +34,7 @@
     "vue-router": "^4.5.0"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.38.0"
+    "@rollup/rollup-linux-x64-gnu": "4.39.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.11.0",
