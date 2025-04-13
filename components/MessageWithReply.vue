@@ -64,7 +64,7 @@ const formattedMessage = computed(() => {
     <div>
       <div class="inline-flex justify-center items-center bg-slate-100 shadow dark:bg-slate-950 p-1.5 text-sm italic">
         <UIcon name="heroicons-solid:reply" class="size-4 mr-1 center" />
-        <span class="dark:text-slate-400">Replying to:</span>
+        <span class="text-slate-500 dark:text-slate-400">Replying to:</span>
         <span class="ml-1">{{ replyMessage }}</span>
       </div>
       <div class="ml-3" data-testid="message" v-html="formattedMessage" />
