@@ -4,6 +4,7 @@ const props = defineProps<{
   displayName: string
   color: string
   message: string
+  replyMessage?: string
   badges: {
     name: string
     url: string
@@ -28,6 +29,12 @@ const messageSentAtTimeAgo = computed(() => {
 
 const messageColor = computed(() => {
   return dynamicHue(props.color, colorModeValue.value)
+})
+
+const formattedMessage = computed(() => {
+  const splitMsg = props.message.split(' ')
+  splitMsg.shift()
+  return splitMsg.join(' ')
 })
 </script>
 
@@ -57,7 +64,15 @@ const messageColor = computed(() => {
       <span :style="{ color: messageColor }" class="font-bold" data-testid="display-name">
         {{ displayName }} </span>:
     </div>
-    <div data-testid="message" v-html="message" />
+    <div>
+      <div v-if="replyMessage" class="inline-flex justify-center items-center bg-slate-100 shadow dark:bg-slate-950 p-1.5 text-sm italic">
+        <UIcon name="heroicons-solid:reply" class="size-4 mr-1 center" />
+        <span class="text-slate-500 dark:text-slate-400">Replying to:</span>
+        <span class="ml-1">{{ replyMessage }}</span>
+      </div>
+      <div v-if="!replyMessage" data-testid="message" v-html="message" />
+      <div v-else class="ml-3" data-testid="message" v-html="formattedMessage" />
+    </div>
   </div>
 </template>
 

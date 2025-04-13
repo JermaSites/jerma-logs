@@ -81,7 +81,7 @@ onUnmounted(() => {
             :badges="parseBadges(message.badges)"
           />
 
-          <MessageWithReply
+          <Message
             v-else
             :sent-at="message.sentAt"
             :display-name="message.displayName"
