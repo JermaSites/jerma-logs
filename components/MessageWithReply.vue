@@ -62,12 +62,12 @@ const formattedMessage = computed(() => {
       <span :style="{ color: messageColor }" class="font-bold" data-testid="display-name">{{ displayName }}</span>:
     </div>
     <div>
-      <div class="inline-flex justify-center items-center bg-slate-950 p-1.5 text-sm italic">
+      <div class="inline-flex justify-center items-center bg-slate-100 shadow dark:bg-slate-950 p-1.5 text-sm italic">
         <UIcon name="heroicons-solid:reply" class="size-4 mr-1 center" />
-        <span class="text-slate-400">Replying to:</span>
+        <span class="dark:text-slate-400">Replying to:</span>
         <span class="ml-1">{{ replyMessage }}</span>
       </div>
-      <div class="ml-4" data-testid="message" v-html="formattedMessage" />
+      <div class="ml-3" data-testid="message" v-html="formattedMessage" />
     </div>
   </div>
 </template>
