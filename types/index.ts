@@ -67,6 +67,21 @@ export interface Message {
   id: string
   userType: string | null
   username: string
+  reply?: {
+    parent: {
+      displayName: string
+      msgBody: string
+      msgID: string
+      userID: string
+      userLogin: string
+    }
+    threadParent: {
+      displayName: string
+      msgID: string
+      userID: string
+      userLogin: string
+    }
+  }
 }
 
 export interface Breadcrumb {
