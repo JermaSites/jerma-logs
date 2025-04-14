@@ -2,7 +2,7 @@
 import type { AlgoliaIndex, Message } from '~/types'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 
-const { db } = useFirebase()
+const { y } = useWindowScroll({ behavior: 'smooth' })
 
 const { fetchEmotes, parseEmotes } = useEmotes()
 const { fetchBadges, parseBadges } = useBadges()
@@ -10,25 +10,16 @@ const { fetchBadges, parseBadges } = useBadges()
 fetchEmotes()
 fetchBadges()
 
-const searchValue = ref('')
 const { result, search } = useAlgoliaSearch<AlgoliaIndex>('messages')
-
-const { twitchUsername } = useRuntimeConfig().public
-
-const firebaseMessages = ref<Message[]>()
-
-const loading = ref(false)
 
 const hasResults = computed(() => {
   return result.value && result.value.hits && result.value.hits.length > 0
 })
 
-const page = ref(1)
-
-function newSearch() {
-  page.value = 1
-  search({ query: searchValue.value })
-}
+const { db } = useFirebase()
+const firebaseMessages = ref<Message[]>()
+const { twitchUsername } = useRuntimeConfig().public
+const loading = ref(false)
 
 watch(result, async () => {
   if (!hasResults.value)
@@ -44,8 +35,8 @@ watch(result, async () => {
   try {
     loading.value = true
     const querySnapshot = await getDocs(q)
-
     firebaseMessages.value = querySnapshot.docs.map(doc => doc.data() as Message)
+    y.value = 0
   }
   catch (error) {
     console.error(error)
@@ -54,6 +45,14 @@ watch(result, async () => {
     loading.value = false
   }
 })
+
+const page = ref(1)
+const searchValue = ref('')
+
+function newSearch() {
+  page.value = 1
+  search({ query: searchValue.value })
+}
 
 watch(page, (newPage) => {
   search({ query: searchValue.value, requestOptions: { page: newPage - 1 } })
@@ -103,7 +102,12 @@ watch(page, (newPage) => {
   </section>
 
   <section v-if="hasResults" class="flex justify-center items-center p-4">
-    <UPagination v-model:page="page" :total="result.nbHits" :items-per-page="result.hitsPerPage" />
+    <UPagination
+      v-model:page="page"
+      size="xl"
+      :total="result.nbHits"
+      :items-per-page="result.hitsPerPage"
+    />
   </section>
 </template>
 

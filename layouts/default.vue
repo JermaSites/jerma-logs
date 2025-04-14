@@ -24,7 +24,7 @@ onMounted(() => {
   <UApp>
     <NuxtLoadingIndicator />
 
-    <SiteHeader class="mb-4" />
+    <SiteHeader hydrate-never class="mb-4" />
 
     <main class="container mx-auto px-4 md:max-w-6xl">
       <div class="flex justify-between">

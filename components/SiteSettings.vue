@@ -33,6 +33,7 @@ const open = ref(false)
     </NuxtLink>
     <div>
       <SortButton
+        v-if="route.name !== 'search'"
         :sort-order="sortOrder[sortId]"
         @click="sortStore.toggleSortOrder(sortId)"
       />
