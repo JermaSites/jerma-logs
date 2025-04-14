@@ -25,9 +25,12 @@ const hasResults = computed(() => {
 
 const page = ref(1)
 
-watch(result, async () => {
+function newSearch() {
   page.value = 1
+  search({ query: searchValue.value })
+}
 
+watch(result, async () => {
   if (!hasResults.value)
     return
 
@@ -66,13 +69,13 @@ watch(page, (newPage) => {
       variant="outline"
       placeholder="Search..."
       class="w-full"
-      @keydown.enter="search({ query: searchValue })"
+      @keydown.enter="newSearch"
     />
   </section>
 
   <section>
     <div v-if="loading">
-      <LazySimpleListSkeleton :rows="10" />
+      <LazySimpleListSkeleton :rows="20" />
     </div>
 
     <SimpleList v-else>
