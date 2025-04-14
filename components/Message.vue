@@ -31,7 +31,7 @@ const messageColor = computed(() => {
   return dynamicHue(props.color, colorModeValue.value)
 })
 
-const formattedMessage = computed(() => {
+const truncatedMessage = computed(() => {
   const splitMsg = props.message.split(' ')
   splitMsg.shift()
   return splitMsg.join(' ')
@@ -70,12 +70,12 @@ const formattedMessage = computed(() => {
           <UIcon name="heroicons-solid:reply" class="size-4 mr-1" />
           Replying to:
         </div>
-        <div class="ml-1">
+        <div>
           {{ replyMessage }}
         </div>
       </div>
       <div v-if="!replyMessage" data-testid="message" v-html="message" />
-      <div v-else class="ml-3" data-testid="message" v-html="formattedMessage" />
+      <div v-else class="ml-3" data-testid="message" v-html="truncatedMessage" />
     </div>
   </div>
 </template>
