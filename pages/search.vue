@@ -70,7 +70,18 @@ watch(page, (newPage) => {
       placeholder="Search..."
       class="w-full"
       @keydown.enter="newSearch"
-    />
+    >
+      <template v-if="searchValue?.length" #trailing>
+        <UButton
+          color="neutral"
+          variant="link"
+          size="xl"
+          icon="heroicons-solid:x-circle"
+          aria-label="Clear input"
+          @click="searchValue = ''"
+        />
+      </template>
+    </UInput>
   </section>
 
   <section>
