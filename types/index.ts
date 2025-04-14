@@ -2,6 +2,10 @@ import type { RouteLocationNormalizedLoaded } from '#vue-router'
 
 export type SortOrder = 'asc' | 'desc'
 
+export interface AlgoliaIndex {
+  message: string
+}
+
 export interface SortableCategories {
   year: SortOrder
   month: SortOrder

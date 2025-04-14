@@ -12,6 +12,7 @@ export default defineNuxtConfig({
     '@nuxt/ui',
     'nuxt-gtag',
     '@nuxtjs/seo',
+    '@nuxtjs/algolia',
   ],
 
   site: {
