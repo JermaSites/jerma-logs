@@ -63,6 +63,7 @@ watch(page, (newPage) => {
   <section class="my-4">
     <UInput
       v-model="searchValue"
+      color="secondary"
       icon="heroicons-solid:magnifying-glass"
       size="xl"
       variant="outline"
@@ -105,6 +106,7 @@ watch(page, (newPage) => {
     <UPagination
       v-model:page="page"
       size="xl"
+      active-color="secondary"
       :total="result.nbHits"
       :items-per-page="result.hitsPerPage"
     />
