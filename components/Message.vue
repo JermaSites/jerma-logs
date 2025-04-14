@@ -13,9 +13,9 @@ const props = defineProps<{
 
 const settingsStore = useSettingsStore()
 const dayjs = useDayjs()
+const colorMode = useColorMode()
 
-const { hideMessageTimestamps, colorModeValue, userTimezone }
-  = storeToRefs(settingsStore)
+const { hideMessageTimestamps, userTimezone } = storeToRefs(settingsStore)
 
 dayjs.tz.setDefault(userTimezone.value)
 
@@ -28,7 +28,7 @@ const messageSentAtTimeAgo = computed(() => {
 })
 
 const messageColor = computed(() => {
-  return dynamicHue(props.color, colorModeValue.value)
+  return dynamicHue(props.color, colorMode.value)
 })
 
 const truncatedMessage = computed(() => {
