@@ -65,9 +65,11 @@ const formattedMessage = computed(() => {
         {{ displayName }} </span>:
     </div>
     <div>
-      <div v-if="replyMessage" class="md:inline-flex justify-center items-center bg-slate-100 shadow dark:bg-slate-950 p-1.5 text-sm italic">
-        <UIcon name="heroicons-solid:reply" class="size-4 mr-1 center" />
-        <span class="text-slate-500 dark:text-slate-400">Replying to:</span>
+      <div v-if="replyMessage" class="inline-flex bg-slate-100 shadow dark:bg-slate-950 p-1.5 text-sm italic">
+        <div class="flex text-slate-500 dark:text-slate-400 whitespace-nowrap">
+          <UIcon name="heroicons-solid:reply" class="size-4 mr-1" />
+          Replying to:
+        </div>
         <div class="ml-1">
           {{ replyMessage }}
         </div>
