@@ -65,7 +65,13 @@ watch(page, (newPage) => {
 </script>
 
 <template>
-  <section class="my-4">
+  <section class="flex items-center my-4">
+    <NuxtImg
+      src="/Algolia-mark-blue.png"
+      class="mr-4 size-8"
+      alt="Algolia logo"
+    />
+
     <UInput
       v-model="searchValue"
       type="search"
