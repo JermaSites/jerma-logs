@@ -22,10 +22,11 @@ const { twitchUsername } = useRuntimeConfig().public
 const loading = ref(false)
 
 watch(result, async () => {
+  firebaseMessages.value = []
+
   if (!hasResults.value)
     return
 
-  firebaseMessages.value = []
   const q = query(
     collection(db, 'messages'),
     where('username', '==', twitchUsername),
@@ -54,6 +55,10 @@ function newSearch() {
   search({ query: searchValue.value })
 }
 
+function clearSearch() {
+  searchValue.value = ''
+}
+
 watch(page, (newPage) => {
   search({ query: searchValue.value, requestOptions: { page: newPage - 1 } })
 })
@@ -63,12 +68,14 @@ watch(page, (newPage) => {
   <section class="my-4">
     <UInput
       v-model="searchValue"
+      type="search"
       color="secondary"
       icon="heroicons-solid:magnifying-glass"
       size="xl"
       variant="outline"
       placeholder="Search..."
       class="w-full"
+      :loading="loading"
       @keydown.enter="newSearch"
     >
       <template v-if="searchValue?.length" #trailing>
@@ -78,7 +85,7 @@ watch(page, (newPage) => {
           size="xl"
           icon="heroicons-solid:x-circle"
           aria-label="Clear input"
-          @click="searchValue = ''"
+          @click="clearSearch"
         />
       </template>
     </UInput>
@@ -89,7 +96,7 @@ watch(page, (newPage) => {
       <LazySimpleListSkeleton :rows="20" />
     </div>
 
-    <SimpleList v-else>
+    <SimpleList v-else-if="hasResults">
       <SimpleListItem v-for="message in firebaseMessages" :key="message.id">
         <Message
           v-if="!message.reply"
@@ -111,6 +118,10 @@ watch(page, (newPage) => {
         />
       </SimpleListItem>
     </SimpleList>
+
+    <div v-else-if="result && searchValue && result.query === searchValue" class="flex justify-center items-center p-4 text-6xl">
+      <h1>No Messages Found</h1>
+    </div>
   </section>
 
   <section v-if="hasResults" class="flex justify-center items-center p-4">
