@@ -67,6 +67,14 @@ watch(page, (newPage) => {
 <template>
   <section class="flex items-center my-4">
     <NuxtImg
+      v-if="$colorMode.value === 'dark'"
+      src="/Algolia-mark-white.png"
+      class="mr-4 size-8"
+      alt="Algolia logo"
+    />
+
+    <NuxtImg
+      v-else
       src="/Algolia-mark-blue.png"
       class="mr-4 size-8"
       alt="Algolia logo"
