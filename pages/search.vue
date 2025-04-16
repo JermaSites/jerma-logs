@@ -62,20 +62,20 @@ function clearSearch() {
 watch(page, (newPage) => {
   search({ query: searchValue.value, requestOptions: { page: newPage - 1 } })
 })
+
+const colorMode = useColorMode()
+const algoliaLogo = computed(() => {
+  const darkUrl = '/Algolia-mark-white.png'
+  const lightUrl = '/Algolia-mark-blue.png'
+
+  return colorMode.value === 'dark' ? darkUrl : lightUrl
+})
 </script>
 
 <template>
   <section class="flex items-center my-4">
     <NuxtImg
-      v-if="$colorMode.value === 'dark'"
-      src="/Algolia-mark-white.png"
-      class="mr-4 size-8"
-      alt="Algolia logo"
-    />
-
-    <NuxtImg
-      v-else
-      src="/Algolia-mark-blue.png"
+      :src="algoliaLogo"
       class="mr-4 size-8"
       alt="Algolia logo"
     />
