@@ -115,6 +115,7 @@ const algoliaLogo = computed(() => {
         <Message
           v-if="!message.reply"
           :sent-at="message.sentAt"
+          sent-at-format="YYYY MMM DD hh:mm A z"
           :display-name="message.displayName"
           :color="message.color"
           :message="parseEmotes(message.message)"
@@ -124,6 +125,7 @@ const algoliaLogo = computed(() => {
         <Message
           v-else
           :sent-at="message.sentAt"
+          sent-at-format="YYYY MMM DD hh:mm A z"
           :display-name="message.displayName"
           :color="message.color"
           :message="parseEmotes(message.message)"

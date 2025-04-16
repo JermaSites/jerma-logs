@@ -75,6 +75,7 @@ onUnmounted(() => {
           <Message
             v-if="!message.reply"
             :sent-at="message.sentAt"
+            sent-at-format="MMM DD hh:mm A z"
             :display-name="message.displayName"
             :color="message.color"
             :message="parseEmotes(message.message)"
@@ -84,6 +85,7 @@ onUnmounted(() => {
           <Message
             v-else
             :sent-at="message.sentAt"
+            sent-at-format="MMM DD hh:mm A z"
             :display-name="message.displayName"
             :color="message.color"
             :message="parseEmotes(message.message)"

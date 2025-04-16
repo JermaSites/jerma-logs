@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const props = defineProps<{
   sentAt: string
+  sentAtFormat: string
   displayName: string
   color: string
   message: string
@@ -20,7 +21,7 @@ const { hideMessageTimestamps, userTimezone } = storeToRefs(settingsStore)
 dayjs.tz.setDefault(userTimezone.value)
 
 const messageSentAt = computed(() => {
-  return dayjs.tz(Number.parseInt(props.sentAt)).format('MMM DD hh:mm A z')
+  return dayjs.tz(Number.parseInt(props.sentAt)).format(props.sentAtFormat)
 })
 
 const messageSentAtTimeAgo = computed(() => {
