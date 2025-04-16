@@ -71,9 +71,7 @@ const truncatedMessage = computed(() => {
           <UIcon name="heroicons-solid:reply" class="size-4 mr-1" />
           Replying to:
         </div>
-        <div class="ml-1">
-          {{ replyMessage }}
-        </div>
+        <div class="ml-1" v-html="replyMessage" />
       </div>
       <div v-if="!replyMessage" data-testid="message" v-html="message" />
       <div v-else class="ml-1.5 mt-1.5" data-testid="message" v-html="truncatedMessage" />
