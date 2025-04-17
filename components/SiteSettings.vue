@@ -28,8 +28,8 @@ const open = ref(false)
   <div class="flex">
     <NuxtLink v-if="route.name !== 'search'" to="/search" class="mr-2">
       <div class="bg-slate-200 p-4 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-900 flex cursor-pointer">
-        <UIcon name="heroicons-solid:magnifying-glass" class="size-6 mr-2 text-blue-500" />
-        Search
+        <UIcon name="heroicons-solid:magnifying-glass" class="size-6 text-blue-500" />
+        <span class="max-sm:hidden ml-2">Search</span>
       </div>
     </NuxtLink>
     <div>
