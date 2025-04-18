@@ -1,5 +1,5 @@
 import type { EmoteMap } from '@/types'
-import linkifyHtml from 'linkify-html'
+import linkifyStr from 'linkify-string'
 
 const emoteMap = reactive<EmoteMap>(new Map())
 
@@ -14,7 +14,7 @@ async function fetchEmotes() {
 }
 
 function parseEmotes(msg: string): string {
-  return linkifyHtml(msg).replace(/\b\w+\b/g, (word) => {
+  return linkifyStr(msg).replace(/\b\w+\b/g, (word) => {
     const emote = emoteMap.get(word)
 
     if (!emote || !emote.urls?.[0]?.url)
