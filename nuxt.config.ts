@@ -7,7 +7,6 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     'pinia-plugin-persistedstate/nuxt',
     '@vueuse/nuxt',
-    '@nuxtjs/robots',
     '@nuxt/image',
     '@nuxt/ui',
     'nuxt-gtag',
