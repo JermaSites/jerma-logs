@@ -34,7 +34,7 @@
     "vue-router": "^4.5.1"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.40.0"
+    "@rollup/rollup-linux-x64-gnu": "4.40.1"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.12.0",
