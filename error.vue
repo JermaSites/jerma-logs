@@ -12,10 +12,10 @@ function handleError() {
   <NuxtLayout name="error">
     <div class="text-center">
       <h1 class="text-9xl">
-        {{ error.statusCode }}
+        {{ error?.statusCode }}
       </h1>
       <h2 class="text-6xl">
-        {{ error.message }}
+        {{ error?.message }}
       </h2>
 
       <div class="test">
