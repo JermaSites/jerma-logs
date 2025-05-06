@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@nuxt/image": "1.10.0",
-    "@nuxt/ui": "^3.1.0",
+    "@nuxt/ui": "^3.1.1",
     "@nuxtjs/algolia": "^1.11.2",
     "@nuxtjs/seo": "^3.0.3",
     "@pinia/nuxt": "^0.11.0",
@@ -26,7 +26,7 @@
     "firestore-rest-parser": "^1.1.1",
     "linkify-string": "^4.2.0",
     "linkifyjs": "^4.2.0",
-    "nuxt": "^3.17.1",
+    "nuxt": "^3.17.2",
     "nuxt-gtag": "^3.0.2",
     "pinia": "^3.0.2",
     "pinia-plugin-persistedstate": "^4.2.0",
@@ -40,7 +40,7 @@
     "@antfu/eslint-config": "^4.12.0",
     "@iconify-json/heroicons-solid": "^1.2.1",
     "@playwright/test": "^1.52.0",
-    "eslint": "^9.25.1",
+    "eslint": "^9.26.0",
     "typescript": "^5.8.3",
     "vue-tsc": "^2.2.10"
   }
