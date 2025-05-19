@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import type { Message } from '@/types'
 import type { Unsubscribe } from 'firebase/firestore'
+import type { Message } from '@/types'
 
 import {
   collection,
