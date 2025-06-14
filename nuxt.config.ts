@@ -1,3 +1,5 @@
+import process from 'node:process'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -59,12 +61,12 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       firebaseApiUrl: 'https://firestore.googleapis.com/v1beta1/projects/jerma-logs/databases/(default)/documents:runQuery',
-      twitchUsername: '',
-      twitchId: '',
+      twitchUsername: process.env.NUXT_TWITCH_USERNAME,
+      twitchId: process.env.NUXT_TWITCH_ID,
     },
-    twitchApiBaseUrl: '',
-    twitchClientId: '',
-    twitchClientSecret: '',
+    twitchApiBaseUrl: process.env.NUXT_TWITCH_API_BASE_URL,
+    twitchClientId: process.env.NUXT_TWITCH_CLIENT_ID,
+    twitchClientSecret: process.env.NUXT_TWITCH_CLIENT_SECRET,
   },
 
   typescript: {
