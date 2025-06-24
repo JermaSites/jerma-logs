@@ -37,7 +37,7 @@
     "@rollup/rollup-linux-x64-gnu": "4.44.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.15.0",
+    "@antfu/eslint-config": "^4.16.1",
     "@iconify-json/heroicons-solid": "^1.2.1",
     "@playwright/test": "^1.53.1",
     "eslint": "^9.29.0",
