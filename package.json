@@ -26,7 +26,7 @@
     "firestore-rest-parser": "^1.1.1",
     "linkify-string": "^4.3.1",
     "linkifyjs": "^4.3.1",
-    "nuxt": "^3.17.5",
+    "nuxt": "^3.17.6",
     "nuxt-gtag": "^3.0.3",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.4.1",
@@ -42,6 +42,6 @@
     "@playwright/test": "^1.53.2",
     "eslint": "^9.30.0",
     "typescript": "^5.8.3",
-    "vue-tsc": "^2.2.10"
+    "vue-tsc": "^3.0.0"
   }
 }
