@@ -14,9 +14,7 @@ const { fetchBadges, parseBadges } = useBadges()
 fetchEmotes()
 fetchBadges()
 
-const { data: messages, status } = await useFetch<Message[]>('/api/messages/latest', {
-  lazy: false,
-})
+const { data: messages, status } = await useFetch<Message[]>('/api/messages/latest')
 
 const msgStore = useMessageStore()
 msgStore.dateOfLastReadMessage = messages.value?.at(0)?.sentAt
@@ -25,7 +23,10 @@ const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
 
 const sortedMessages = computed(() => {
-  return messages?.value?.toSorted((a, b) => {
+  if (!messages.value)
+    return []
+
+  return messages.value.toSorted((a, b) => {
     if (sortOrder.value.latest === 'asc')
       return Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt)
 
