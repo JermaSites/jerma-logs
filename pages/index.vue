@@ -1,6 +1,9 @@
 <script setup lang="ts">
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
+
+const msgStore = useMessageStore()
+const { unreadMessages } = storeToRefs(msgStore)
 </script>
 
 <template>
@@ -12,7 +15,13 @@ const { sortOrder } = storeToRefs(sortStore)
     <SimpleList>
       <SimpleListItem>
         <NuxtLink :to="{ name: 'latest' }" class="block p-4 font-medium">
-          Latest Messages
+          <div class="flex items-center gap-4">
+            Latest Messages
+
+            <UBadge v-if="unreadMessages" color="info" icon="i-lucide-mail">
+              New Messages
+            </UBadge>
+          </div>
         </NuxtLink>
       </SimpleListItem>
     </SimpleList>

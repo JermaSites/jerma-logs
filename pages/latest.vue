@@ -15,8 +15,11 @@ fetchEmotes()
 fetchBadges()
 
 const { data: messages, status } = await useFetch<Message[]>('/api/messages/latest', {
-  lazy: true,
+  lazy: false,
 })
+
+const msgStore = useMessageStore()
+msgStore.dateOfLastReadMessage = messages.value?.at(0)?.sentAt
 
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
