@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Message } from '@/types'
+
 useHead({
   bodyAttrs: {
     class:
@@ -21,9 +23,9 @@ onMounted(() => {
 
 const msgStore = useMessageStore()
 
-const { data } = await useFetch('/api/messages/latest/date')
+const { data: lastMessage } = await useFetch<Message>('/api/messages/latest/lastMessage')
 
-msgStore.dateOfLatestMessage = data?.value?.sentAt
+msgStore.dateOfLatestMessage = lastMessage?.value?.sentAt
 </script>
 
 <template>
