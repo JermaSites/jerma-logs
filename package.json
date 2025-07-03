@@ -19,8 +19,8 @@
     "@nuxtjs/algolia": "^1.11.2",
     "@nuxtjs/seo": "^3.1.0",
     "@pinia/nuxt": "^0.11.1",
-    "@vueuse/core": "^13.4.0",
-    "@vueuse/nuxt": "^13.4.0",
+    "@vueuse/core": "^13.5.0",
+    "@vueuse/nuxt": "^13.5.0",
     "dayjs": "^1.11.13",
     "firebase": "^11.10.0",
     "firestore-rest-parser": "^1.1.1",
@@ -37,11 +37,11 @@
     "@rollup/rollup-linux-x64-gnu": "4.44.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.16.1",
+    "@antfu/eslint-config": "^4.16.2",
     "@iconify-json/heroicons-solid": "^1.2.1",
     "@playwright/test": "^1.53.2",
-    "eslint": "^9.30.0",
+    "eslint": "^9.30.1",
     "typescript": "^5.8.3",
-    "vue-tsc": "^3.0.0"
+    "vue-tsc": "^3.0.1"
   }
 }
