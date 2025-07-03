@@ -18,7 +18,7 @@ const { unreadMessages } = storeToRefs(msgStore)
           <div class="flex items-center gap-4">
             Latest Messages
 
-            <UBadge v-if="unreadMessages" color="info" icon="i-lucide-mail">
+            <UBadge v-if="unreadMessages" color="info" icon="heroicons-solid:mail">
               New Messages
             </UBadge>
           </div>
