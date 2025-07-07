@@ -3,8 +3,8 @@ const dayjs = useDayjs()
 export const useMessageStore = defineStore(
   'newMessages',
   () => {
-    const dateOfLatestMessage = ref()
-    const dateOfLastReadMessage = ref()
+    const dateOfLatestMessage = ref<string>('')
+    const dateOfLastReadMessage = ref<string>('')
 
     const unreadMessages = computed(() => {
       return dayjs(Number.parseInt(dateOfLatestMessage.value)).isAfter(dayjs(Number.parseInt(dateOfLastReadMessage.value)))

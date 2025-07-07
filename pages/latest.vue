@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Unsubscribe } from 'firebase/firestore'
 import type { Message } from '@/types'
+import dayjs from 'dayjs'
 import {
   collection,
   onSnapshot,
@@ -17,7 +18,8 @@ fetchBadges()
 const { data: messages, status } = await useFetch<Message[]>('/api/messages/latest')
 
 const msgStore = useMessageStore()
-msgStore.dateOfLastReadMessage = messages.value?.at(0)?.sentAt
+const lastReadMessageTimestamp = msgStore.dateOfLastReadMessage
+msgStore.dateOfLastReadMessage = messages.value?.at(0)?.sentAt || ''
 
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
@@ -65,6 +67,10 @@ onUnmounted(() => {
     return
   unsub.value()
 })
+
+function isUnread(sentAt: string) {
+  return dayjs(Number.parseInt(sentAt)).isAfter(dayjs(Number.parseInt(lastReadMessageTimestamp)))
+}
 </script>
 
 <template>
@@ -77,24 +83,14 @@ onUnmounted(() => {
       <SimpleList>
         <SimpleListItem v-for="message in sortedMessages" :key="message.id">
           <Message
-            v-if="!message.reply"
             :sent-at="message.sentAt"
             sent-at-format="MMM DD hh:mm A z"
             :display-name="message.displayName"
             :color="message.color"
             :message="parseEmotes(message.message)"
             :badges="parseBadges(message.badges)"
-          />
-
-          <Message
-            v-else
-            :sent-at="message.sentAt"
-            sent-at-format="MMM DD hh:mm A z"
-            :display-name="message.displayName"
-            :color="message.color"
-            :message="parseEmotes(message.message)"
-            :badges="parseBadges(message.badges)"
-            :reply-message="parseEmotes(message.reply.parent.msgBody)"
+            :reply-message="parseEmotes(message?.reply?.parent?.msgBody || '')"
+            :unread="isUnread(message.sentAt)"
           />
         </SimpleListItem>
       </SimpleList>

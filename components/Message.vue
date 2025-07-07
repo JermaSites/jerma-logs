@@ -10,6 +10,7 @@ const props = defineProps<{
     name: string
     url: string
   }[]
+  unread: boolean
 }>()
 
 const settingsStore = useSettingsStore()
@@ -41,7 +42,7 @@ const truncatedMessage = computed(() => {
 
 <template>
   <div
-    class="md:grid gap-1 grid-cols-[max-content_max-content_auto] p-4"
+    class="md:grid gap-1 grid-cols-[max-content_max-content_auto_min-content] p-4"
   >
     <div :title="messageSentAtTimeAgo" class="font-mono">
       <span v-show="!hideMessageTimestamps">[{{ messageSentAt }}]</span>
@@ -76,7 +77,14 @@ const truncatedMessage = computed(() => {
       <div v-if="!replyMessage" data-testid="message" v-html="message" />
       <div v-else class="ml-1.5 mt-1.5" data-testid="message" v-html="truncatedMessage" />
     </div>
+
+    <div>
+      <UBadge v-if="unread" color="info">
+        New
+      </UBadge>
+    </div>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>
