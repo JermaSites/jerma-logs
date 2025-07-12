@@ -42,7 +42,7 @@ const truncatedMessage = computed(() => {
 
 <template>
   <div
-    class="md:grid gap-1 grid-cols-[max-content_max-content_auto_min-content] p-4"
+    class="grid gap-1 md:grid-cols-[max-content_max-content_auto_min-content] relative p-4"
   >
     <div :title="messageSentAtTimeAgo" class="font-mono">
       <span v-show="!hideMessageTimestamps">[{{ messageSentAt }}]</span>
@@ -78,7 +78,7 @@ const truncatedMessage = computed(() => {
       <div v-else class="ml-1.5 mt-1.5" data-testid="message" v-html="truncatedMessage" />
     </div>
 
-    <div>
+    <div class="absolute md:static top-2 right-2">
       <UBadge v-if="unread" color="info">
         New
       </UBadge>
