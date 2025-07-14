@@ -17,9 +17,9 @@ fetchBadges()
 
 const { data: messages, status } = await useFetch<Message[]>('/api/messages/latest')
 
-const msgStore = useMessageStore()
-const lastReadMessageTimestamp = msgStore.dateOfLastReadMessage
-msgStore.dateOfLastReadMessage = messages.value?.at(0)?.sentAt || ''
+const unreadStore = useUnreadStore()
+const lastReadMessageTimestamp = unreadStore.dateOfLastReadMessage
+unreadStore.dateOfLastReadMessage = messages.value?.at(0)?.sentAt ?? ''
 
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)

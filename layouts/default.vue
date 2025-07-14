@@ -21,11 +21,11 @@ onMounted(() => {
   settingsStore.userTimezone = dayjs.tz.guess()
 })
 
-const msgStore = useMessageStore()
+const unreadStore = useUnreadStore()
 
 const { data: lastMessage } = await useFetch<Message>('/api/messages/latest/lastMessage')
 
-msgStore.dateOfLatestMessage = lastMessage?.value?.sentAt
+unreadStore.dateOfLatestMessage = lastMessage?.value?.sentAt ?? ''
 </script>
 
 <template>

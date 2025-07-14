@@ -2,8 +2,8 @@
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
 
-const msgStore = useMessageStore()
-const { unreadMessages } = storeToRefs(msgStore)
+const unreadStore = useUnreadStore()
+const { unreadMessages } = storeToRefs(unreadStore)
 </script>
 
 <template>

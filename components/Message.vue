@@ -10,7 +10,7 @@ const props = defineProps<{
     name: string
     url: string
   }[]
-  unread: boolean
+  unread?: boolean
 }>()
 
 const settingsStore = useSettingsStore()

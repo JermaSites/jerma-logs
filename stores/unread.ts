@@ -1,7 +1,7 @@
 const dayjs = useDayjs()
 
-export const useMessageStore = defineStore(
-  'newMessages',
+export const useUnreadStore = defineStore(
+  'unread',
   () => {
     const dateOfLatestMessage = ref<string>('')
     const dateOfLastReadMessage = ref<string>('')
