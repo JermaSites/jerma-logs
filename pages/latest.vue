@@ -19,6 +19,8 @@ const { data: messages, status } = await useFetch<Message[]>('/api/messages/late
 
 const unreadStore = useUnreadStore()
 const lastReadMessageTimestamp = unreadStore.dateOfLastReadMessage
+const latestMessageIndexTimestamp = unreadStore.latestMessageIndex
+unreadStore.latestMessageIndex = messages.value?.at(-1)?.sentAt ?? ''
 unreadStore.dateOfLastReadMessage = messages.value?.at(0)?.sentAt ?? ''
 
 const sortStore = useSortStore()
@@ -68,8 +70,11 @@ onUnmounted(() => {
   unsub.value()
 })
 
-function isUnread(sentAt: string) {
-  return dayjs(Number.parseInt(sentAt)).isAfter(dayjs(Number.parseInt(lastReadMessageTimestamp)))
+function showAsUnread(sentAt: string) {
+  const messageIsUnread = dayjs(Number.parseInt(sentAt)).isAfter(dayjs(Number.parseInt(lastReadMessageTimestamp)))
+  const latestMessagesHasBeenPreviouslyRead = unreadStore.latestMessageIndex === latestMessageIndexTimestamp
+
+  return messageIsUnread && latestMessagesHasBeenPreviouslyRead
 }
 </script>
 
@@ -90,7 +95,7 @@ function isUnread(sentAt: string) {
             :message="parseEmotes(message.message)"
             :badges="parseBadges(message.badges)"
             :reply-message="parseEmotes(message?.reply?.parent?.msgBody || '')"
-            :unread="isUnread(message.sentAt)"
+            :unread="showAsUnread(message.sentAt)"
           />
         </SimpleListItem>
       </SimpleList>

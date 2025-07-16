@@ -3,6 +3,7 @@ const dayjs = useDayjs()
 export const useUnreadStore = defineStore(
   'unread',
   () => {
+    const latestMessageIndex = ref<string>('')
     const dateOfLatestMessage = ref<string>('')
     const dateOfLastReadMessage = ref<string>('')
 
@@ -12,6 +13,7 @@ export const useUnreadStore = defineStore(
 
     return {
       unreadMessages,
+      latestMessageIndex,
       dateOfLatestMessage,
       dateOfLastReadMessage,
     }
