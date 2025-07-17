@@ -1,4 +1,0 @@
-{
-  // https://nuxt.com/docs/guide/directory-structure/server#server-types
-  "extends": "../.nuxt/tsconfig.server.json"
-}
