@@ -1,10 +1,12 @@
-import type { EmoteMap } from '@/types'
+import type { EmoteMap } from '../../types'
 import linkifyStr from 'linkify-string'
 
 const emoteMap = reactive<EmoteMap>(new Map())
 
 async function fetchEmotes() {
-  const { data: emotes } = await useFetch('/api/emotes')
+  const { data: emotes } = await useFetch('/api/emotes', {
+    deep: true,
+  })
 
   emotes.value?.forEach((emote) => {
     emoteMap.set(emote.code, emote)

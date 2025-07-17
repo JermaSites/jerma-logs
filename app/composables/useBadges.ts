@@ -1,9 +1,11 @@
-import type { Badge, BadgeInfo, BadgeMap } from '@/types'
+import type { Badge, BadgeInfo, BadgeMap } from '../../types'
 
 const badges = reactive<BadgeMap>(new Map())
 
 async function fetchBadges() {
-  const { data } = await useFetch<Badge[]>('/api/badges')
+  const { data } = await useFetch<Badge[]>('/api/badges', {
+    deep: true,
+  })
 
   data.value?.forEach((badge) => {
     const badgeVersionsMap = new Map(badge.versions.map(v => [v.id, v]))

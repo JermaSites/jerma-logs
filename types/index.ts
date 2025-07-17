@@ -1,4 +1,4 @@
-import type { RouteLocationNormalizedLoaded } from '#vue-router'
+import type { RouteLocationNormalizedLoaded } from 'vue-router'
 
 export type SortOrder = 'asc' | 'desc'
 

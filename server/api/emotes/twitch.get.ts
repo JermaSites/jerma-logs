@@ -1,4 +1,4 @@
-import type { ChannelEmotesResponse, GlobalEmotesResponse } from '@/types'
+import type { ChannelEmotesResponse, GlobalEmotesResponse } from '@/../types'
 import twitchApi from '../../utils/twitch'
 
 export default cachedEventHandler(

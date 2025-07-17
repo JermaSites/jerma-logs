@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { AlgoliaIndex, Message } from '~/types'
+import type { AlgoliaIndex, Message } from '@/../types'
 import { collection, getDocs, query, where } from 'firebase/firestore'
 
 const { y } = useWindowScroll({ behavior: 'smooth' })

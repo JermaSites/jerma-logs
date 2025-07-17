@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Unsubscribe } from 'firebase/firestore'
-import type { Message } from '@/types'
+import type { Message } from '@/../types'
 import dayjs from 'dayjs'
 import {
   collection,

@@ -1,4 +1,4 @@
-import type { BttvEmote, UserBttvResponse } from '@/types'
+import type { BttvEmote, UserBttvResponse } from '@/../types'
 
 export default cachedEventHandler(
   async () => {

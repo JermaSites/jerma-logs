@@ -1,4 +1,4 @@
-import type { Emote } from '@/types'
+import type { Emote } from '@/../types'
 
 export default cachedEventHandler(
   async () => {

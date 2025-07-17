@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { SortOrder } from '~/types'
+import type { SortOrder } from '../../types'
 
 const props = defineProps<{
   sortOrder: SortOrder
