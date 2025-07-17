@@ -1,4 +1,4 @@
-import type { Badge, BadgeInfo, BadgeMap } from '../../types'
+import type { Badge, BadgeInfo, BadgeMap } from '@/../types'
 
 const badges = reactive<BadgeMap>(new Map())
 

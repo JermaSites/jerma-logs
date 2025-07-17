@@ -1,4 +1,4 @@
-import type { EmoteMap } from '../../types'
+import type { EmoteMap } from '@/../types'
 import linkifyStr from 'linkify-string'
 
 const emoteMap = reactive<EmoteMap>(new Map())
