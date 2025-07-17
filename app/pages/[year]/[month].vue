@@ -124,24 +124,13 @@ onUnmounted(() => {
       <SimpleList>
         <SimpleListItem v-for="message in messages" :key="message.id">
           <Message
-            v-if="!message.reply"
             :sent-at="message.sentAt"
             sent-at-format="MMM DD hh:mm A z"
             :display-name="message.displayName"
             :color="message.color"
             :message="parseEmotes(message.message)"
             :badges="parseBadges(message.badges)"
-          />
-
-          <Message
-            v-else
-            :sent-at="message.sentAt"
-            sent-at-format="MMM DD hh:mm A z"
-            :display-name="message.displayName"
-            :color="message.color"
-            :message="parseEmotes(message.message)"
-            :badges="parseBadges(message.badges)"
-            :reply-message="parseEmotes(message.reply.parent.msgBody)"
+            :reply-message="parseEmotes(message?.reply?.parent?.msgBody || '')"
           />
         </SimpleListItem>
       </SimpleList>

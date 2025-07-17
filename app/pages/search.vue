@@ -113,24 +113,13 @@ const algoliaLogo = computed(() => {
     <SimpleList v-else-if="hasResults">
       <SimpleListItem v-for="message in firebaseMessages" :key="message.id">
         <Message
-          v-if="!message.reply"
           :sent-at="message.sentAt"
-          sent-at-format="YYYY MMM DD hh:mm A z"
+          sent-at-format="MMM DD hh:mm A z"
           :display-name="message.displayName"
           :color="message.color"
           :message="parseEmotes(message.message)"
           :badges="parseBadges(message.badges)"
-        />
-
-        <Message
-          v-else
-          :sent-at="message.sentAt"
-          sent-at-format="YYYY MMM DD hh:mm A z"
-          :display-name="message.displayName"
-          :color="message.color"
-          :message="parseEmotes(message.message)"
-          :badges="parseBadges(message.badges)"
-          :reply-message="parseEmotes(message.reply.parent.msgBody)"
+          :reply-message="parseEmotes(message?.reply?.parent?.msgBody || '')"
         />
       </SimpleListItem>
     </SimpleList>
