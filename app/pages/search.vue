@@ -63,12 +63,12 @@ watch(page, (newPage) => {
   search({ query: searchValue.value, requestOptions: { page: newPage - 1 } })
 })
 
-const colorMode = useColorMode()
+const settingsStore = useSettingsStore()
 const algoliaLogo = computed(() => {
   const darkUrl = '/Algolia-mark-white.png'
   const lightUrl = '/Algolia-mark-blue.png'
 
-  return colorMode.value === 'dark' ? darkUrl : lightUrl
+  return settingsStore.colorModeValue === 'dark' ? darkUrl : lightUrl
 })
 </script>
 
