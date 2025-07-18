@@ -66,6 +66,9 @@ exports.sendSusNotification = onDocumentCreated(
 
     const sus = message.match(susRegExp)?.groups?.susMessage
 
+    if (!sus)
+      return
+
     // Notification details.
     const payload = {
       topic: 'sus',
