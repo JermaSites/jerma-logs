@@ -16,7 +16,7 @@ export function useEmotes() {
   }
 
   function parseEmotes(msg: string): string {
-    return linkifyStr(msg).replace(/\b\w+\b/g, (word) => {
+    return linkifyStr(msg, { target: '_blank', rel: 'noopener noreferrer' }).replace(/\b\w+\b/g, (word) => {
       const emote = emoteMap.get(word)
 
       if (!emote || !emote.urls?.[0]?.url)
