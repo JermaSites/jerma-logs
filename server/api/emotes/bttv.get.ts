@@ -1,5 +1,3 @@
-import type { BttvEmote, UserBttvResponse } from '@/../types'
-
 export default cachedEventHandler(
   async () => {
     const { twitchId } = useRuntimeConfig().public

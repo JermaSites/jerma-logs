@@ -1,5 +1,3 @@
-import type { MessagesResponse } from '@/../types'
-
 import { parse } from 'firestore-rest-parser'
 import { getDayOfLatestMessage } from '~/utils/latestMessageUtils'
 

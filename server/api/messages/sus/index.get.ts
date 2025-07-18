@@ -1,4 +1,3 @@
-import type { MessagesResponse } from '@/../types'
 import { parse } from 'firestore-rest-parser'
 
 const { firebaseApiUrl } = useRuntimeConfig().public

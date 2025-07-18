@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { SortOrder } from '@/../types'
-
 defineProps<{
   sortOrder: SortOrder
 }>()

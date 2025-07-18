@@ -48,5 +48,9 @@ export function useFCM() {
     }
   }
 
-  return { isSupported, getTokenAndSubscribeToTopic, getTokenAndUnsubscribeToTopic }
+  return {
+    isSupported,
+    getTokenAndSubscribeToTopic,
+    getTokenAndUnsubscribeToTopic,
+  }
 }

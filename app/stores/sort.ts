@@ -1,5 +1,3 @@
-import type { SortableCategories } from '@/../types'
-
 export const useSortStore = defineStore(
   'sort',
   () => {

@@ -1,5 +1,3 @@
-import type { MessagesResponse } from '@/../types'
-
 import dayjs from 'dayjs'
 import { parse } from 'firestore-rest-parser'
 
