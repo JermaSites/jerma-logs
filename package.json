@@ -18,7 +18,7 @@
     "@nuxt/ui": "^3.2.0",
     "@nuxtjs/algolia": "^1.11.2",
     "@nuxtjs/seo": "^3.1.0",
-    "@pinia/nuxt": "^0.11.1",
+    "@pinia/nuxt": "^0.11.2",
     "@vueuse/core": "^13.5.0",
     "@vueuse/nuxt": "^13.5.0",
     "dayjs": "^1.11.13",
@@ -42,6 +42,6 @@
     "@playwright/test": "^1.54.1",
     "eslint": "^9.31.0",
     "typescript": "^5.8.3",
-    "vue-tsc": "^3.0.2"
+    "vue-tsc": "^3.0.3"
   }
 }
