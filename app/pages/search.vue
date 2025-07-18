@@ -16,7 +16,7 @@ const hasResults = computed(() => {
   return result.value && result.value.hits && result.value.hits.length > 0
 })
 
-const { db } = useFirebase()
+const { $firebase } = useNuxtApp()
 const firebaseMessages = ref<Message[]>()
 const { twitchUsername } = useRuntimeConfig().public
 const loading = ref(false)
@@ -28,7 +28,7 @@ watch(result, async () => {
     return
 
   const q = query(
-    collection(db, 'messages'),
+    collection($firebase.firestore, 'messages'),
     where('username', '==', twitchUsername),
     where('__name__', 'in', result.value.hits.map(hit => hit.objectID)),
   )

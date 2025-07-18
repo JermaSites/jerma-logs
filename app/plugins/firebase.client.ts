@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app'
 import { getFirestore } from 'firebase/firestore'
 import { getFunctions } from 'firebase/functions'
 
-export function useFirebase() {
+export default defineNuxtPlugin(() => {
   const firebaseConfig = {
     apiKey: 'AIzaSyBV9G06TKa-B6LF7fe63Z7QFbm8PJU7ad4',
     authDomain: 'jerma-logs.firebaseapp.com',
@@ -14,9 +14,20 @@ export function useFirebase() {
     measurementId: 'G-R7QL1P3TGG',
   }
 
+  // Initialize Firebase
   const app = initializeApp(firebaseConfig)
-  const db = getFirestore(app)
+
+  // Initialize Firebase services
+  const firestore = getFirestore(app)
   const functions = getFunctions(app)
 
-  return { app, db, functions }
-}
+  return {
+    provide: {
+      firebase: {
+        app,
+        firestore,
+        functions,
+      },
+    },
+  }
+})

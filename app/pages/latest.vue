@@ -37,7 +37,7 @@ const sortedMessages = computed(() => {
   })
 })
 
-const { db } = useFirebase()
+const { $firebase } = useNuxtApp()
 const { twitchUsername } = useRuntimeConfig().public
 const unsub = ref<Unsubscribe>()
 
@@ -53,7 +53,7 @@ watch(status, async (newStatus) => {
   const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(latestMessage.sentAt))
 
   const latestMessagesQuery = query(
-    collection(db, 'messages'),
+    collection($firebase.firestore, 'messages'),
     where('username', '==', twitchUsername),
     where('sentAt', '>=', dayOfLatestMessage),
   )

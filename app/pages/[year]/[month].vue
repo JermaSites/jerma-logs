@@ -76,7 +76,7 @@ watch(() => sortOrder.value.message, (value) => {
   }
 })
 
-const { db } = useFirebase()
+const { $firebase } = useNuxtApp()
 const { twitchUsername } = useRuntimeConfig().public
 const unsub = ref<Unsubscribe>()
 
@@ -92,7 +92,7 @@ onMounted(async () => {
     return
 
   const q = query(
-    collection(db, 'messages'),
+    collection($firebase.firestore, 'messages'),
     where('sentAt', '>=', startTime.valueOf().toString()),
     where('sentAt', '<=', endTime.valueOf().toString()),
     where('username', '==', twitchUsername),
