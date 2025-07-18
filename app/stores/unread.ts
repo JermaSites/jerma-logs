@@ -1,8 +1,8 @@
-const dayjs = useDayjs()
-
 export const useUnreadStore = defineStore(
   'unread',
   () => {
+    const { $dayjs: dayjs } = useNuxtApp()
+
     const latestMessageIndex = ref<string>('')
     const dateOfLatestMessage = ref<string>('')
     const dateOfLastReadMessage = ref<string>('')

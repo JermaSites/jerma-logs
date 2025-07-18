@@ -13,8 +13,8 @@ const props = defineProps<{
   unread?: boolean
 }>()
 
+const { $dayjs: dayjs } = useNuxtApp()
 const settingsStore = useSettingsStore()
-const dayjs = useDayjs()
 const colorMode = useColorMode()
 
 const { hideMessageTimestamps, userTimezone } = storeToRefs(settingsStore)

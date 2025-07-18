@@ -11,7 +11,6 @@ import {
 } from 'firebase/firestore'
 
 const route = useRoute()
-const { capitalize } = useCapitalize()
 
 useSeoMeta({
   title: `${capitalize(route.params.month as string)} | ${route.params.year}`,
@@ -81,7 +80,7 @@ const { db } = useFirebase()
 const { twitchUsername } = useRuntimeConfig().public
 const unsub = ref<Unsubscribe>()
 
-const dayjs = useDayjs()
+const { $dayjs: dayjs } = useNuxtApp()
 
 onMounted(async () => {
   const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')

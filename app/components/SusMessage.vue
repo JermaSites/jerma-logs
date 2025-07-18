@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Message } from '@/../types'
 
-const dayjs = useDayjs()
+const { $dayjs: dayjs } = useNuxtApp()
 
 const { fetchEmotes } = useEmotes()
 

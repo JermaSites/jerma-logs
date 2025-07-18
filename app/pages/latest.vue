@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { Unsubscribe } from 'firebase/firestore'
 import type { Message } from '@/../types'
-import dayjs from 'dayjs'
 import {
   collection,
   onSnapshot,
@@ -69,6 +68,8 @@ onUnmounted(() => {
     return
   unsub.value()
 })
+
+const { $dayjs: dayjs } = useNuxtApp()
 
 function showAsUnread(sentAt: string) {
   const messageIsUnread = dayjs(Number.parseInt(sentAt)).isAfter(dayjs(Number.parseInt(lastReadMessageTimestamp)))
