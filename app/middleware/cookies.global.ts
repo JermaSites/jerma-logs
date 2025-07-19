@@ -3,6 +3,6 @@ export default defineNuxtRouteMiddleware(() => {
   const sortStore = useSortStore()
   const settingsStore = useSettingsStore()
 
-  sortStore.updateCookieExperation = !sortStore.updateCookieExperation
-  settingsStore.updateCookieExperation = !settingsStore.updateCookieExperation
+  sortStore.refreshCookieExpiration()
+  settingsStore.refreshCookieExpiration()
 })

@@ -14,9 +14,17 @@ export const useSortStore = defineStore(
         : 'asc'
     }
 
-    const updateCookieExperation = ref(false)
+    const updateCookieExpiration = ref(false)
 
-    return { sortOrder, toggleSortOrder, updateCookieExperation }
+    function refreshCookieExpiration() {
+      updateCookieExpiration.value = !updateCookieExpiration.value
+    }
+
+    return {
+      sortOrder,
+      toggleSortOrder,
+      refreshCookieExpiration,
+    }
   },
   { persist: true },
 )

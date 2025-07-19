@@ -8,7 +8,11 @@ export const useSettingsStore = defineStore(
     const colorModeValue = ref('light')
     const userTimezone = ref('America/New_York')
 
-    const updateCookieExperation = ref(false)
+    const updateCookieExpiration = ref(false)
+
+    function refreshCookieExpiration() {
+      updateCookieExpiration.value = !updateCookieExpiration.value
+    }
 
     return {
       messageNotifications,
@@ -17,7 +21,7 @@ export const useSettingsStore = defineStore(
       hideMessageTimestamps,
       userTimezone,
       colorModeValue,
-      updateCookieExperation,
+      refreshCookieExpiration,
     }
   },
   { persist: true },
