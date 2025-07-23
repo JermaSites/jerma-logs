@@ -31,5 +31,3 @@ const { unreadMessages } = storeToRefs(unreadStore)
     <SusMessage />
   </section>
 </template>
-
-<style scoped></style>

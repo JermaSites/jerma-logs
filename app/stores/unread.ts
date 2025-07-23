@@ -8,7 +8,10 @@ export const useUnreadStore = defineStore(
     const dateOfLastReadMessage = ref<string>('')
 
     const unreadMessages = computed(() => {
-      return dayjs(Number.parseInt(dateOfLatestMessage.value)).isAfter(dayjs(Number.parseInt(dateOfLastReadMessage.value)))
+      const latestTimestamp = Number.parseInt(dateOfLatestMessage.value)
+      const lastReadTimestamp = Number.parseInt(dateOfLastReadMessage.value)
+
+      return dayjs(latestTimestamp).isAfter(dayjs(lastReadTimestamp))
     })
 
     return {

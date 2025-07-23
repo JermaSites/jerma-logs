@@ -138,7 +138,3 @@ const algoliaLogo = computed(() => {
     />
   </section>
 </template>
-
-<style scoped>
-
-</style>

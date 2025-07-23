@@ -56,13 +56,9 @@ const { data: messages, status } = await useFetch<Message[]>(`/api/messages/${ye
   lazy: true,
 })
 
-const isLoading = computed(() => {
-  return messages.value == null || status.value === 'pending'
-})
+const isLoading = computed(() => messages.value == null || status.value === 'pending')
 
-const hasMessages = computed(() => {
-  return messages.value != null && messages.value.length !== 0
-})
+const hasMessages = computed(() => messages.value != null && messages.value.length > 0)
 
 const sortedMessages = computed(() => {
   if (!messages.value)
@@ -138,5 +134,3 @@ onMounted(async () => {
     </div>
   </section>
 </template>
-
-<style scoped></style>

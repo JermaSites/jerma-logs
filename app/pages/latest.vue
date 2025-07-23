@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { Unsubscribe } from 'firebase/firestore'
 import {
   collection,
   onSnapshot,
@@ -13,11 +12,15 @@ const { fetchBadges, parseBadges } = useBadges()
 fetchEmotes()
 fetchBadges()
 
-const { data: messages, status } = await useFetch<Message[]>('/api/messages/latest')
+const { data: messages, status } = await useFetch<Message[]>('/api/messages/latest', {
+  server: false,
+  lazy: true,
+})
 
 const unreadStore = useUnreadStore()
 const lastReadMessageTimestamp = unreadStore.dateOfLastReadMessage
 const latestMessageIndexTimestamp = unreadStore.latestMessageIndex
+
 unreadStore.latestMessageIndex = messages.value?.at(-1)?.sentAt ?? ''
 unreadStore.dateOfLastReadMessage = messages.value?.at(0)?.sentAt ?? ''
 
@@ -38,18 +41,22 @@ const sortedMessages = computed(() => {
   })
 })
 
+const hasMessages = computed(() => messages.value != null && sortedMessages.value.length > 0)
+const isLoading = computed(() => messages.value == null || status.value === 'pending')
+
 const { firestore } = useFirebase()
 const { twitchUsername } = useRuntimeConfig().public
 
 watchEffect((onCleanup) => {
-  if (status.value !== 'success')
+  if (status.value !== 'success' || !messages.value?.length)
     return
 
-  const latestMessage = messages.value?.at(0)
+  const latestMessage = messages.value[0]
   if (!latestMessage)
     return
 
   const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(latestMessage.sentAt))
+
   const latestMessagesQuery = query(
     collection(firestore, 'messages'),
     where('username', '==', twitchUsername),
@@ -60,15 +67,19 @@ watchEffect((onCleanup) => {
     messages.value = querySnapshot.docs.map(doc => doc.data() as Message)
   })
 
-  onCleanup(() => {
-    unsubscribe()
-  })
+  onCleanup(unsubscribe)
 })
 
 const { dayjs } = useDayjs()
 
 function showAsUnread(sentAt: string) {
-  const messageIsUnread = dayjs(Number.parseInt(sentAt)).isAfter(dayjs(Number.parseInt(lastReadMessageTimestamp)))
+  if (!lastReadMessageTimestamp || !latestMessageIndexTimestamp)
+    return false
+
+  const messageTimestamp = Number.parseInt(sentAt)
+  const lastReadTimestamp = Number.parseInt(lastReadMessageTimestamp)
+
+  const messageIsUnread = dayjs(messageTimestamp).isAfter(dayjs(lastReadTimestamp))
   const latestMessagesHasBeenPreviouslyRead = unreadStore.latestMessageIndex === latestMessageIndexTimestamp
 
   return messageIsUnread && latestMessagesHasBeenPreviouslyRead
@@ -77,11 +88,11 @@ function showAsUnread(sentAt: string) {
 
 <template>
   <section>
-    <div v-if="status === 'pending'">
+    <div v-if="isLoading">
       <LazySimpleListSkeleton :rows="10" />
     </div>
 
-    <div v-else-if="sortedMessages && sortedMessages.length !== 0" class="flex flex-col">
+    <div v-else-if="hasMessages" class="flex flex-col">
       <SimpleList>
         <SimpleListItem v-for="message in sortedMessages" :key="message.id">
           <Message
@@ -103,5 +114,3 @@ function showAsUnread(sentAt: string) {
     </div>
   </section>
 </template>
-
-<style scoped></style>

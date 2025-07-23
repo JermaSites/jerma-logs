@@ -24,5 +24,3 @@ const { sortOrder } = storeToRefs(sortStore)
     <MonthList :sort-order="sortOrder.month" />
   </section>
 </template>
-
-<style scoped></style>
