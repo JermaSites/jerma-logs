@@ -16,7 +16,7 @@ const hasResults = computed(() => {
 })
 
 const { firestore } = useFirebase()
-const firebaseMessages = ref<Message[]>()
+const firebaseMessages = ref<Message[]>([])
 const { twitchUsername } = useRuntimeConfig().public
 const loading = ref(false)
 
