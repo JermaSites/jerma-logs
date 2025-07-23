@@ -75,7 +75,6 @@ watchEffect((onCleanup) => {
   )
 
   const unsubscribe = onSnapshot(latestMessagesQuery, (querySnapshot) => {
-    console.log('snap:', querySnapshot.docs.at(0)?.data().message as Message)
     messages.value = querySnapshot.docs.map(doc => doc.data() as Message)
   })
 
