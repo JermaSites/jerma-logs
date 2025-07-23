@@ -36,7 +36,7 @@ const sortedMessages = computed(() => {
   })
 })
 
-const { $firebase } = useNuxtApp()
+const { firestore } = useFirebase()
 const { twitchUsername } = useRuntimeConfig().public
 const unsub = ref<Unsubscribe>()
 
@@ -52,7 +52,7 @@ watch(status, async (newStatus) => {
   const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(latestMessage.sentAt))
 
   const latestMessagesQuery = query(
-    collection($firebase.firestore, 'messages'),
+    collection(firestore, 'messages'),
     where('username', '==', twitchUsername),
     where('sentAt', '>=', dayOfLatestMessage),
   )
@@ -68,7 +68,7 @@ onUnmounted(() => {
   unsub.value()
 })
 
-const { $dayjs: dayjs } = useNuxtApp()
+const { dayjs } = useDayjs()
 
 function showAsUnread(sentAt: string) {
   const messageIsUnread = dayjs(Number.parseInt(sentAt)).isAfter(dayjs(Number.parseInt(lastReadMessageTimestamp)))

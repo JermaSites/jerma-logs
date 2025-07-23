@@ -13,7 +13,7 @@ const props = defineProps<{
   unread?: boolean
 }>()
 
-const { $dayjs: dayjs } = useNuxtApp()
+const { dayjs } = useDayjs()
 const settingsStore = useSettingsStore()
 const colorMode = useColorMode()
 

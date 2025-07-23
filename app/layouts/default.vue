@@ -13,7 +13,7 @@ useSeoMeta({
 
 const settingsStore = useSettingsStore()
 
-const { $dayjs: dayjs } = useNuxtApp()
+const { dayjs } = useDayjs()
 
 onMounted(() => {
   settingsStore.userTimezone = dayjs.tz.guess()

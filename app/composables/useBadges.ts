@@ -1,4 +1,4 @@
-export function useBadges() {
+export default function () {
   const badges = reactive<BadgeMap>(new Map())
 
   async function fetchBadges() {

@@ -1,7 +1,7 @@
 export const useUnreadStore = defineStore(
   'unread',
   () => {
-    const { $dayjs: dayjs } = useNuxtApp()
+    const { dayjs } = useDayjs()
 
     const latestMessageIndex = ref<string>('')
     const dateOfLatestMessage = ref<string>('')

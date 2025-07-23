@@ -1,6 +1,6 @@
 import linkifyStr from 'linkify-string'
 
-export function useEmotes() {
+export default function () {
   const emoteMap = reactive<EmoteMap>(new Map())
 
   async function fetchEmotes() {

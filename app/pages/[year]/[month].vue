@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import type { Unsubscribe } from 'firebase/firestore'
-
 import {
   collection,
   onSnapshot,
@@ -75,11 +73,9 @@ watch(() => sortOrder.value.message, (value) => {
   }
 })
 
-const { $firebase } = useNuxtApp()
+const { firestore } = useFirebase()
 const { twitchUsername } = useRuntimeConfig().public
-const unsub = ref<Unsubscribe>()
-
-const { $dayjs: dayjs } = useNuxtApp()
+const { dayjs } = useDayjs()
 
 onMounted(async () => {
   const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
@@ -91,24 +87,22 @@ onMounted(async () => {
     return
 
   const q = query(
-    collection($firebase.firestore, 'messages'),
+    collection(firestore, 'messages'),
     where('sentAt', '>=', startTime.valueOf().toString()),
     where('sentAt', '<=', endTime.valueOf().toString()),
     where('username', '==', twitchUsername),
     orderBy('sentAt', sortOrder.value.message),
   )
 
-  unsub.value = onSnapshot(q, (querySnapshot) => {
+  const unsubscribe = onSnapshot(q, (querySnapshot) => {
     if (querySnapshot.docs.length === 0)
       return
     messages.value = querySnapshot.docs.map(doc => doc.data() as Message)
   })
-})
 
-onUnmounted(() => {
-  if (!unsub.value)
-    return
-  unsub.value()
+  onUnmounted(() => {
+    unsubscribe()
+  })
 })
 </script>
 

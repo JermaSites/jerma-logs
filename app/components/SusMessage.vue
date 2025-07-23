@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { $dayjs: dayjs } = useNuxtApp()
+const { dayjs } = useDayjs()
 
 const { fetchEmotes } = useEmotes()
 

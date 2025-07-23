@@ -1,14 +1,14 @@
 import { httpsCallable } from 'firebase/functions'
 import { getMessaging, getToken, isSupported } from 'firebase/messaging'
 
-export function useFCM() {
-  const { $firebase } = useNuxtApp()
+export default function () {
+  const { app, functions } = useFirebase()
 
   const vapidKey = 'BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8'
 
   async function getFCMToken() {
     try {
-      return await getToken(getMessaging($firebase.app), { vapidKey })
+      return await getToken(getMessaging(app), { vapidKey })
     }
     catch (error) {
       console.error('Error getting FCM token:', error)
@@ -17,7 +17,7 @@ export function useFCM() {
   }
 
   async function getTokenAndSubscribeToTopic(topic: string) {
-    const subscribeToTopic = httpsCallable($firebase.functions, 'subscribeToTopic')
+    const subscribeToTopic = httpsCallable(functions, 'subscribeToTopic')
 
     try {
       const currentToken = await getFCMToken()
@@ -33,7 +33,7 @@ export function useFCM() {
   }
 
   async function getTokenAndUnsubscribeToTopic(topic: string) {
-    const unsubscribeFromTopic = httpsCallable($firebase.functions, 'unsubscribeFromTopic')
+    const unsubscribeFromTopic = httpsCallable(functions, 'unsubscribeFromTopic')
 
     try {
       const currentToken = await getFCMToken()
