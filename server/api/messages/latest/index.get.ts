@@ -1,5 +1,4 @@
 import { parse } from 'firestore-rest-parser'
-import { getDayOfLatestMessage } from '~/utils/latestMessageUtils'
 
 const { firebaseApiUrl, twitchUsername } = useRuntimeConfig().public
 

@@ -1,4 +1,4 @@
-import twitchApi from '../../utils/twitch'
+import twitchApi from '~~/server/utils/twitch'
 
 export default cachedEventHandler(
   async () => {
