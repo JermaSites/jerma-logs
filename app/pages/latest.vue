@@ -12,7 +12,13 @@ const { fetchBadges, parseBadges } = useBadges()
 fetchEmotes()
 fetchBadges()
 
+const sortStore = useSortStore()
+const { sortOrder } = storeToRefs(sortStore)
+
 const { data: messages, status } = await useFetch<Message[]>('/api/messages/latest', {
+  query: {
+    order: sortOrder.value.message,
+  },
   server: false,
   lazy: true,
 })
@@ -21,11 +27,13 @@ const unreadStore = useUnreadStore()
 const lastReadMessageTimestamp = unreadStore.dateOfLastReadMessage
 const latestMessageIndexTimestamp = unreadStore.latestMessageIndex
 
-unreadStore.latestMessageIndex = messages.value?.at(-1)?.sentAt ?? ''
-unreadStore.dateOfLastReadMessage = messages.value?.at(0)?.sentAt ?? ''
+watch(messages, () => {
+  if (!messages.value)
+    return
 
-const sortStore = useSortStore()
-const { sortOrder } = storeToRefs(sortStore)
+  unreadStore.latestMessageIndex = messages.value.at(0)?.sentAt ?? ''
+  unreadStore.dateOfLastReadMessage = messages.value.at(-1)?.sentAt ?? ''
+})
 
 const sortedMessages = computed(() => {
   if (!messages.value)
@@ -44,18 +52,21 @@ const sortedMessages = computed(() => {
 const hasMessages = computed(() => messages.value != null && sortedMessages.value.length > 0)
 const isLoading = computed(() => messages.value == null || status.value === 'pending')
 
+const latestMessageTimestamp = computed(() => {
+  if (status.value !== 'success' || !messages.value?.length)
+    return null
+  return messages.value[0]?.sentAt
+})
+
 const { firestore } = useFirebase()
 const { twitchUsername } = useRuntimeConfig().public
 
 watchEffect((onCleanup) => {
-  if (status.value !== 'success' || !messages.value?.length)
+  const timestamp = latestMessageTimestamp.value
+  if (!timestamp)
     return
 
-  const latestMessage = messages.value[0]
-  if (!latestMessage)
-    return
-
-  const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(latestMessage.sentAt))
+  const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(timestamp))
 
   const latestMessagesQuery = query(
     collection(firestore, 'messages'),
@@ -64,6 +75,7 @@ watchEffect((onCleanup) => {
   )
 
   const unsubscribe = onSnapshot(latestMessagesQuery, (querySnapshot) => {
+    console.log('snap:', querySnapshot.docs.at(0)?.data().message as Message)
     messages.value = querySnapshot.docs.map(doc => doc.data() as Message)
   })
 
