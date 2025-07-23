@@ -3,7 +3,8 @@ const props = defineProps<{
   sortOrder: SortOrder
 }>()
 
-const route = useRoute()
+const RECORDING_START_YEAR = 2020 // only started recording form May 2020 onward
+const RECORDING_START_MONTH = 4 // May (0-based)
 
 const months = [
   { name: 'January', id: 0 },
@@ -20,34 +21,27 @@ const months = [
   { name: 'December', id: 11 },
 ]
 
-const orderedMonths = computed(() => {
-  return [...months].sort((a, b) => a.id - b.id)
-})
+const route = useRoute()
 
 const filteredMonths = computed(() => {
-  const selectedYear = route.params.year as string
-  const date = new Date()
-  const currentYear = date.getFullYear()
-  const currentMonth = date.getMonth()
+  const selectedYear = Number.parseInt(route.params.year as string)
+  const now = new Date()
+  const currentYear = now.getFullYear()
+  const currentMonth = now.getMonth()
 
-  let recordedMonths = [...orderedMonths.value]
-  if (Number.parseInt(selectedYear) === currentYear) {
-    recordedMonths = recordedMonths.slice(0, currentMonth + 1)
+  if (selectedYear === currentYear) {
+    return months.slice(0, currentMonth + 1)
   }
-  else if (Number.parseInt(selectedYear) === 2020) {
-    // only started recording form May 2020 onward
-    recordedMonths = recordedMonths.slice(4)
+  else if (selectedYear === RECORDING_START_YEAR) {
+    return months.slice(RECORDING_START_MONTH)
   }
 
-  return recordedMonths
+  return months
 })
 
 const sortedMonths = computed(() => {
-  return [...filteredMonths.value].sort((a, b) => {
-    if (props.sortOrder === 'asc')
-      return a.id - b.id
-
-    return b.id - a.id
+  return filteredMonths.value.toSorted((a, b) => {
+    return props.sortOrder === 'asc' ? a.id - b.id : b.id - a.id
   })
 })
 </script>

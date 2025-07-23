@@ -64,13 +64,18 @@ const hasMessages = computed(() => {
   return messages.value != null && messages.value.length !== 0
 })
 
-watch(() => sortOrder.value.message, (value) => {
-  if (value === 'asc') {
-    messages.value?.sort((a, b) => Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt))
-  }
-  else {
-    messages.value?.sort((a, b) => Number.parseInt(b.sentAt) - Number.parseInt(a.sentAt))
-  }
+const sortedMessages = computed(() => {
+  if (!messages.value)
+    return []
+
+  return messages.value.toSorted((a, b) => {
+    const aTime = Number.parseInt(a.sentAt)
+    const bTime = Number.parseInt(b.sentAt)
+
+    return sortOrder.value.message === 'asc'
+      ? aTime - bTime
+      : bTime - aTime
+  })
 })
 
 const { firestore } = useFirebase()
@@ -114,7 +119,7 @@ onMounted(async () => {
 
     <div v-else-if="hasMessages">
       <SimpleList>
-        <SimpleListItem v-for="message in messages" :key="message.id">
+        <SimpleListItem v-for="message in sortedMessages" :key="message.id">
           <Message
             :sent-at="message.sentAt"
             sent-at-format="MMM DD hh:mm A z"

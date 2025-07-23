@@ -29,43 +29,40 @@ const sortedMessages = computed(() => {
     return []
 
   return messages.value.toSorted((a, b) => {
-    if (sortOrder.value.latest === 'asc')
-      return Number.parseInt(a.sentAt) - Number.parseInt(b.sentAt)
+    const aTime = Number.parseInt(a.sentAt)
+    const bTime = Number.parseInt(b.sentAt)
 
-    return Number.parseInt(b.sentAt) - Number.parseInt(a.sentAt)
+    return sortOrder.value.latest === 'asc'
+      ? aTime - bTime
+      : bTime - aTime
   })
 })
 
 const { firestore } = useFirebase()
 const { twitchUsername } = useRuntimeConfig().public
-const unsub = ref<Unsubscribe>()
 
-watch(status, async (newStatus) => {
-  if (newStatus !== 'success')
+watchEffect((onCleanup) => {
+  if (status.value !== 'success')
     return
 
   const latestMessage = messages.value?.at(0)
-
   if (!latestMessage)
     return
 
   const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(latestMessage.sentAt))
-
   const latestMessagesQuery = query(
     collection(firestore, 'messages'),
     where('username', '==', twitchUsername),
     where('sentAt', '>=', dayOfLatestMessage),
   )
 
-  unsub.value = onSnapshot(latestMessagesQuery, (querySnapshot) => {
+  const unsubscribe = onSnapshot(latestMessagesQuery, (querySnapshot) => {
     messages.value = querySnapshot.docs.map(doc => doc.data() as Message)
   })
-}, { immediate: true })
 
-onUnmounted(() => {
-  if (!unsub.value)
-    return
-  unsub.value()
+  onCleanup(() => {
+    unsubscribe()
+  })
 })
 
 const { dayjs } = useDayjs()
