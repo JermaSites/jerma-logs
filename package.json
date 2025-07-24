@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@nuxt/image": "1.10.0",
-    "@nuxt/ui": "^3.2.0",
+    "@nuxt/ui": "^3.3.0",
     "@nuxtjs/algolia": "^1.11.2",
     "@nuxtjs/seo": "^3.1.0",
     "@pinia/nuxt": "^0.11.2",
@@ -37,11 +37,11 @@
     "@rollup/rollup-linux-x64-gnu": "4.45.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^4.18.0",
+    "@antfu/eslint-config": "^4.19.0",
     "@iconify-json/heroicons-solid": "^1.2.1",
     "@playwright/test": "^1.54.1",
     "eslint": "^9.31.0",
     "typescript": "^5.8.3",
-    "vue-tsc": "^3.0.3"
+    "vue-tsc": "^3.0.4"
   }
 }
