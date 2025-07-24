@@ -133,6 +133,10 @@ const algoliaLogo = computed(() => {
       v-model:page="page"
       size="xl"
       active-color="secondary"
+      first-icon="heroicons-solid:chevron-double-left"
+      prev-icon="heroicons-solid:chevron-left"
+      next-icon="heroicons-solid:chevron-right"
+      last-icon="heroicons-solid:chevron-double-right"
       :total="result.nbHits"
       :items-per-page="result.hitsPerPage"
     />
