@@ -11,8 +11,12 @@ const { isSupported, getTokenAndSubscribeToTopic, getTokenAndUnsubscribeToTopic 
 
 const isMessagingSupported = await isSupported()
 
-const notificationPermissoinDenied = computed(() => {
+const notificationPermissionDenied = computed(() => {
   return notificationPermission.value === 'denied' || !isMessagingSupported
+})
+
+const notificationPermissionGranted = computed(() => {
+  return notificationPermission.value === 'granted'
 })
 
 const route = useRoute()
@@ -23,28 +27,34 @@ const isDev = computed(() => {
 
 // set all notification settings to false if permission is denied
 watchEffect(() => {
-  if (!!notificationPermission.value && notificationPermission.value !== 'granted') {
+  if (!!notificationPermission.value && !notificationPermissionGranted.value) {
     messageNotifications.value = false
     susNotifications.value = false
     testNotifications.value = false
   }
 })
 
+async function handleNotificationToggle(topic: string, enabled: boolean) {
+  if (!notificationPermissionGranted.value)
+    return
+
+  try {
+    if (enabled) {
+      await getTokenAndSubscribeToTopic(topic)
+    }
+    else {
+      await getTokenAndUnsubscribeToTopic(topic)
+    }
+  }
+  catch (error) {
+    console.error(`Error ${enabled ? 'subscribing to' : 'unsubscribing from'} ${topic}:`, error)
+  }
+}
+
 watchEffect(async () => {
-  if (messageNotifications.value)
-    getTokenAndSubscribeToTopic('message')
-  else if (notificationPermission.value === 'granted')
-    getTokenAndUnsubscribeToTopic('message')
-
-  if (susNotifications.value)
-    getTokenAndSubscribeToTopic('sus')
-  else if (notificationPermission.value === 'granted')
-    getTokenAndUnsubscribeToTopic('sus')
-
-  if (testNotifications.value)
-    getTokenAndSubscribeToTopic('test')
-  else if (notificationPermission.value === 'granted')
-    getTokenAndUnsubscribeToTopic('test')
+  await handleNotificationToggle('message', messageNotifications.value)
+  await handleNotificationToggle('sus', susNotifications.value)
+  await handleNotificationToggle('test', testNotifications.value)
 })
 
 const { hideMessageTimestamps, colorModeValue } = storeToRefs(settingsStore)
@@ -90,7 +100,7 @@ watchEffect(() => {
         <hr class="border-slate-400">
       </div>
 
-      <div v-if="notificationPermissoinDenied" class="mb-4 p-4 bg-red-500 dark:bg-red-900 rounded text-center text-xl text-white">
+      <div v-if="notificationPermissionDenied" class="mb-4 p-4 bg-red-500 dark:bg-red-900 rounded text-center text-xl text-white">
         <h3 class="text-4xl mb-4">
           Notifications are disabled or blocked
         </h3>
@@ -101,7 +111,7 @@ watchEffect(() => {
       <div>
         <USwitch
           v-model="messageNotifications"
-          :disabled="notificationPermissoinDenied"
+          :disabled="notificationPermissionDenied"
           color="secondary"
           size="xl"
           label="Enable message notifications"
@@ -112,7 +122,7 @@ watchEffect(() => {
 
         <USwitch
           v-model="susNotifications"
-          :disabled="notificationPermissoinDenied"
+          :disabled="notificationPermissionDenied"
           color="secondary"
           size="xl"
           label="Enable SUS! notifications"
@@ -124,7 +134,7 @@ watchEffect(() => {
         <USwitch
           v-if="isDev"
           v-model="testNotifications"
-          :disabled="notificationPermissoinDenied"
+          :disabled="notificationPermissionDenied"
           color="secondary"
           size="xl"
           label="Enable test notifications"
