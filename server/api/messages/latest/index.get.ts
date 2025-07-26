@@ -86,7 +86,7 @@ export default defineEventHandler(async () => {
           field: {
             fieldPath: 'sentAt',
           },
-          direction: 'DESCENDING',
+          direction: 'ASCENDING',
         },
       ],
     },

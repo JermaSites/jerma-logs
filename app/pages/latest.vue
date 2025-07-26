@@ -1,45 +1,50 @@
 <script setup lang="ts">
+const { dayjs } = useDayjs()
 const { fetchEmotes, parseEmotes } = useEmotes()
 const { fetchBadges, parseBadges } = useBadges()
-
-fetchEmotes()
-fetchBadges()
 
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
 
+const unreadStore = useUnreadStore()
+const { dateOfLastReadMessage, latestMessageIndex } = storeToRefs(unreadStore)
+
 const { messages, getLatestMessages } = useMessages()
 
+fetchEmotes()
+fetchBadges()
+
 const { data, status } = await useFetch<Message[]>('/api/messages/latest', {
-  query: {
-    order: sortOrder.value.message,
-  },
   server: false,
   lazy: true,
+  default() {
+    return []
+  },
 })
+
+const hasMessages = computed(() => messages.value.length > 0)
+const isLoading = computed(() => status.value === 'idle' || status.value === 'pending')
+
+const lastReadMessageTimestamp = dateOfLastReadMessage.value
+const latestMessageIndexTimestamp = latestMessageIndex.value
 
 watch(data, (msg) => {
-  if (!msg)
-    return
   messages.value = msg
-})
 
-const unreadStore = useUnreadStore()
-const lastReadMessageTimestamp = unreadStore.dateOfLastReadMessage
-const latestMessageIndexTimestamp = unreadStore.latestMessageIndex
+  const firstMessage = msg.at(0)
+  const lastMessage = msg.at(-1)
 
-watch(messages, () => {
-  if (!messages.value)
-    return
+  latestMessageIndex.value = firstMessage?.sentAt ?? ''
+  dateOfLastReadMessage.value = lastMessage?.sentAt ?? ''
 
-  unreadStore.latestMessageIndex = messages.value.at(0)?.sentAt ?? ''
-  unreadStore.dateOfLastReadMessage = messages.value.at(-1)?.sentAt ?? ''
+  if (lastMessage) {
+    const unsubscribe = getLatestMessages(lastMessage.sentAt)
+
+    onWatcherCleanup(unsubscribe)
+  }
 })
 
 const sortedMessages = computed(() => {
-  if (!messages.value)
-    return []
-
   return messages.value.toSorted((a, b) => {
     const aTime = Number.parseInt(a.sentAt)
     const bTime = Number.parseInt(b.sentAt)
@@ -50,28 +55,7 @@ const sortedMessages = computed(() => {
   })
 })
 
-const hasMessages = computed(() => messages.value != null && sortedMessages.value.length > 0)
-const isLoading = computed(() => messages.value == null || status.value === 'pending')
-
-const latestMessageTimestamp = computed(() => {
-  if (status.value !== 'success' || !messages.value?.length)
-    return null
-  return messages.value[0]?.sentAt
-})
-
-watchEffect((onCleanup) => {
-  const timestamp = latestMessageTimestamp.value
-  if (!timestamp)
-    return
-
-  const unsubscribe = getLatestMessages(timestamp)
-
-  onCleanup(unsubscribe)
-})
-
-const { dayjs } = useDayjs()
-
-function showAsUnread(sentAt: string) {
+function isUnread(sentAt: string) {
   if (!lastReadMessageTimestamp || !latestMessageIndexTimestamp)
     return false
 
@@ -102,7 +86,7 @@ function showAsUnread(sentAt: string) {
             :message="parseEmotes(message.message)"
             :badges="parseBadges(message.badges)"
             :reply-message="parseEmotes(message?.reply?.parent?.msgBody || '')"
-            :unread="showAsUnread(message.sentAt)"
+            :unread="isUnread(message.sentAt)"
           />
         </SimpleListItem>
       </SimpleList>
