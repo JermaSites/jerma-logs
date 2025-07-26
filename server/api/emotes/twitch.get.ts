@@ -1,5 +1,3 @@
-import twitchApi from '~~/server/utils/twitch'
-
 export default cachedEventHandler(
   async () => {
     const { twitchId } = useRuntimeConfig().public

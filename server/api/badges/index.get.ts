@@ -1,5 +1,3 @@
-import twitchApi from '~~/server/utils/twitch'
-
 interface BadgesResponse {
   data: [
     {
