@@ -1,11 +1,4 @@
 <script setup lang="ts">
-import {
-  collection,
-  onSnapshot,
-  query,
-  where,
-} from 'firebase/firestore'
-
 const { fetchEmotes, parseEmotes } = useEmotes()
 const { fetchBadges, parseBadges } = useBadges()
 
@@ -15,12 +8,20 @@ fetchBadges()
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
 
-const { data: messages, status } = await useFetch<Message[]>('/api/messages/latest', {
+const { messages, getLatestMessages } = useMessages()
+
+const { data, status } = await useFetch<Message[]>('/api/messages/latest', {
   query: {
     order: sortOrder.value.message,
   },
   server: false,
   lazy: true,
+})
+
+watch(data, (msg) => {
+  if (!msg)
+    return
+  messages.value = msg
 })
 
 const unreadStore = useUnreadStore()
@@ -58,25 +59,12 @@ const latestMessageTimestamp = computed(() => {
   return messages.value[0]?.sentAt
 })
 
-const { firestore } = useFirebase()
-const { twitchUsername } = useRuntimeConfig().public
-
 watchEffect((onCleanup) => {
   const timestamp = latestMessageTimestamp.value
   if (!timestamp)
     return
 
-  const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(timestamp))
-
-  const latestMessagesQuery = query(
-    collection(firestore, 'messages'),
-    where('username', '==', twitchUsername),
-    where('sentAt', '>=', dayOfLatestMessage),
-  )
-
-  const unsubscribe = onSnapshot(latestMessagesQuery, (querySnapshot) => {
-    messages.value = querySnapshot.docs.map(doc => doc.data() as Message)
-  })
+  const unsubscribe = getLatestMessages(timestamp)
 
   onCleanup(unsubscribe)
 })

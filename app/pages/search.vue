@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { collection, getDocs, query, where } from 'firebase/firestore'
-
 const { y } = useWindowScroll({ behavior: 'smooth' })
 
 const { fetchEmotes, parseEmotes } = useEmotes()
@@ -15,27 +13,21 @@ const hasResults = computed(() => {
   return result.value && result.value.hits && result.value.hits.length > 0
 })
 
-const { firestore } = useFirebase()
+const { messages, searchMessages } = useMessages()
+
 const firebaseMessages = ref<Message[]>([])
-const { twitchUsername } = useRuntimeConfig().public
 const loading = ref(false)
 
-watch(result, async () => {
+watch(result, async (result) => {
   firebaseMessages.value = []
 
   if (!hasResults.value)
     return
 
-  const q = query(
-    collection(firestore, 'messages'),
-    where('username', '==', twitchUsername),
-    where('__name__', 'in', result.value.hits.map(hit => hit.objectID)),
-  )
-
   try {
     loading.value = true
-    const querySnapshot = await getDocs(q)
-    firebaseMessages.value = querySnapshot.docs.map(doc => doc.data() as Message)
+    // firebaseMessages.value = await searchMessages(result)
+    await searchMessages(result)
     y.value = 0
   }
   catch (error) {
@@ -110,7 +102,7 @@ const algoliaLogo = computed(() => {
     </div>
 
     <SimpleList v-else-if="hasResults">
-      <SimpleListItem v-for="message in firebaseMessages" :key="message.id">
+      <SimpleListItem v-for="message in messages" :key="message.id">
         <Message
           :sent-at="message.sentAt"
           sent-at-format="MMM DD hh:mm A z"

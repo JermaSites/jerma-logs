@@ -1,12 +1,4 @@
 <script setup lang="ts">
-import {
-  collection,
-  onSnapshot,
-  orderBy,
-  query,
-  where,
-} from 'firebase/firestore'
-
 const route = useRoute()
 
 useSeoMeta({
@@ -48,12 +40,20 @@ const { sortOrder } = storeToRefs(sortStore)
 
 const { year, month } = route.params as { year: string, month: string }
 
-const { data: messages, status } = await useFetch<Message[]>(`/api/messages/${year}/${month}`, {
+const { messages, getMessages } = useMessages()
+
+const { data, status } = await useFetch<Message[]>(`/api/messages/${year}/${month}`, {
   query: {
     order: sortOrder.value.message,
   },
   server: false,
   lazy: true,
+})
+
+watch(data, (msg) => {
+  if (!msg)
+    return
+  messages.value = msg
 })
 
 const isLoading = computed(() => messages.value == null || status.value === 'pending')
@@ -74,8 +74,6 @@ const sortedMessages = computed(() => {
   })
 })
 
-const { firestore } = useFirebase()
-const { twitchUsername } = useRuntimeConfig().public
 const { dayjs } = useDayjs()
 
 onMounted(async () => {
@@ -87,19 +85,11 @@ onMounted(async () => {
   if (endTime.isBefore(currentDate))
     return
 
-  const q = query(
-    collection(firestore, 'messages'),
-    where('sentAt', '>=', startTime.valueOf().toString()),
-    where('sentAt', '<=', endTime.valueOf().toString()),
-    where('username', '==', twitchUsername),
-    orderBy('sentAt', sortOrder.value.message),
-  )
+  const start = startTime.valueOf().toString()
+  const end = endTime.valueOf().toString()
+  const order = sortOrder.value.message
 
-  const unsubscribe = onSnapshot(q, (querySnapshot) => {
-    if (querySnapshot.docs.length === 0)
-      return
-    messages.value = querySnapshot.docs.map(doc => doc.data() as Message)
-  })
+  const unsubscribe = getMessages(start, end, order)
 
   onUnmounted(() => {
     unsubscribe()
