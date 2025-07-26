@@ -1,6 +1,9 @@
 <script setup lang="ts">
 const route = useRoute()
 
+const sortStore = useSortStore()
+const { sortOrder } = storeToRefs(sortStore)
+
 useSeoMeta({
   title: `${route.params.year}`,
 })
@@ -14,9 +17,6 @@ definePageMeta({
     return year >= 2020 && year <= new Date().getFullYear()
   },
 })
-
-const sortStore = useSortStore()
-const { sortOrder } = storeToRefs(sortStore)
 </script>
 
 <template>

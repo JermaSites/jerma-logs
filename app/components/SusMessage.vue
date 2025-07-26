@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { dayjs } = useDayjs()
 
-const { fetchEmotes } = useEmotes()
+const { fetchEmotes, parseEmotes } = useEmotes()
 
 fetchEmotes()
 
@@ -37,8 +37,6 @@ const formattedSusMessage = computed(() => {
 
   return sus
 })
-
-const { parseEmotes } = useEmotes()
 
 const parsedSusMessage = computed(() => parseEmotes(formattedSusMessage.value))
 </script>

@@ -1,5 +1,9 @@
 <script setup lang="ts">
 const route = useRoute()
+const sortStore = useSortStore()
+const { sortOrder } = storeToRefs(sortStore)
+
+const isMobileScreen = useMediaQuery('(max-width: 768px)')
 
 const sortId = computed(() => {
   switch (route.name) {
@@ -15,11 +19,6 @@ const sortId = computed(() => {
       return 'year'
   }
 })
-
-const sortStore = useSortStore()
-const { sortOrder } = storeToRefs(sortStore)
-
-const isMobileScreen = useMediaQuery('(max-width: 768px)')
 
 const open = ref(false)
 </script>

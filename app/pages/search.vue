@@ -1,5 +1,11 @@
 <script setup lang="ts">
+const settingsStore = useSettingsStore()
+
+const { messages, searchMessages } = useMessages()
+
 const { y } = useWindowScroll({ behavior: 'smooth' })
+
+const { result, search } = useAlgoliaSearch<AlgoliaIndex>('messages')
 
 const { fetchEmotes, parseEmotes } = useEmotes()
 const { fetchBadges, parseBadges } = useBadges()
@@ -7,13 +13,9 @@ const { fetchBadges, parseBadges } = useBadges()
 fetchEmotes()
 fetchBadges()
 
-const { result, search } = useAlgoliaSearch<AlgoliaIndex>('messages')
-
 const hasResults = computed(() => {
   return result.value && result.value.hits && result.value.hits.length > 0
 })
-
-const { messages, searchMessages } = useMessages()
 
 const firebaseMessages = ref<Message[]>([])
 const loading = ref(false)
@@ -54,7 +56,6 @@ watch(page, (newPage) => {
   search({ query: searchValue.value, requestOptions: { page: newPage - 1 } })
 })
 
-const settingsStore = useSettingsStore()
 const algoliaLogo = computed(() => {
   const darkUrl = '/Algolia-mark-white.png'
   const lightUrl = '/Algolia-mark-blue.png'

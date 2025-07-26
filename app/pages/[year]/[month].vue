@@ -2,6 +2,14 @@
 const route = useRoute()
 const { dayjs } = useDayjs()
 
+const sortStore = useSortStore()
+const { sortOrder } = storeToRefs(sortStore)
+
+const { messages, getMessages } = useMessages()
+
+const { fetchEmotes, parseEmotes } = useEmotes()
+const { fetchBadges, parseBadges } = useBadges()
+
 useSeoMeta({
   title: `${capitalize(route.params.month as string)} | ${route.params.year}`,
 })
@@ -30,18 +38,10 @@ definePageMeta({
   },
 })
 
-const { fetchEmotes, parseEmotes } = useEmotes()
-const { fetchBadges, parseBadges } = useBadges()
-
 fetchEmotes()
 fetchBadges()
 
-const sortStore = useSortStore()
-const { sortOrder } = storeToRefs(sortStore)
-
 const { year, month } = route.params as { year: string, month: string }
-
-const { messages, getMessages } = useMessages()
 
 const { data, status } = await useFetch<Message[]>(`/api/messages/${year}/${month}`, {
   query: {

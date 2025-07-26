@@ -1,11 +1,13 @@
 <script setup lang="ts">
 const emit = defineEmits<{ close: [boolean] }>()
 
-const settingsStore = useSettingsStore()
+const route = useRoute()
 
+const settingsStore = useSettingsStore()
 const { messageNotifications, susNotifications, testNotifications } = storeToRefs(settingsStore)
 
 const notificationPermission = usePermission('notifications')
+const colorMode = useColorMode()
 
 const { isSupported, getTokenAndSubscribeToTopic, getTokenAndUnsubscribeToTopic } = useFCM()
 
@@ -18,8 +20,6 @@ const notificationPermissionDenied = computed(() => {
 const notificationPermissionGranted = computed(() => {
   return notificationPermission.value === 'granted'
 })
-
-const route = useRoute()
 
 const isDev = computed(() => {
   return Object.hasOwn(route.query, 'test')
@@ -58,8 +58,6 @@ watchEffect(async () => {
 })
 
 const { hideMessageTimestamps, colorModeValue } = storeToRefs(settingsStore)
-
-const colorMode = useColorMode()
 
 const lightModeEnabled = computed({
   get() {

@@ -11,15 +11,13 @@ useSeoMeta({
   twitterCard: 'summary',
 })
 
-const settingsStore = useSettingsStore()
-
 const { dayjs } = useDayjs()
+const settingsStore = useSettingsStore()
+const unreadStore = useUnreadStore()
 
 onMounted(() => {
   settingsStore.userTimezone = dayjs.tz.guess()
 })
-
-const unreadStore = useUnreadStore()
 
 const { data: lastMessage } = await useFetch<Message>('/api/messages/latest/lastMessage')
 
