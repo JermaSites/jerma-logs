@@ -2,16 +2,6 @@ import { $fetch } from 'ofetch'
 
 const { twitchApiBaseUrl, twitchClientId, twitchClientSecret } = useRuntimeConfig()
 
-interface AccessToken {
-  access_token: string
-  expires_in: number
-  token_type: string
-}
-
-interface StoredToken extends AccessToken {
-  expires_at: number
-}
-
 async function getAuthToken() {
   return await $fetch<AccessToken>(`https://id.twitch.tv/oauth2/token`, {
     method: 'POST',

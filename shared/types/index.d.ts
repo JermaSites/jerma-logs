@@ -44,6 +44,26 @@ export interface BadgeInfo {
   broadcaster: string
 }
 
+export interface BadgesResponse {
+  data: [
+    {
+      set_id: string
+      versions: [
+        {
+          id: string
+          image_url_1x: string
+          image_url_2x: string
+          image_url_4x: string
+          title: string
+          description: string
+          click_action: string | null
+          click_url: string | null
+        },
+      ]
+    },
+  ]
+}
+
 export interface Message {
   mod: boolean
   subscriber: boolean
@@ -184,3 +204,13 @@ export type MessagesResponse = [
     readTime: string
   },
 ]
+
+export interface AccessToken {
+  access_token: string
+  expires_in: number
+  token_type: string
+}
+
+export interface StoredToken extends AccessToken {
+  expires_at: number
+}
