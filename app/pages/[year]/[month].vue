@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const route = useRoute()
+const { dayjs } = useDayjs()
 
 useSeoMeta({
   title: `${capitalize(route.params.month as string)} | ${route.params.year}`,
@@ -48,22 +49,19 @@ const { data, status } = await useFetch<Message[]>(`/api/messages/${year}/${mont
   },
   server: false,
   lazy: true,
+  default() {
+    return []
+  },
 })
 
+const hasMessages = computed(() => messages.value.length > 0)
+const isLoading = computed(() => status.value === 'idle' || status.value === 'pending')
+
 watch(data, (msg) => {
-  if (!msg)
-    return
   messages.value = msg
 })
 
-const isLoading = computed(() => messages.value == null || status.value === 'pending')
-
-const hasMessages = computed(() => messages.value != null && messages.value.length > 0)
-
 const sortedMessages = computed(() => {
-  if (!messages.value)
-    return []
-
   return messages.value.toSorted((a, b) => {
     const aTime = Number.parseInt(a.sentAt)
     const bTime = Number.parseInt(b.sentAt)
@@ -73,8 +71,6 @@ const sortedMessages = computed(() => {
       : bTime - aTime
   })
 })
-
-const { dayjs } = useDayjs()
 
 onMounted(async () => {
   const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
