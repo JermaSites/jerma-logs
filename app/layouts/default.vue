@@ -14,8 +14,10 @@ useSeoMeta({
 const { dayjs } = useDayjs()
 const settingsStore = useSettingsStore()
 const unreadStore = useUnreadStore()
+const colorMode = useColorMode()
 
 onMounted(() => {
+  settingsStore.colorModeValue = colorMode.value
   settingsStore.userTimezone = dayjs.tz.guess()
 })
 
