@@ -11,15 +11,15 @@ useSeoMeta({
   twitterCard: 'summary',
 })
 
-const settingsStore = useSettingsStore()
-
 const { dayjs } = useDayjs()
+const settingsStore = useSettingsStore()
+const unreadStore = useUnreadStore()
+const colorMode = useColorMode()
 
 onMounted(() => {
+  settingsStore.colorModeValue = colorMode.value
   settingsStore.userTimezone = dayjs.tz.guess()
 })
-
-const unreadStore = useUnreadStore()
 
 const { data: lastMessage } = await useFetch<Message>('/api/messages/latest/lastMessage')
 
@@ -37,7 +37,7 @@ unreadStore.dateOfLatestMessage = lastMessage?.value?.sentAt ?? ''
         <SiteBreadcrumb />
         <SiteSettings />
       </div>
-      <slot />
+      <NuxtPage />
     </main>
     <LazySiteFooter hydrate-never />
   </UApp>

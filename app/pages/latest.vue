@@ -1,44 +1,57 @@
 <script setup lang="ts">
-import {
-  collection,
-  onSnapshot,
-  query,
-  where,
-} from 'firebase/firestore'
-
+const { dayjs } = useDayjs()
 const { fetchEmotes, parseEmotes } = useEmotes()
 const { fetchBadges, parseBadges } = useBadges()
-
-fetchEmotes()
-fetchBadges()
 
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
 
+const unreadStore = useUnreadStore()
+const { dateOfLastReadMessage, latestMessageIndex } = storeToRefs(unreadStore)
+
+const { getLatestMessages } = useMessages()
+
+fetchEmotes()
+fetchBadges()
+
 const { data: messages, status } = await useFetch<Message[]>('/api/messages/latest', {
-  query: {
-    order: sortOrder.value.message,
-  },
   server: false,
   lazy: true,
+  default() {
+    return []
+  },
 })
 
-const unreadStore = useUnreadStore()
-const lastReadMessageTimestamp = unreadStore.dateOfLastReadMessage
-const latestMessageIndexTimestamp = unreadStore.latestMessageIndex
+const hasMessages = computed(() => messages.value.length > 0)
+const isLoading = computed(() => status.value === 'idle' || status.value === 'pending')
 
-watch(messages, () => {
-  if (!messages.value)
+const lastReadMessageTimestamp = dateOfLastReadMessage.value
+const latestMessageIndexTimestamp = latestMessageIndex.value
+
+watch(messages, (newMessages) => {
+  const firstMessage = newMessages.at(0)
+  const lastMessage = newMessages.at(-1)
+
+  latestMessageIndex.value = firstMessage?.sentAt || ''
+  dateOfLastReadMessage.value = lastMessage?.sentAt || ''
+})
+
+const lastMessageTimestamp = computed(() => {
+  return messages.value.at(-1)?.sentAt || ''
+})
+
+watch(lastMessageTimestamp, (timestamp) => {
+  if (!timestamp)
     return
 
-  unreadStore.latestMessageIndex = messages.value.at(0)?.sentAt ?? ''
-  unreadStore.dateOfLastReadMessage = messages.value.at(-1)?.sentAt ?? ''
+  const unsubscribe = getLatestMessages(timestamp, (docs) => {
+    messages.value = docs
+  })
+
+  onWatcherCleanup(unsubscribe)
 })
 
 const sortedMessages = computed(() => {
-  if (!messages.value)
-    return []
-
   return messages.value.toSorted((a, b) => {
     const aTime = Number.parseInt(a.sentAt)
     const bTime = Number.parseInt(b.sentAt)
@@ -49,41 +62,7 @@ const sortedMessages = computed(() => {
   })
 })
 
-const hasMessages = computed(() => messages.value != null && sortedMessages.value.length > 0)
-const isLoading = computed(() => messages.value == null || status.value === 'pending')
-
-const latestMessageTimestamp = computed(() => {
-  if (status.value !== 'success' || !messages.value?.length)
-    return null
-  return messages.value[0]?.sentAt
-})
-
-const { firestore } = useFirebase()
-const { twitchUsername } = useRuntimeConfig().public
-
-watchEffect((onCleanup) => {
-  const timestamp = latestMessageTimestamp.value
-  if (!timestamp)
-    return
-
-  const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(timestamp))
-
-  const latestMessagesQuery = query(
-    collection(firestore, 'messages'),
-    where('username', '==', twitchUsername),
-    where('sentAt', '>=', dayOfLatestMessage),
-  )
-
-  const unsubscribe = onSnapshot(latestMessagesQuery, (querySnapshot) => {
-    messages.value = querySnapshot.docs.map(doc => doc.data() as Message)
-  })
-
-  onCleanup(unsubscribe)
-})
-
-const { dayjs } = useDayjs()
-
-function showAsUnread(sentAt: string) {
+function isUnread(sentAt: string) {
   if (!lastReadMessageTimestamp || !latestMessageIndexTimestamp)
     return false
 
@@ -114,7 +93,7 @@ function showAsUnread(sentAt: string) {
             :message="parseEmotes(message.message)"
             :badges="parseBadges(message.badges)"
             :reply-message="parseEmotes(message?.reply?.parent?.msgBody || '')"
-            :unread="showAsUnread(message.sentAt)"
+            :unread="isUnread(message.sentAt)"
           />
         </SimpleListItem>
       </SimpleList>

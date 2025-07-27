@@ -1,13 +1,6 @@
 import { $fetch } from 'ofetch'
 
-const { twitchApiBaseUrl, twitchClientId, twitchClientSecret }
-  = useRuntimeConfig()
-
-interface AccessToken {
-  access_token: string
-  expires_in: number
-  token_type: string
-}
+const { twitchApiBaseUrl, twitchClientId, twitchClientSecret } = useRuntimeConfig()
 
 async function getAuthToken() {
   return await $fetch<AccessToken>(`https://id.twitch.tv/oauth2/token`, {
@@ -29,14 +22,19 @@ export default $fetch.create({
     'Client-ID': twitchClientId,
   },
   async onRequest({ options }) {
-    let token = await useStorage('twitch').getItem<AccessToken>('token')
+    let storedToken = await useStorage('twitch').getItem<StoredToken>('token')
 
-    if (!token || token.expires_in <= Date.now()) {
-      token = await getAuthToken()
-      token.expires_in += Date.now()
-      await useStorage('twitch').setItem<AccessToken>('token', token)
+    if (!storedToken || storedToken.expires_in <= Date.now()) {
+      const newToken = await getAuthToken()
+
+      storedToken = {
+        ...newToken,
+        expires_at: Date.now() + (newToken.expires_in * 1000), // Convert to milliseconds
+      }
+
+      await useStorage('twitch').setItem('token', storedToken)
     }
 
-    options.headers.set('authorization', `Bearer ${token.access_token}`)
+    options.headers.set('authorization', `Bearer ${storedToken.access_token}`)
   },
 })

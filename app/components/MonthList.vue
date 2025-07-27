@@ -3,6 +3,8 @@ const props = defineProps<{
   sortOrder: SortOrder
 }>()
 
+const route = useRoute()
+
 const RECORDING_START_YEAR = 2020 // only started recording form May 2020 onward
 const RECORDING_START_MONTH = 4 // May (0-based)
 
@@ -20,8 +22,6 @@ const months = [
   { name: 'November', id: 10 },
   { name: 'December', id: 11 },
 ]
-
-const route = useRoute()
 
 const filteredMonths = computed(() => {
   const selectedYear = Number.parseInt(route.params.year as string)

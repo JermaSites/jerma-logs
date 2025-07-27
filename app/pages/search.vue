@@ -1,7 +1,12 @@
 <script setup lang="ts">
-import { collection, getDocs, query, where } from 'firebase/firestore'
+const settingsStore = useSettingsStore()
+const { colorModeValue } = storeToRefs(settingsStore)
+
+const { searchMessages } = useMessages()
 
 const { y } = useWindowScroll({ behavior: 'smooth' })
+
+const { result, search } = useAlgoliaSearch<AlgoliaIndex>('messages')
 
 const { fetchEmotes, parseEmotes } = useEmotes()
 const { fetchBadges, parseBadges } = useBadges()
@@ -9,33 +14,22 @@ const { fetchBadges, parseBadges } = useBadges()
 fetchEmotes()
 fetchBadges()
 
-const { result, search } = useAlgoliaSearch<AlgoliaIndex>('messages')
-
 const hasResults = computed(() => {
   return result.value && result.value.hits && result.value.hits.length > 0
 })
 
-const { firestore } = useFirebase()
-const firebaseMessages = ref<Message[]>([])
-const { twitchUsername } = useRuntimeConfig().public
+const messages = ref<Message[]>([])
 const loading = ref(false)
 
-watch(result, async () => {
-  firebaseMessages.value = []
+watch(result, async (result) => {
+  messages.value = []
 
   if (!hasResults.value)
     return
 
-  const q = query(
-    collection(firestore, 'messages'),
-    where('username', '==', twitchUsername),
-    where('__name__', 'in', result.value.hits.map(hit => hit.objectID)),
-  )
-
   try {
     loading.value = true
-    const querySnapshot = await getDocs(q)
-    firebaseMessages.value = querySnapshot.docs.map(doc => doc.data() as Message)
+    messages.value = await searchMessages(result)
     y.value = 0
   }
   catch (error) {
@@ -62,12 +56,11 @@ watch(page, (newPage) => {
   search({ query: searchValue.value, requestOptions: { page: newPage - 1 } })
 })
 
-const settingsStore = useSettingsStore()
 const algoliaLogo = computed(() => {
   const darkUrl = '/Algolia-mark-white.png'
   const lightUrl = '/Algolia-mark-blue.png'
 
-  return settingsStore.colorModeValue === 'dark' ? darkUrl : lightUrl
+  return colorModeValue.value === 'dark' ? darkUrl : lightUrl
 })
 </script>
 
@@ -88,7 +81,6 @@ const algoliaLogo = computed(() => {
       variant="outline"
       placeholder="Search..."
       class="w-full"
-      :loading="loading"
       @keydown.enter="newSearch"
     >
       <template v-if="searchValue?.length" #trailing>
@@ -110,7 +102,7 @@ const algoliaLogo = computed(() => {
     </div>
 
     <SimpleList v-else-if="hasResults">
-      <SimpleListItem v-for="message in firebaseMessages" :key="message.id">
+      <SimpleListItem v-for="message in messages" :key="message.id">
         <Message
           :sent-at="message.sentAt"
           sent-at-format="MMM DD hh:mm A z"
