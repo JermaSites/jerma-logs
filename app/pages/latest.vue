@@ -9,12 +9,12 @@ const { sortOrder } = storeToRefs(sortStore)
 const unreadStore = useUnreadStore()
 const { dateOfLastReadMessage, latestMessageIndex } = storeToRefs(unreadStore)
 
-const { messages, getLatestMessages } = useMessages()
+const { getLatestMessages } = useMessages()
 
 fetchEmotes()
 fetchBadges()
 
-const { data, status } = await useFetch<Message[]>('/api/messages/latest', {
+const { data: messages, status } = await useFetch<Message[]>('/api/messages/latest', {
   server: false,
   lazy: true,
   default() {
@@ -28,9 +28,7 @@ const isLoading = computed(() => status.value === 'idle' || status.value === 'pe
 const lastReadMessageTimestamp = dateOfLastReadMessage.value
 const latestMessageIndexTimestamp = latestMessageIndex.value
 
-watch(data, (msg) => {
-  messages.value = msg
-
+watch(messages, (msg) => {
   const firstMessage = msg.at(0)
   const lastMessage = msg.at(-1)
 
@@ -38,7 +36,9 @@ watch(data, (msg) => {
   dateOfLastReadMessage.value = lastMessage?.sentAt ?? ''
 
   if (lastMessage) {
-    const unsubscribe = getLatestMessages(lastMessage.sentAt)
+    const unsubscribe = getLatestMessages(lastMessage.sentAt, (docs) => {
+      messages.value = docs
+    })
 
     onWatcherCleanup(unsubscribe)
   }

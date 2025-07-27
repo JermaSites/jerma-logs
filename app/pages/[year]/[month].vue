@@ -5,7 +5,7 @@ const { dayjs } = useDayjs()
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
 
-const { messages, getMessages } = useMessages()
+const { getMessages } = useMessages()
 
 const { fetchEmotes, parseEmotes } = useEmotes()
 const { fetchBadges, parseBadges } = useBadges()
@@ -43,7 +43,7 @@ fetchBadges()
 
 const { year, month } = route.params as { year: string, month: string }
 
-const { data, status } = await useFetch<Message[]>(`/api/messages/${year}/${month}`, {
+const { data: messages, status } = await useFetch<Message[]>(`/api/messages/${year}/${month}`, {
   query: {
     order: sortOrder.value.message,
   },
@@ -56,10 +56,6 @@ const { data, status } = await useFetch<Message[]>(`/api/messages/${year}/${mont
 
 const hasMessages = computed(() => messages.value.length > 0)
 const isLoading = computed(() => status.value === 'idle' || status.value === 'pending')
-
-watch(data, (msg) => {
-  messages.value = msg
-})
 
 const sortedMessages = computed(() => {
   return messages.value.toSorted((a, b) => {
@@ -85,7 +81,9 @@ onMounted(async () => {
   const end = endTime.valueOf().toString()
   const order = sortOrder.value.message
 
-  const unsubscribe = getMessages(start, end, order)
+  const unsubscribe = getMessages(start, end, order, (docs) => {
+    messages.value = docs
+  })
 
   onUnmounted(() => {
     unsubscribe()

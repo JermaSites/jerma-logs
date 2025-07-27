@@ -1,7 +1,8 @@
 <script setup lang="ts">
 const settingsStore = useSettingsStore()
+const { colorModeValue } = storeToRefs(settingsStore)
 
-const { messages, searchMessages } = useMessages()
+const { searchMessages } = useMessages()
 
 const { y } = useWindowScroll({ behavior: 'smooth' })
 
@@ -17,19 +18,18 @@ const hasResults = computed(() => {
   return result.value && result.value.hits && result.value.hits.length > 0
 })
 
-const firebaseMessages = ref<Message[]>([])
+const messages = ref<Message[]>([])
 const loading = ref(false)
 
 watch(result, async (result) => {
-  firebaseMessages.value = []
+  messages.value = []
 
   if (!hasResults.value)
     return
 
   try {
     loading.value = true
-    // firebaseMessages.value = await searchMessages(result)
-    await searchMessages(result)
+    messages.value = await searchMessages(result)
     y.value = 0
   }
   catch (error) {
@@ -60,7 +60,7 @@ const algoliaLogo = computed(() => {
   const darkUrl = '/Algolia-mark-white.png'
   const lightUrl = '/Algolia-mark-blue.png'
 
-  return settingsStore.colorModeValue === 'dark' ? darkUrl : lightUrl
+  return colorModeValue.value === 'dark' ? darkUrl : lightUrl
 })
 </script>
 
@@ -81,7 +81,6 @@ const algoliaLogo = computed(() => {
       variant="outline"
       placeholder="Search..."
       class="w-full"
-      :loading="loading"
       @keydown.enter="newSearch"
     >
       <template v-if="searchValue?.length" #trailing>

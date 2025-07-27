@@ -4,6 +4,7 @@ import type { SortOrder } from '~~/shared/types'
 
 import {
   collection,
+
   getDocs,
   onSnapshot,
   orderBy,
@@ -15,9 +16,7 @@ export default function () {
   const { firestore } = useFirebase()
   const { twitchUsername } = useRuntimeConfig().public
 
-  const messages = ref<Message[]>([])
-
-  function getMessages(start: string, end: string, order: SortOrder) {
+  function getMessages(start: string, end: string, order: SortOrder, callback: (docs: Message[]) => void) {
     const q = query(
       collection(firestore, 'messages'),
       where('sentAt', '>=', start),
@@ -27,13 +26,12 @@ export default function () {
     )
 
     return onSnapshot(q, (querySnapshot) => {
-      if (querySnapshot.docs.length === 0)
-        return
-      messages.value = querySnapshot.docs.map(doc => doc.data() as Message)
+      const docs = querySnapshot.docs.map(doc => doc.data() as Message)
+      callback(docs)
     })
   }
 
-  function getLatestMessages(timestamp: string) {
+  function getLatestMessages(timestamp: string, callback: (docs: Message[]) => void) {
     const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(timestamp))
 
     const q = query(
@@ -43,7 +41,8 @@ export default function () {
     )
 
     return onSnapshot(q, (querySnapshot) => {
-      messages.value = querySnapshot.docs.map(doc => doc.data() as Message)
+      const docs = querySnapshot.docs.map(doc => doc.data() as Message)
+      callback(docs)
     })
   }
 
@@ -56,11 +55,10 @@ export default function () {
 
     const querySnapshot = await getDocs(q)
 
-    messages.value = querySnapshot.docs.map(doc => doc.data() as Message)
+    return querySnapshot.docs.map(doc => doc.data() as Message)
   }
 
   return {
-    messages,
     getMessages,
     getLatestMessages,
     searchMessages,

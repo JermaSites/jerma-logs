@@ -12,7 +12,7 @@ const { data, status } = await useFetch<Message>('/api/messages/sus', {
 const susMessageTimeFromNow = computed(() => {
   const sentAt = data.value?.sentAt
 
-  if (sentAt === undefined)
+  if (!sentAt)
     return ''
 
   return dayjs.utc(Number.parseInt(sentAt)).fromNow()
@@ -21,7 +21,7 @@ const susMessageTimeFromNow = computed(() => {
 const susMessageDate = computed(() => {
   const sentAt = data.value?.sentAt
 
-  if (sentAt === undefined)
+  if (!sentAt)
     return ''
 
   return dayjs.utc(Number.parseInt(sentAt)).format('MMM D, YYYY')
@@ -30,12 +30,13 @@ const susMessageDate = computed(() => {
 const susRegExp = /^!(commands\s+edit|editcom)\s+(-cd=\d+\s+)?(!sus)\s(-cd=\d+\s)?(?<susMessage>.+)$/
 
 const formattedSusMessage = computed(() => {
-  const sus = data.value?.message?.match(susRegExp)?.groups?.susMessage
-
-  if (sus === undefined)
+  const message = data.value?.message
+  if (!message)
     return ''
 
-  return sus
+  const match = message.match(susRegExp)
+
+  return match?.groups?.susMessage?.trim() || ''
 })
 
 const parsedSusMessage = computed(() => parseEmotes(formattedSusMessage.value))
@@ -60,5 +61,3 @@ const parsedSusMessage = computed(() => parseEmotes(formattedSusMessage.value))
     </div>
   </div>
 </template>
-
-<style scoped></style>
