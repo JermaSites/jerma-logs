@@ -1,5 +1,5 @@
 export default function () {
-  const badgeMap = reactive<BadgeMap>(new Map())
+  const badgeMap: BadgeMap = new Map()
 
   async function fetchBadges() {
     const { data: badges } = await useFetch<Badge[]>('/api/badges', {
@@ -25,7 +25,7 @@ export default function () {
   function parseBadges(badgeInfo: BadgeInfo) {
     if (!badgeInfo)
       return []
-
+    console.log('Parsing badges:', badgeMap.size)
     return Object.entries(badgeInfo)
       .sort(([a], [b]) => getBadgeRank(a) - getBadgeRank(b))
       .map(([name, version]) => {

@@ -1,7 +1,7 @@
 import linkifyStr from 'linkify-string'
 
 export default function () {
-  const emoteMap = reactive<EmoteMap>(new Map())
+  const emoteMap: EmoteMap = new Map()
 
   async function fetchEmotes() {
     const { data: emotes } = await useFetch('/api/emotes', {
