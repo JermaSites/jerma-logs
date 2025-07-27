@@ -1,10 +1,11 @@
 <script setup lang="ts">
 const error = useError()
 
-function handleError() {
-  clearError({
-    redirect: '/',
-  })
+const statusCode = error.value?.statusCode
+const message = error.value?.message
+
+async function handleError() {
+  await clearError({ redirect: '/' })
 }
 </script>
 
@@ -12,14 +13,18 @@ function handleError() {
   <NuxtLayout name="error">
     <div class="text-center">
       <h1 class="text-9xl">
-        {{ error?.statusCode }}
+        {{ statusCode }}
       </h1>
+
       <h2 class="text-6xl">
-        {{ error?.message }}
+        {{ message }}
       </h2>
 
-      <div class="test">
-        <button class="btn border-2 border-blue-500 bg-slate-800 hover:bg-slate-900 font-bold tracking-wide p-4 mt-4" @click="handleError">
+      <div>
+        <button
+          class="btn cursor-pointer border-2 border-blue-500 bg-slate-800 hover:bg-slate-900 font-bold tracking-wide p-4 mt-4"
+          @click="handleError"
+        >
           <span>Return to Home</span>
         </button>
       </div>
