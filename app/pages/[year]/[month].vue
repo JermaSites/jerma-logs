@@ -7,10 +7,8 @@ const { sortOrder } = storeToRefs(sortStore)
 
 const { getMessages } = useMessages()
 
-const { fetchEmotes, parseEmotes } = useEmotes()
-const { fetchBadges, parseBadges } = useBadges()
-
-await Promise.allSettled([fetchEmotes(), fetchBadges()])
+const { parseEmotes } = useEmotes()
+const { parseBadges } = useBadges()
 
 useSeoMeta({
   title: `${capitalize(route.params.month as string)} | ${route.params.year}`,

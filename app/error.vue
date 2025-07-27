@@ -42,7 +42,7 @@ async function handleError() {
         </div>
       </div>
     </main>
-    <SiteFooter />
+    <LazySiteFooter hydrate-never />
   </UApp>
 </template>
 

@@ -1,14 +1,10 @@
+const badgeMap: BadgeMap = new Map()
+
 export default function () {
-  const badgeMap: BadgeMap = new Map()
-
   async function fetchBadges() {
-    const { data: badges } = await useFetch<Badge[]>('/api/badges', {
-      default() {
-        return []
-      },
-    })
+    const badges = await $fetch<Badge[]>('/api/badges')
 
-    badges.value.forEach((badge) => {
+    badges.forEach((badge) => {
       const badgeVersionsMap = new Map(badge.versions.map(v => [v.id, v]))
       badgeMap.set(badge.set_id, badgeVersionsMap)
     })

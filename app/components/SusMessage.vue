@@ -1,9 +1,7 @@
 <script setup lang="ts">
 const { dayjs } = useDayjs()
 
-const { fetchEmotes, parseEmotes } = useEmotes()
-
-await fetchEmotes()
+const { parseEmotes } = useEmotes()
 
 const { data, status } = await useFetch<Message>('/api/messages/sus', {
   lazy: false,

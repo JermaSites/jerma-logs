@@ -16,6 +16,11 @@ const settingsStore = useSettingsStore()
 const unreadStore = useUnreadStore()
 const colorMode = useColorMode()
 
+const { fetchEmotes } = useEmotes()
+const { fetchBadges } = useBadges()
+
+await Promise.allSettled([fetchEmotes(), fetchBadges()])
+
 onMounted(() => {
   settingsStore.colorModeValue = colorMode.value
   settingsStore.userTimezone = dayjs.tz.guess()

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 const { dayjs } = useDayjs()
-const { fetchEmotes, parseEmotes } = useEmotes()
-const { fetchBadges, parseBadges } = useBadges()
+const { parseEmotes } = useEmotes()
+const { parseBadges } = useBadges()
 
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
@@ -18,8 +18,6 @@ const { data: messages, status } = await useFetch<Message[]>('/api/messages/late
     return []
   },
 })
-
-await Promise.allSettled([fetchEmotes(), fetchBadges()])
 
 const hasMessages = computed(() => messages.value.length > 0)
 const isLoading = computed(() => status.value === 'idle' || status.value === 'pending')

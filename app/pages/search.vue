@@ -8,10 +8,8 @@ const { y } = useWindowScroll({ behavior: 'smooth' })
 
 const { result, search } = useAlgoliaSearch<AlgoliaIndex>('messages')
 
-const { fetchEmotes, parseEmotes } = useEmotes()
-const { fetchBadges, parseBadges } = useBadges()
-
-await Promise.allSettled([fetchEmotes(), fetchBadges()])
+const { parseEmotes } = useEmotes()
+const { parseBadges } = useBadges()
 
 const hasResults = computed(() => {
   return result.value && result.value.hits && result.value.hits.length > 0

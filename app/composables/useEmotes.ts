@@ -1,16 +1,12 @@
 import linkifyStr from 'linkify-string'
 
+const emoteMap: EmoteMap = new Map()
+
 export default function () {
-  const emoteMap: EmoteMap = new Map()
-
   async function fetchEmotes() {
-    const { data: emotes } = await useFetch('/api/emotes', {
-      default() {
-        return []
-      },
-    })
+    const emotes = await $fetch<Emote[]>('/api/emotes')
 
-    emotes.value.forEach((emote) => {
+    emotes.forEach((emote) => {
       emoteMap.set(emote.code, emote)
     })
 
