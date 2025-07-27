@@ -2,33 +2,31 @@ import { parse } from 'firestore-rest-parser'
 
 const { firebaseApiUrl } = useRuntimeConfig().public
 
-export default defineEventHandler(
-  async () => {
-    const queryData = {
-      structuredQuery: {
-        from: [
-          {
-            collectionId: 'sus',
+export default defineEventHandler(async () => {
+  const queryData = {
+    structuredQuery: {
+      from: [
+        {
+          collectionId: 'sus',
+        },
+      ],
+      orderBy: [
+        {
+          field: {
+            fieldPath: 'sentAt',
           },
-        ],
-        orderBy: [
-          {
-            field: {
-              fieldPath: 'sentAt',
-            },
-            direction: 'DESCENDING',
-          },
-        ],
-        limit: 1,
-      },
-    }
+          direction: 'DESCENDING',
+        },
+      ],
+      limit: 1,
+    },
+  }
 
-    const sus = await $fetch<MessagesResponse>(firebaseApiUrl, {
-      method: 'POST',
+  const sus = await $fetch<MessagesResponse>(firebaseApiUrl, {
+    method: 'POST',
 
-      body: queryData,
-    })
+    body: queryData,
+  })
 
-    return sus.map(doc => parse(doc.document)).pop()
-  },
-)
+  return sus.map(doc => parse(doc.document)).pop()
+})
