@@ -57,8 +57,19 @@ const { data: messages, status } = await useFetch<Message[]>(`/api/messages/${ye
 const hasMessages = computed(() => messages.value.length > 0)
 const isLoading = computed(() => status.value === 'idle' || status.value === 'pending')
 
+const parsedMessages = computed(() => {
+  return messages.value.map((msg) => {
+    return {
+      ...msg,
+      message: parseEmotes(msg.message),
+      badges: parseBadges(msg.badges),
+      reply: parseEmotes(msg.reply?.parent.msgBody || ''),
+    }
+  })
+})
+
 const sortedMessages = computed(() => {
-  return messages.value.toSorted((a, b) => {
+  return parsedMessages.value.toSorted((a, b) => {
     const aTime = Number.parseInt(a.sentAt)
     const bTime = Number.parseInt(b.sentAt)
 
@@ -105,9 +116,9 @@ onMounted(async () => {
             sent-at-format="MMM DD hh:mm A z"
             :display-name="message.displayName"
             :color="message.color"
-            :message="parseEmotes(message.message)"
-            :badges="parseBadges(message.badges)"
-            :reply-message="parseEmotes(message?.reply?.parent?.msgBody || '')"
+            :message="message.message"
+            :badges="message.badges"
+            :reply-message="message.reply"
           />
         </SimpleListItem>
       </SimpleList>
