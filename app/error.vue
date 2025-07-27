@@ -1,4 +1,11 @@
 <script setup lang="ts">
+useHead({
+  bodyAttrs: {
+    class:
+      'min-h-screen bg-slate-50 text-slate-950 dark:bg-slate-700 dark:text-slate-200',
+  },
+})
+
 const error = useError()
 
 const statusCode = error.value?.statusCode
@@ -10,29 +17,40 @@ async function handleError() {
 </script>
 
 <template>
-  <NuxtLayout name="error">
-    <div class="text-center">
-      <h1 class="text-9xl">
-        {{ statusCode }}
-      </h1>
+  <UApp>
+    <NuxtLoadingIndicator />
 
-      <h2 class="text-6xl">
-        {{ message }}
-      </h2>
+    <SiteHeader class="mb-4" />
 
-      <div>
-        <button
-          class="btn cursor-pointer border-2 border-blue-500 bg-slate-800 hover:bg-slate-900 font-bold tracking-wide p-4 mt-4"
-          @click="handleError"
-        >
-          <span>Return to Home</span>
-        </button>
+    <main class="container mx-auto px-4 md:max-w-6xl">
+      <div class="text-center">
+        <h1 class="text-9xl">
+          {{ statusCode }}
+        </h1>
+
+        <h2 class="text-6xl">
+          {{ message }}
+        </h2>
+
+        <div>
+          <button
+            class="btn cursor-pointer border-2 border-blue-500 bg-slate-800 hover:bg-slate-900 font-bold tracking-wide p-4 mt-4"
+            @click="handleError"
+          >
+            <span>Return to Home</span>
+          </button>
+        </div>
       </div>
-    </div>
-  </NuxtLayout>
+    </main>
+    <SiteFooter />
+  </UApp>
 </template>
 
 <style scoped>
+:root {
+  font-family: "Roboto", sans-serif;
+}
+
 .btn {
   overflow: hidden;
   position: relative;

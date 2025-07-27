@@ -37,7 +37,7 @@ unreadStore.dateOfLatestMessage = lastMessage?.value?.sentAt ?? ''
         <SiteBreadcrumb />
         <SiteSettings />
       </div>
-      <slot />
+      <NuxtPage />
     </main>
     <LazySiteFooter hydrate-never />
   </UApp>
