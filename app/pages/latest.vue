@@ -28,20 +28,27 @@ const isLoading = computed(() => status.value === 'idle' || status.value === 'pe
 const lastReadMessageTimestamp = dateOfLastReadMessage.value
 const latestMessageIndexTimestamp = latestMessageIndex.value
 
-watch(messages, (msg) => {
-  const firstMessage = msg.at(0)
-  const lastMessage = msg.at(-1)
+watch(messages, (newMessages) => {
+  const firstMessage = newMessages.at(0)
+  const lastMessage = newMessages.at(-1)
 
-  latestMessageIndex.value = firstMessage?.sentAt ?? ''
-  dateOfLastReadMessage.value = lastMessage?.sentAt ?? ''
+  latestMessageIndex.value = firstMessage?.sentAt || ''
+  dateOfLastReadMessage.value = lastMessage?.sentAt || ''
+})
 
-  if (lastMessage) {
-    const unsubscribe = getLatestMessages(lastMessage.sentAt, (docs) => {
-      messages.value = docs
-    })
+const lastMessageTimestamp = computed(() => {
+  return messages.value.at(-1)?.sentAt || ''
+})
 
-    onWatcherCleanup(unsubscribe)
-  }
+watch(lastMessageTimestamp, (timestamp) => {
+  if (!timestamp)
+    return
+
+  const unsubscribe = getLatestMessages(timestamp, (docs) => {
+    messages.value = docs
+  })
+
+  onWatcherCleanup(unsubscribe)
 })
 
 const sortedMessages = computed(() => {
