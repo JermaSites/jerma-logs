@@ -1,14 +1,16 @@
 export default function () {
-  const badges = reactive<BadgeMap>(new Map())
+  const badgeMap = reactive<BadgeMap>(new Map())
 
   async function fetchBadges() {
-    const { data } = await useFetch<Badge[]>('/api/badges', {
-      deep: true,
+    const { data: badges } = await useFetch<Badge[]>('/api/badges', {
+      default() {
+        return []
+      },
     })
 
-    data.value?.forEach((badge) => {
+    badges.value.forEach((badge) => {
       const badgeVersionsMap = new Map(badge.versions.map(v => [v.id, v]))
-      badges.set(badge.set_id, badgeVersionsMap)
+      badgeMap.set(badge.set_id, badgeVersionsMap)
     })
   }
 
@@ -27,7 +29,7 @@ export default function () {
     return Object.entries(badgeInfo)
       .sort(([a], [b]) => getBadgeRank(a) - getBadgeRank(b))
       .map(([name, version]) => {
-        const badgeURL = badges?.get(name)?.get(version)?.image_url_1x
+        const badgeURL = badgeMap.get(name)?.get(version)?.image_url_1x
         return {
           name,
           url: badgeURL || 'https://placehold.co/18x18',

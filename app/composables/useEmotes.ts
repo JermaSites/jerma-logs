@@ -5,10 +5,12 @@ export default function () {
 
   async function fetchEmotes() {
     const { data: emotes } = await useFetch('/api/emotes', {
-      deep: true,
+      default() {
+        return []
+      },
     })
 
-    emotes.value?.forEach((emote) => {
+    emotes.value.forEach((emote) => {
       emoteMap.set(emote.code, emote)
     })
 
