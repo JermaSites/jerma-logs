@@ -25,7 +25,7 @@ export default function () {
   function parseBadges(badgeInfo: BadgeInfo) {
     if (!badgeInfo)
       return []
-    console.log('Parsing badges:', badgeMap.size)
+
     return Object.entries(badgeInfo)
       .sort(([a], [b]) => getBadgeRank(a) - getBadgeRank(b))
       .map(([name, version]) => {
