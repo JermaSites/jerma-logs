@@ -10,6 +10,8 @@ const { getMessages } = useMessages()
 const { fetchEmotes, parseEmotes } = useEmotes()
 const { fetchBadges, parseBadges } = useBadges()
 
+await Promise.allSettled([fetchEmotes(), fetchBadges()])
+
 useSeoMeta({
   title: `${capitalize(route.params.month as string)} | ${route.params.year}`,
 })
@@ -37,9 +39,6 @@ definePageMeta({
     return months.includes(month)
   },
 })
-
-fetchEmotes()
-fetchBadges()
 
 const { year, month } = route.params as { year: string, month: string }
 

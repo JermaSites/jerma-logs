@@ -11,9 +11,6 @@ const { dateOfLastReadMessage, latestMessageIndex } = storeToRefs(unreadStore)
 
 const { getLatestMessages } = useMessages()
 
-fetchEmotes()
-fetchBadges()
-
 const { data: messages, status } = await useFetch<Message[]>('/api/messages/latest', {
   server: false,
   lazy: true,
@@ -21,6 +18,8 @@ const { data: messages, status } = await useFetch<Message[]>('/api/messages/late
     return []
   },
 })
+
+await Promise.allSettled([fetchEmotes(), fetchBadges()])
 
 const hasMessages = computed(() => messages.value.length > 0)
 const isLoading = computed(() => status.value === 'idle' || status.value === 'pending')

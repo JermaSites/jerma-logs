@@ -11,8 +11,7 @@ const { result, search } = useAlgoliaSearch<AlgoliaIndex>('messages')
 const { fetchEmotes, parseEmotes } = useEmotes()
 const { fetchBadges, parseBadges } = useBadges()
 
-fetchEmotes()
-fetchBadges()
+await Promise.allSettled([fetchEmotes(), fetchBadges()])
 
 const hasResults = computed(() => {
   return result.value && result.value.hits && result.value.hits.length > 0

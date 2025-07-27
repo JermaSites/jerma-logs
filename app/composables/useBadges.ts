@@ -1,5 +1,5 @@
 export default function () {
-  const badgeMap: BadgeMap = new Map()
+  const badgeMap = reactive<BadgeMap>(new Map())
 
   async function fetchBadges() {
     const { data: badges } = await useFetch<Badge[]>('/api/badges', {

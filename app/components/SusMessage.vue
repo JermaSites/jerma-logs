@@ -3,7 +3,7 @@ const { dayjs } = useDayjs()
 
 const { fetchEmotes, parseEmotes } = useEmotes()
 
-fetchEmotes()
+await fetchEmotes()
 
 const { data, status } = await useFetch<Message>('/api/messages/sus', {
   lazy: false,
