@@ -4,7 +4,6 @@ export default function () {
   const emoteMap = reactive<EmoteMap>(new Map())
 
   async function fetchEmotes() {
-    console.log('fetching emotes')
     const { data: emotes } = await useFetch('/api/emotes', {
       deep: true,
     })
