@@ -26,7 +26,7 @@
     "firestore-rest-parser": "^1.1.1",
     "linkify-string": "^4.3.2",
     "linkifyjs": "^4.3.2",
-    "nuxt": "^4.0.1",
+    "nuxt": "^4.0.2",
     "nuxt-gtag": "^3.0.3",
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.4.1",
@@ -34,7 +34,7 @@
     "vue-router": "^4.5.1"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.46.1"
+    "@rollup/rollup-linux-x64-gnu": "4.46.2"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^5.0.0",
