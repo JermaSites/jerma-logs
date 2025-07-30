@@ -8,7 +8,7 @@ ENV NODE_ENV=production
 WORKDIR /usr/src/app
 
 # Throw-away build stage to reduce size of final image
-FROM base as build
+FROM base AS build
 
 # Install build dependencies that might be needed for native modules
 RUN apt-get update && apt-get install -y \
