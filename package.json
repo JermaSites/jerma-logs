@@ -14,7 +14,7 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "@nuxt/image": "1.10.0",
+    "@nuxt/image": "1.11.0",
     "@nuxt/ui": "^3.3.0",
     "@nuxtjs/algolia": "^1.11.2",
     "@nuxtjs/seo": "^3.1.0",
