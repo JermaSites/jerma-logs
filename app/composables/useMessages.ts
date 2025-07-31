@@ -1,10 +1,7 @@
 import type { SearchResponse } from '@nuxtjs/algolia'
 
-import type { SortOrder } from '~~/shared/types'
-
 import {
   collection,
-
   getDocs,
   onSnapshot,
   orderBy,

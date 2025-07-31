@@ -35,7 +35,7 @@ watchEffect(() => {
 })
 
 async function handleNotificationToggle(topic: string, enabled: boolean) {
-  if (!notificationPermissionGranted.value)
+  if (notificationPermissionDenied.value)
     return
 
   try {
@@ -51,10 +51,10 @@ async function handleNotificationToggle(topic: string, enabled: boolean) {
   }
 }
 
-watchEffect(async () => {
-  await handleNotificationToggle('message', messageNotifications.value)
-  await handleNotificationToggle('sus', susNotifications.value)
-  await handleNotificationToggle('test', testNotifications.value)
+watch([messageNotifications, susNotifications, testNotifications], ([message, sus, test]) => {
+  handleNotificationToggle('message', message)
+  handleNotificationToggle('sus', sus)
+  handleNotificationToggle('test', test)
 })
 
 const { hideMessageTimestamps, colorModeValue } = storeToRefs(settingsStore)
