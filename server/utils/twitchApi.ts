@@ -24,7 +24,7 @@ export default $fetch.create({
   async onRequest({ options }) {
     let storedToken = await useStorage('twitch').getItem<StoredToken>('token')
 
-    if (!storedToken || storedToken.expires_in <= Date.now()) {
+    if (!storedToken || storedToken.expires_at <= Date.now()) {
       const newToken = await getAuthToken()
 
       storedToken = {

@@ -1,24 +1,33 @@
 export default defineEventHandler(async () => {
-  const globalBadgesPromise = twitchApi<BadgesResponse>(
-    'chat/badges/global',
-    {
-      method: 'GET',
-    },
-  )
+  const { twitchId } = useRuntimeConfig().public
 
-  const channelBadgesPromise = twitchApi<BadgesResponse>(
-    'chat/badges?broadcaster_id=23936415',
-    {
-      method: 'GET',
-    },
-  )
+  try {
+    const globalBadgesPromise = twitchApi<BadgesResponse>(
+      'chat/badges/global',
+      {
+        method: 'GET',
+      },
+    )
 
-  const [globalBadges, channelBadges] = await Promise.all([
-    globalBadgesPromise,
-    channelBadgesPromise,
-  ])
+    const channelBadgesPromise = twitchApi<BadgesResponse>(
+      `chat/badges?broadcaster_id=${twitchId}`,
+      {
+        method: 'GET',
+      },
+    )
 
-  const badges = [...globalBadges.data, ...channelBadges.data]
+    const [globalBadges, channelBadges] = await Promise.all([
+      globalBadgesPromise,
+      channelBadgesPromise,
+    ])
 
-  return badges
+    return [...globalBadges.data, ...channelBadges.data]
+  }
+  catch (error) {
+    console.error(error)
+    throw createError({
+      statusCode: 500,
+      statusMessage: 'Failed to fetch badges',
+    })
+  }
 })
