@@ -37,11 +37,11 @@
     "@rollup/rollup-linux-x64-gnu": "4.46.2"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^5.0.0",
+    "@antfu/eslint-config": "^5.1.0",
     "@iconify-json/heroicons-solid": "^1.2.1",
-    "@playwright/test": "^1.54.1",
+    "@playwright/test": "^1.54.2",
     "eslint": "^9.32.0",
     "typescript": "^5.9.2",
-    "vue-tsc": "^3.0.4"
+    "vue-tsc": "^3.0.5"
   }
 }
