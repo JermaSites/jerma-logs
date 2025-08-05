@@ -1,0 +1,8 @@
+{
+  "name": "jermalogs",
+  "vars": {
+    "NUXT_PUBLIC_TWITCH_USERNAME": "jerma985",
+    "NUXT_PUBLIC_TWITCH_ID": "23936415",
+    "NUXT_TWITCH_API_BASE_URL": "https://api.twitch.tv/helix/"
+  }
+}
