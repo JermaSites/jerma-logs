@@ -15,6 +15,14 @@ export default defineNuxtConfig({
     '@nuxtjs/algolia',
   ],
 
+  nitro: {
+    preset: 'cloudflare_pages',
+    cloudflare: {
+      deployConfig: true,
+      nodeCompat: true,
+    },
+  },
+
   site: {
     url: 'https://logs.jerma.io',
     name: 'Jerma Logs',
