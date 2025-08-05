@@ -1,16 +1,29 @@
 import linkifyStr from 'linkify-string'
 
-const emoteMap: EmoteMap = new Map()
+const emoteMap = reactive<EmoteMap>(new Map())
+const isLoading = ref(false)
+const error = ref<string | null>(null)
 
 export default function () {
   async function fetchEmotes() {
-    const emotes = await $fetch<Emote[]>('/api/emotes')
+    try {
+      const emotes = await $fetch<Emote[]>('/api/emotes')
 
-    emotes.forEach((emote) => {
-      emoteMap.set(emote.code, emote)
-    })
+      if (!emotes || emotes.length === 0) {
+        console.warn('No emotes received from API')
+        return
+      }
 
-    return emoteMap
+      emotes.forEach((emote) => {
+        emoteMap.set(emote.code, emote)
+      })
+
+      return emoteMap
+    }
+    catch (err) {
+      error.value = 'Failed to fetch emotes'
+      console.error('Emote fetch error:', err)
+    }
   }
 
   function parseEmotes(msg: string): string {
@@ -30,5 +43,7 @@ export default function () {
   return {
     fetchEmotes,
     parseEmotes,
+    isLoading: readonly(isLoading),
+    error: readonly(error),
   }
 }

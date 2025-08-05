@@ -19,7 +19,12 @@ const colorMode = useColorMode()
 const { fetchEmotes } = useEmotes()
 const { fetchBadges } = useBadges()
 
-await Promise.allSettled([fetchEmotes(), fetchBadges()])
+try {
+  await Promise.allSettled([fetchEmotes(), fetchBadges()])
+}
+catch (error) {
+  console.error('Failed to load initial data:', error)
+}
 
 onMounted(() => {
   settingsStore.colorModeValue = colorMode.value

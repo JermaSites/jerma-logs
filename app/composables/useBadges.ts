@@ -1,13 +1,32 @@
-const badgeMap: BadgeMap = new Map()
+const badgeMap = reactive<BadgeMap>(new Map())
+const isLoading = ref(false)
+const error = ref<string | null>(null)
 
 export default function () {
   async function fetchBadges() {
-    const badges = await $fetch<Badge[]>('/api/badges')
+    if (isLoading.value)
+      return
 
-    badges.forEach((badge) => {
-      const badgeVersionsMap = new Map(badge.versions.map(v => [v.id, v]))
-      badgeMap.set(badge.set_id, badgeVersionsMap)
-    })
+    try {
+      const badges = await $fetch<Badge[]>('/api/badges')
+
+      if (!badges || badges.length === 0) {
+        console.warn('No badges received from API')
+        return
+      }
+
+      badges.forEach((badge) => {
+        const badgeVersionsMap = new Map(badge.versions.map(v => [v.id, v]))
+        badgeMap.set(badge.set_id, badgeVersionsMap)
+      })
+    }
+    catch (err) {
+      error.value = 'Failed to fetch badges'
+      console.error('Badge fetch error:', err)
+    }
+    finally {
+      isLoading.value = false
+    }
   }
 
   function getBadgeRank(badge: string): number {
@@ -36,5 +55,7 @@ export default function () {
   return {
     fetchBadges,
     parseBadges,
+    isLoading: readonly(isLoading),
+    error: readonly(error),
   }
 }

@@ -44,15 +44,20 @@ export default function () {
   }
 
   async function searchMessages(result: SearchResponse<globalThis.AlgoliaIndex>) {
-    const q = query(
-      collection(firestore, 'messages'),
-      where('username', '==', twitchUsername),
-      where('__name__', 'in', result.hits.map(hit => hit.objectID)),
-    )
+    try {
+      const q = query(
+        collection(firestore, 'messages'),
+        where('username', '==', twitchUsername),
+        where('__name__', 'in', result.hits.map(hit => hit.objectID)),
+      )
 
-    const querySnapshot = await getDocs(q)
+      const querySnapshot = await getDocs(q)
 
-    return querySnapshot.docs.map(doc => doc.data() as Message)
+      return querySnapshot.docs.map(doc => doc.data() as Message)
+    }
+    catch (error) {
+      console.error(error)
+    }
   }
 
   return {
