@@ -22,20 +22,26 @@ export default $fetch.create({
     'Client-ID': twitchClientId,
   },
   async onRequest({ options }) {
-    let storedToken = await useStorage('twitch').getItem<StoredToken>('token')
+    try {
+      let storedToken = await useStorage('twitch').getItem<StoredToken>('token')
 
-    const bufferTime = 5 * 60 * 1000 // 5 minutes in ms
-    if (!storedToken || storedToken.expires_at <= Date.now() + bufferTime) {
-      const newToken = await getAuthToken()
+      const bufferTime = 5 * 60 * 1000 // 5 minutes in ms
+      if (!storedToken || storedToken.expires_at <= Date.now() + bufferTime) {
+        const newToken = await getAuthToken()
 
-      storedToken = {
-        ...newToken,
-        expires_at: Date.now() + (newToken.expires_in * 1000), // Convert to milliseconds
+        storedToken = {
+          ...newToken,
+          expires_at: Date.now() + (newToken.expires_in * 1000), // Convert to milliseconds
+        }
+
+        await useStorage('twitch').setItem('token', storedToken)
       }
 
-      await useStorage('twitch').setItem('token', storedToken)
+      options.headers.set('authorization', `Bearer ${storedToken.access_token}`)
     }
-
-    options.headers.set('authorization', `Bearer ${storedToken.access_token}`)
+    catch (error) {
+      console.error('Failed to authenticate with Twitch API:', error)
+      throw error
+    }
   },
 })
