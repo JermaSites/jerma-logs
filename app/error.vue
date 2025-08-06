@@ -20,7 +20,7 @@ async function handleError() {
   <UApp>
     <NuxtLoadingIndicator />
 
-    <SiteHeader class="mb-4" />
+    <LazySiteHeader class="mb-4" />
 
     <main class="container mx-auto px-4 md:max-w-6xl">
       <div class="text-center">
