@@ -52,9 +52,3 @@ unreadStore.dateOfLatestMessage = lastMessage?.value?.sentAt ?? ''
     <LazySiteFooter hydrate-never />
   </UApp>
 </template>
-
-<style>
-/* :root {
-  font-family: "Roboto", sans-serif;
-} */
-</style>
