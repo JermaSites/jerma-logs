@@ -36,7 +36,7 @@ export default function () {
       const emoteName = emote.code
       const imgSrc = emote.urls[0].url
 
-      return `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="28" height="28" alt="${emoteName}" title="${emoteName}" loading="lazy">`
+      return `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${imgSrc}" width="28" height="28" alt="${emoteName}" title="${emoteName}">`
     })
   }
 

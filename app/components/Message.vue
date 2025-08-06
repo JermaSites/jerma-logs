@@ -59,7 +59,6 @@ const truncatedMessage = computed(() => {
           class="mr-1 inline-block"
           width="18"
           height="18"
-          loading="lazy"
           placeholder
         />
       </span>
