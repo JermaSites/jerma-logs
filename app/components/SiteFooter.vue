@@ -18,5 +18,3 @@ import { version } from '../../package.json'
     </div>
   </footer>
 </template>
-
-<style scoped></style>

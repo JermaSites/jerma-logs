@@ -37,5 +37,3 @@ const sortedYears = computed(() => {
     </SimpleListItem>
   </SimpleList>
 </template>
-
-<style scoped></style>

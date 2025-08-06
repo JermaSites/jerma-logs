@@ -64,5 +64,3 @@ const sortedMonths = computed(() => {
     </SimpleListItem>
   </SimpleList>
 </template>
-
-<style scoped></style>

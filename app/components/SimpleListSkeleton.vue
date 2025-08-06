@@ -15,7 +15,3 @@ defineProps<{
     </SimpleListItem>
   </SimpleList>
 </template>
-
-<style scoped>
-
-</style>

@@ -54,7 +54,7 @@ unreadStore.dateOfLatestMessage = lastMessage?.value?.sentAt ?? ''
 </template>
 
 <style>
-:root {
+/* :root {
   font-family: "Roboto", sans-serif;
-}
+} */
 </style>

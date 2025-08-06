@@ -13,6 +13,7 @@ export default defineNuxtConfig({
     'nuxt-gtag',
     '@nuxtjs/seo',
     '@nuxtjs/algolia',
+    '@nuxt/fonts',
   ],
 
   site: {

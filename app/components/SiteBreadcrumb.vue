@@ -13,5 +13,3 @@ const breadcrumbs = useBreadcrumbItems()
     <span>{{ breadcrumbs.at(-1)?.label }}</span>
   </div>
 </template>
-
-<style lang="scss" scoped></style>
