@@ -1,12 +1,11 @@
 import { httpsCallable } from 'firebase/functions'
 import { getMessaging, getToken, isSupported } from 'firebase/messaging'
 
+const token = ref<string | null>(null)
+const vapidKey = 'BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8'
+
 export default function () {
   const { app, functions } = useFirebase()
-
-  const token = ref<string | null>(null)
-
-  const vapidKey = 'BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8'
 
   async function getFCMToken() {
     if (token.value)

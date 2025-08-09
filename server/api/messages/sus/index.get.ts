@@ -24,7 +24,6 @@ export default defineEventHandler(async () => {
 
   const sus = await $fetch<MessagesResponse>(firebaseApiUrl, {
     method: 'POST',
-
     body: queryData,
   })
 
