@@ -41,7 +41,7 @@
     "@antfu/eslint-config": "^5.2.0",
     "@iconify-json/heroicons-solid": "^1.2.1",
     "@playwright/test": "^1.54.2",
-    "eslint": "^9.32.0",
+    "eslint": "^9.33.0",
     "typescript": "^5.9.2",
     "vue-tsc": "^3.0.5"
   }
