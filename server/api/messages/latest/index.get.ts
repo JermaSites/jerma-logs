@@ -2,7 +2,7 @@ import { parse } from 'firestore-rest-parser'
 
 const { firebaseApiUrl, twitchUsername } = useRuntimeConfig().public
 
-export default defineEventHandler(async () => {
+export default defineCachedEventHandler(async () => {
   try {
     const latestMessageQuery = {
       structuredQuery: {
@@ -107,4 +107,6 @@ export default defineEventHandler(async () => {
       statusMessage: 'Failed to fetch latest messages',
     })
   }
+}, {
+  maxAge: 60 * 60, // 1 hour
 })

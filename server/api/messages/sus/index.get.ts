@@ -2,7 +2,7 @@ import { parse } from 'firestore-rest-parser'
 
 const { firebaseApiUrl } = useRuntimeConfig().public
 
-export default defineEventHandler(async () => {
+export default defineCachedEventHandler(async () => {
   const queryData = {
     structuredQuery: {
       from: [
@@ -28,4 +28,6 @@ export default defineEventHandler(async () => {
   })
 
   return sus.map(doc => parse(doc.document)).pop()
+}, {
+  maxAge: 60 * 60, // 1 hour
 })

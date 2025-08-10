@@ -1,4 +1,4 @@
-export default defineEventHandler(async () => {
+export default defineCachedEventHandler(async () => {
   const { twitchId } = useRuntimeConfig().public
 
   try {
@@ -30,4 +30,6 @@ export default defineEventHandler(async () => {
       statusMessage: 'Failed to fetch bttv emotes',
     })
   }
+}, {
+  maxAge: 60 * 60 * 24, // 24 hours
 })

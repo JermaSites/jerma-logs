@@ -3,7 +3,7 @@ import { parse } from 'firestore-rest-parser'
 
 const { firebaseApiUrl, twitchUsername } = useRuntimeConfig().public
 
-export default defineEventHandler(async (event) => {
+export default defineCachedEventHandler(async (event) => {
   try {
     const { year, month } = getRouterParams(event)
     const { order = 'desc' } = getQuery(event)
@@ -99,4 +99,6 @@ export default defineEventHandler(async (event) => {
       statusMessage: 'Failed to fetch messages',
     })
   }
+}, {
+  maxAge: 60 * 60 * 24, // 24 hours
 })

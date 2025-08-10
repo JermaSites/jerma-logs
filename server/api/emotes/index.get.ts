@@ -1,4 +1,4 @@
-export default defineEventHandler(async () => {
+export default defineCachedEventHandler(async () => {
   try {
     const twitchEmotesPromise = $fetch('/api/emotes/twitch', {
       method: 'GET',
@@ -63,4 +63,6 @@ export default defineEventHandler(async () => {
       statusMessage: 'Failed to fetch emotes',
     })
   }
+}, {
+  maxAge: 60 * 60 * 24, // 24 hours
 })
