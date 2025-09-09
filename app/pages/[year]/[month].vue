@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import type { Unsubscribe } from 'firebase/firestore'
+
 const route = useRoute()
 const { dayjs } = useDayjs()
 
@@ -76,7 +78,8 @@ const sortedMessages = computed(() => {
   })
 })
 
-onMounted(async () => {
+let unsubscribe: Unsubscribe
+onMounted(() => {
   const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
   const currentDate = dayjs.utc()
   const startTime = date.startOf('month')
@@ -89,13 +92,15 @@ onMounted(async () => {
   const end = endTime.valueOf().toString()
   const order = sortOrder.value.message
 
-  const unsubscribe = getMessages(start, end, order, (docs) => {
+  unsubscribe = getMessages(start, end, order, (docs) => {
     messages.value = docs
   })
+})
 
-  onUnmounted(() => {
+onBeforeUnmount(() => {
+  if (typeof unsubscribe === 'function') {
     unsubscribe()
-  })
+  }
 })
 </script>
 
