@@ -78,31 +78,6 @@ const sortedMessages = computed(() => {
   })
 })
 
-// https://github.com/nuxt/nuxt/issues/33151
-
-// onMounted(() => {
-//   const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
-//   const currentDate = dayjs.utc()
-//   const startTime = date.startOf('month')
-//   const endTime = date.endOf('month')
-
-//   if (endTime.isBefore(currentDate))
-//     return
-
-//   const start = startTime.valueOf().toString()
-//   const end = endTime.valueOf().toString()
-//   const order = sortOrder.value.message
-
-//   const unsubscribe = getMessages(start, end, order, (docs) => {
-//     messages.value = docs
-//   })
-
-//   onUnmounted(() => {
-//     unsubscribe()
-//   })
-// })
-
-let unsubscribe: Unsubscribe
 onMounted(() => {
   const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
   const currentDate = dayjs.utc()
@@ -116,15 +91,13 @@ onMounted(() => {
   const end = endTime.valueOf().toString()
   const order = sortOrder.value.message
 
-  unsubscribe = getMessages(start, end, order, (docs) => {
+  const unsubscribe = getMessages(start, end, order, (docs) => {
     messages.value = docs
   })
-})
 
-onBeforeUnmount(() => {
-  if (typeof unsubscribe === 'function') {
+  onUnmounted(() => {
     unsubscribe()
-  }
+  })
 })
 </script>
 
