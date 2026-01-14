@@ -16,11 +16,29 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
   ],
 
+  vite: {
+    build: {
+      sourcemap: false,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            firebase: ['firebase/app', 'firebase/firestore'],
+            linkify: ['linkify-string', 'linkifyjs'],
+          },
+        },
+      },
+    },
+  },
+
   site: {
     url: 'https://logs.jerma.io',
     name: 'Jerma Logs',
     description: 'Jerma985\'s twitch chat logs',
     defaultLocale: 'en',
+  },
+
+  sitemap: {
+    zeroRuntime: true,
   },
 
   ogImage: {
