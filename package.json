@@ -23,7 +23,7 @@
     "@vueuse/core": "^14.1.0",
     "@vueuse/nuxt": "^14.1.0",
     "dayjs": "^1.11.19",
-    "firebase": "^12.7.0",
+    "firebase": "^12.8.0",
     "firestore-rest-parser": "^2.0.0",
     "linkify-string": "^4.3.2",
     "linkifyjs": "^4.3.2",
@@ -35,10 +35,10 @@
     "vue-router": "^4.6.4"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "^4.54.0"
+    "@rollup/rollup-linux-x64-gnu": "^4.55.1"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^7.0.0",
+    "@antfu/eslint-config": "^7.0.1",
     "@iconify-json/heroicons-solid": "^1.2.1",
     "@playwright/test": "^1.57.0",
     "eslint": "^9.39.2",
