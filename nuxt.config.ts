@@ -22,8 +22,8 @@ export default defineNuxtConfig({
       rollupOptions: {
         output: {
           manualChunks: {
-            firebase: ['firebase/app', 'firebase/firestore'],
-            linkify: ['linkify-string', 'linkifyjs'],
+            // firebase: ['firebase/app', 'firebase/firestore'],
+            // linkify: ['linkify-string', 'linkifyjs'],
           },
         },
       },
