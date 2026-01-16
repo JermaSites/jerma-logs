@@ -23,10 +23,6 @@ export default defineNuxtConfig({
     defaultLocale: 'en',
   },
 
-  sitemap: {
-    zeroRuntime: true,
-  },
-
   ogImage: {
     enabled: false,
   },
