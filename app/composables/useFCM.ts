@@ -5,11 +5,13 @@ const token = ref<string | null>(null)
 const vapidKey = 'BBzAmYU-18pvRnM2vrdMwWz3vHZfT6BErkcg9L7A0IghKslryeDwuZ0sSiMGD75__jsjpjbO2xkVVxKIa6UE3W8'
 
 export default function () {
-  const { app, functions } = useFirebase()
-
   async function getFCMToken() {
     if (token.value)
       return token.value
+
+    const { app } = useFirebase()
+    if (!app)
+      return null
 
     try {
       token.value = await getToken(getMessaging(app), { vapidKey })
@@ -22,6 +24,10 @@ export default function () {
   }
 
   async function getTokenAndSubscribeToTopic(topic: string) {
+    const { functions } = useFirebase()
+    if (!functions)
+      return
+
     const subscribeToTopic = httpsCallable(functions, 'subscribeToTopic')
 
     try {
@@ -38,6 +44,10 @@ export default function () {
   }
 
   async function getTokenAndUnsubscribeToTopic(topic: string) {
+    const { functions } = useFirebase()
+    if (!functions)
+      return
+
     const unsubscribeFromTopic = httpsCallable(functions, 'unsubscribeFromTopic')
 
     try {
