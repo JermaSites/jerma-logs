@@ -5,7 +5,7 @@
   "private": false,
   "engines": {
     "node": "24.13.0",
-    "npm": "11.6.2"
+    "npm": "11.7.0"
   },
   "scripts": {
     "build": "nuxt build",
