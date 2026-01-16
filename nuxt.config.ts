@@ -16,6 +16,23 @@ export default defineNuxtConfig({
     '@nuxt/fonts',
   ],
 
+  vite: {
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            'firebase-core': ['firebase/app'],
+            'firebase-firestore': ['firebase/firestore'],
+          },
+        },
+      },
+    },
+  },
+
+  sitemap: {
+    zeroRuntime: true,
+  },
+
   site: {
     url: 'https://logs.jerma.io',
     name: 'Jerma Logs',
