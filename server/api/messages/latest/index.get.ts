@@ -43,10 +43,10 @@ export default defineCachedEventHandler(async () => {
       .map(doc => parse(doc.document))
       .pop()
 
-    if (!latestMessage || typeof latestMessage.sentAt !== 'string')
+    if (!latestMessage)
       return []
 
-    const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(latestMessage.sentAt, 10))
+    const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(latestMessage.sentAt))
 
     const latestMessagesQuery = {
       structuredQuery: {
