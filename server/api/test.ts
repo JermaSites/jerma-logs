@@ -1,5 +1,5 @@
 export default defineEventHandler(async () => {
-  const config = useRuntimeConfig()
+  const config = useRuntimeConfig().public
 
   return config
 })
