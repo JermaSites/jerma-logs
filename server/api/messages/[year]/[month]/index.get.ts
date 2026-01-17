@@ -97,6 +97,7 @@ export default defineCachedEventHandler(async (event) => {
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to fetch messages',
+      data: error,
     })
   }
 }, {

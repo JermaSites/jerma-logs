@@ -46,7 +46,7 @@ export default defineCachedEventHandler(async () => {
     if (!latestMessage)
       return []
 
-    const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(latestMessage.sentAt))
+    const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(latestMessage.sentAt as string))
 
     const latestMessagesQuery = {
       structuredQuery: {
@@ -105,6 +105,7 @@ export default defineCachedEventHandler(async () => {
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to fetch latest messages',
+      data: error,
     })
   }
 }, {
