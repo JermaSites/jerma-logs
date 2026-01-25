@@ -14,9 +14,9 @@
     "lint:fix": "eslint . --fix"
   },
   "dependencies": {
-    "@nuxt/fonts": "^0.12.1",
+    "@nuxt/fonts": "^0.13.0",
     "@nuxt/image": "2.0.0",
-    "@nuxt/ui": "^4.3.0",
+    "@nuxt/ui": "^4.4.0",
     "@nuxtjs/algolia": "^1.11.2",
     "@nuxtjs/seo": "^3.3.0",
     "@pinia/nuxt": "^0.11.3",
@@ -27,22 +27,22 @@
     "firestore-rest-parser": "^2.0.0",
     "linkify-string": "^4.3.2",
     "linkifyjs": "^4.3.2",
-    "nuxt": "^4.2.2",
+    "nuxt": "^4.3.0",
     "nuxt-gtag": "^4.1.0",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
-    "vue": "^3.5.26",
+    "vue": "^3.5.27",
     "vue-router": "^4.6.4"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.55.1"
+    "@rollup/rollup-linux-x64-gnu": "4.56.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^7.0.1",
+    "@antfu/eslint-config": "^7.2.0",
     "@iconify-json/heroicons-solid": "^1.2.1",
-    "@playwright/test": "^1.57.0",
+    "@playwright/test": "^1.58.0",
     "eslint": "^9.39.2",
     "typescript": "^5.9.3",
-    "vue-tsc": "^3.2.2"
+    "vue-tsc": "^3.2.3"
   }
 }
