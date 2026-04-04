@@ -9,6 +9,8 @@ import { onCall } from 'firebase-functions/v2/https'
 
 initializeApp()
 
+const susRegExp = /^!(commands\s+edit|editcom)\s+(-cd=\d+\s+)?(!sus)\s(-cd=\d+\s)?(?<susMessage>.+)$/
+
 exports.subscribeToTopic = onCall((request) => {
   const { token, topic } = request.data
   return messaging().subscribeToTopic(token, topic)
@@ -61,8 +63,6 @@ exports.sendSusNotification = onDocumentCreated(
 
     if (username !== 'jerma985' && !mod)
       return
-
-    const susRegExp = /^!(commands\s+edit|editcom)\s+(-cd=\d+\s+)?(!sus)\s(-cd=\d+\s)?(?<susMessage>.+)$/
 
     const sus = message.match(susRegExp)?.groups?.susMessage
 
