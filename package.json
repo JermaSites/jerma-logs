@@ -42,7 +42,7 @@
     "@iconify-json/heroicons-solid": "^1.2.1",
     "@playwright/test": "^1.59.1",
     "eslint": "^10.2.0",
-    "typescript": "^5.9.3",
+    "typescript": "^6.0.2",
     "vue-tsc": "^3.2.6"
   }
 }
