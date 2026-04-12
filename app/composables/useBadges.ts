@@ -7,6 +7,8 @@ export default function () {
     if (isLoading.value)
       return
 
+    isLoading.value = true
+
     try {
       const badges = await $fetch<Badge[]>('/api/badges')
 

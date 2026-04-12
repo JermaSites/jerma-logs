@@ -18,6 +18,18 @@ const hasResults = computed(() => {
 const messages = ref<Message[]>([])
 const loading = ref(false)
 
+const parsedMessages = computed(() => {
+  return messages.value.map((msg) => {
+    const rawMessage = msg.reply ? msg.message.replace(/^@\S+\s*/, '') : msg.message
+    return {
+      ...msg,
+      message: parseEmotes(rawMessage),
+      badges: parseBadges(msg.badges),
+      reply: parseEmotes(msg.reply?.parent?.msgBody || ''),
+    }
+  })
+})
+
 watch(result, async (result) => {
   messages.value = []
 
@@ -99,15 +111,15 @@ const algoliaLogo = computed(() => {
     </div>
 
     <SimpleList v-else-if="hasResults">
-      <SimpleListItem v-for="message in messages" :key="message.id">
+      <SimpleListItem v-for="message in parsedMessages" :key="message.id">
         <Message
           :sent-at="message.sentAt"
           sent-at-format="MMM DD hh:mm A z"
           :display-name="message.displayName"
           :color="message.color"
-          :message="parseEmotes(message.message)"
-          :badges="parseBadges(message.badges)"
-          :reply-message="parseEmotes(message?.reply?.parent?.msgBody || '')"
+          :message="message.message"
+          :badges="message.badges"
+          :reply-message="message.reply"
         />
       </SimpleListItem>
     </SimpleList>

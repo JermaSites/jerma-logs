@@ -43,7 +43,7 @@ const parsedSusMessage = computed(() => parseEmotes(formattedSusMessage.value))
 <template>
   <div class="text-center">
     <div class="bg-slate-300 px-4 py-2 dark:bg-slate-900">
-      <h1 class="font-meduim text-xl">
+      <h1 class="font-medium text-xl">
         !SUS Message
       </h1>
       <h2 class="text-lg text-slate-600 dark:text-slate-300" :title="susMessageDate">

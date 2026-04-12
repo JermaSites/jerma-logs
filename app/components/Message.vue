@@ -17,9 +17,7 @@ const { dayjs } = useDayjs()
 const settingsStore = useSettingsStore()
 const colorMode = useColorMode()
 
-const { hideMessageTimestamps, userTimezone } = storeToRefs(settingsStore)
-
-dayjs.tz.setDefault(userTimezone.value)
+const { hideMessageTimestamps } = storeToRefs(settingsStore)
 
 const messageSentAt = computed(() => {
   return dayjs.tz(Number.parseInt(props.sentAt)).format(props.sentAtFormat)
@@ -33,11 +31,6 @@ const messageColor = computed(() => {
   return dynamicHue(props.color, colorMode.value)
 })
 
-const truncatedMessage = computed(() => {
-  const splitMsg = props.message.split(' ')
-  splitMsg.shift()
-  return splitMsg.join(' ')
-})
 </script>
 
 <template>
@@ -73,8 +66,7 @@ const truncatedMessage = computed(() => {
         </div>
         <div class="ml-1" v-html="replyMessage" />
       </div>
-      <div v-if="!replyMessage" data-testid="message" v-html="message" />
-      <div v-else class="ml-1.5 mt-1.5" data-testid="message" v-html="truncatedMessage" />
+      <div :class="replyMessage ? 'ml-1.5 mt-1.5' : ''" data-testid="message" v-html="message" />
     </div>
 
     <div class="absolute md:static top-2 right-2">

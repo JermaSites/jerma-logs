@@ -56,9 +56,10 @@ const isLoading = computed(() => status.value === 'idle' || status.value === 'pe
 
 const parsedMessages = computed(() => {
   return messages.value.map((msg) => {
+    const rawMessage = msg.reply ? msg.message.replace(/^@\S+\s*/, '') : msg.message
     return {
       ...msg,
-      message: parseEmotes(msg.message),
+      message: parseEmotes(rawMessage),
       badges: parseBadges(msg.badges),
       reply: parseEmotes(msg.reply?.parent.msgBody || ''),
     }

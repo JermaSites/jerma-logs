@@ -52,8 +52,11 @@ export default function () {
       )
 
       const querySnapshot = await getDocs(q)
+      const hitOrder = result.hits.map(hit => hit.objectID)
 
-      return querySnapshot.docs.map(doc => doc.data() as Message)
+      return querySnapshot.docs
+        .map(doc => doc.data() as Message)
+        .sort((a, b) => hitOrder.indexOf(a.id) - hitOrder.indexOf(b.id))
     }
     catch (error) {
       console.error(error)
