@@ -35,14 +35,14 @@
     "vue-router": "^5.0.4"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.60.1"
+    "@rollup/rollup-linux-x64-gnu": "4.60.2"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^8.2.0",
     "@iconify-json/heroicons-solid": "^1.2.1",
     "@playwright/test": "^1.59.1",
-    "eslint": "^10.2.0",
-    "typescript": "^6.0.2",
-    "vue-tsc": "^3.2.6"
+    "eslint": "^10.2.1",
+    "typescript": "^6.0.3",
+    "vue-tsc": "^3.2.7"
   }
 }

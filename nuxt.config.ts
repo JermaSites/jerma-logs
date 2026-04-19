@@ -1,5 +1,3 @@
-import process from 'node:process'
-
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -69,7 +67,7 @@ export default defineNuxtConfig({
   piniaPluginPersistedstate: {
     cookieOptions: {
       maxAge: 60 * 60 * 24 * 400,
-      sameSite: 'none',
+      sameSite: 'lax',
       secure: true,
       httpOnly: false,
     },
@@ -82,9 +80,9 @@ export default defineNuxtConfig({
       twitchUsername: 'jerma985',
       twitchId: '23936415',
     },
-    twitchApiBaseUrl: process.env.NUXT_TWITCH_API_BASE_URL,
-    twitchClientId: process.env.NUXT_TWITCH_CLIENT_ID,
-    twitchClientSecret: process.env.NUXT_TWITCH_CLIENT_SECRET,
+    twitchApiBaseUrl: '',
+    twitchClientId: '',
+    twitchClientSecret: '',
   },
 
   typescript: {
