@@ -1,3 +1,5 @@
+import process from 'node:process'
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -80,9 +82,9 @@ export default defineNuxtConfig({
       twitchUsername: 'jerma985',
       twitchId: '23936415',
     },
-    twitchApiBaseUrl: '',
-    twitchClientId: '',
-    twitchClientSecret: '',
+    twitchApiBaseUrl: process.env.NUXT_TWITCH_API_BASE_URL,
+    twitchClientId: process.env.NUXT_TWITCH_CLIENT_ID,
+    twitchClientSecret: process.env.NUXT_TWITCH_CLIENT_SECRET,
   },
 
   typescript: {
