@@ -17,6 +17,20 @@ export default defineNuxtConfig({
   ],
 
   vite: {
+    optimizeDeps: {
+      include: [
+        '@vue/devtools-core',
+        '@vue/devtools-kit',
+        'dayjs',
+        'dayjs/plugin/advancedFormat',
+        'dayjs/plugin/relativeTime',
+        'dayjs/plugin/timezone',
+        'dayjs/plugin/utc',
+        'firebase/app',
+        'firebase/firestore',
+        'firebase/functions',
+      ],
+    },
     build: {
       rollupOptions: {
         output: {
