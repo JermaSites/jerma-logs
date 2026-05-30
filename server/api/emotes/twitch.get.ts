@@ -21,7 +21,18 @@ export default defineCachedEventHandler(async () => {
       globalEmotesPromise,
     ])
 
-    return [...channelEmotes.data, ...globalEmotes.data]
+    const combinedEmotes = [...channelEmotes.data, ...globalEmotes.data]
+
+    // Fix for animated emotes
+    combinedEmotes.forEach((emote) => {
+      emote.images = {
+        url_1x: emote.images.url_1x.replace('/static/', '/default/'),
+        url_2x: emote.images.url_2x.replace('/static/', '/default/'),
+        url_4x: emote.images.url_4x.replace('/static/', '/default/'),
+      }
+    })
+
+    return combinedEmotes
   }
   catch (error) {
     console.error(error)
