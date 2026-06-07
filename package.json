@@ -24,7 +24,7 @@
     "@vueuse/nuxt": "^14.3.0",
     "dayjs": "^1.11.21",
     "firebase": "^12.14.0",
-    "firestore-rest-parser": "^2.0.0",
+    "firestore-rest-parser": "^3.0.0",
     "linkify-string": "^4.3.3",
     "linkifyjs": "^4.3.3",
     "nuxt": "^4.4.7",
