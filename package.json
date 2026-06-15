@@ -35,7 +35,7 @@
     "vue-router": "^5.1.0"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "4.61.1"
+    "@rollup/rollup-linux-x64-gnu": "4.62.0"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^9.0.0",
@@ -43,6 +43,6 @@
     "@playwright/test": "^1.60.0",
     "eslint": "^10.5.0",
     "typescript": "^6.0.3",
-    "vue-tsc": "^3.3.4"
+    "vue-tsc": "^3.3.5"
   }
 }
