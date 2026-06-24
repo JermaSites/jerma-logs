@@ -1,6 +1,6 @@
 import type { Message } from './types'
-import { messaging } from 'firebase-admin'
 import { initializeApp } from 'firebase-admin/app'
+import { getMessaging } from 'firebase-admin/messaging'
 import {
   onDocumentCreated,
   onDocumentWritten,
@@ -11,17 +11,17 @@ initializeApp()
 
 const susRegExp = /^!(commands\s+edit|editcom)\s+(-cd=\d+\s+)?(!sus)\s(-cd=\d+\s)?(?<susMessage>.+)$/
 
-exports.subscribeToTopic = onCall((request) => {
+export const subscribeToTopic = onCall<{ token: string; topic: string }>((request) => {
   const { token, topic } = request.data
-  return messaging().subscribeToTopic(token, topic)
+  return getMessaging().subscribeToTopic(token, topic)
 })
 
-exports.unsubscribeFromTopic = onCall((request) => {
+export const unsubscribeFromTopic = onCall<{ token: string; topic: string }>((request) => {
   const { token, topic } = request.data
-  return messaging().unsubscribeFromTopic(token, topic)
+  return getMessaging().unsubscribeFromTopic(token, topic)
 })
 
-exports.sendMessageNotification = onDocumentCreated(
+export const sendMessageNotification = onDocumentCreated(
   '/messages/{documentId}',
   async (event) => {
     if (!event.data)
@@ -32,7 +32,6 @@ exports.sendMessageNotification = onDocumentCreated(
     if (username !== 'jerma985')
       return
 
-    // Notification details.
     const payload = {
       topic: 'message',
       webpush: {
@@ -49,11 +48,11 @@ exports.sendMessageNotification = onDocumentCreated(
       },
     }
 
-    return messaging().send(payload)
+    return getMessaging().send(payload)
   },
 )
 
-exports.sendSusNotification = onDocumentCreated(
+export const sendSusNotification = onDocumentCreated(
   '/sus/{documentId}',
   async (event) => {
     if (!event.data)
@@ -69,7 +68,6 @@ exports.sendSusNotification = onDocumentCreated(
     if (!sus)
       return
 
-    // Notification details.
     const payload = {
       topic: 'sus',
       webpush: {
@@ -86,20 +84,22 @@ exports.sendSusNotification = onDocumentCreated(
       },
     }
 
-    return messaging().send(payload)
+    return getMessaging().send(payload)
   },
 )
 
-exports.sendTestNotification = onDocumentWritten(
+export const sendTestNotification = onDocumentWritten(
   '/test/{documentId}',
   async (event) => {
     if (!event.data)
       return
 
-    const { message } = event.data.after.data() as Message
+    const afterData = event.data.after.data()
+    if (!afterData)
+      return
 
-    // Notification details.
-    // https://firebase.google.com/docs/reference/admin/node/firebase-admin.messaging.webpushnotification.md#webpushnotification_interface
+    const { message } = afterData as Message
+
     const payload = {
       topic: 'test',
       webpush: {
@@ -116,6 +116,6 @@ exports.sendTestNotification = onDocumentWritten(
       },
     }
 
-    return messaging().send(payload)
+    return getMessaging().send(payload)
   },
 )
