@@ -30,7 +30,6 @@ const messageSentAtTimeAgo = computed(() => {
 const messageColor = computed(() => {
   return dynamicHue(props.color, colorMode.value)
 })
-
 </script>
 
 <template>
