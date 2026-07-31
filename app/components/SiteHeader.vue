@@ -1,5 +1,3 @@
-<script setup lang="ts"></script>
-
 <template>
   <header class="bg-slate-300 dark:bg-slate-900">
     <div class="container mx-auto p-4 md:max-w-6xl">

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const emit = defineEmits<{ close: [boolean] }>()
+const emit = defineEmits<{ close: [] }>()
 
 const route = useRoute()
 
@@ -51,11 +51,19 @@ async function handleNotificationToggle(topic: string, enabled: boolean) {
   }
 }
 
-watch([messageNotifications, susNotifications, testNotifications], ([message, sus, test]) => {
-  handleNotificationToggle('message', message)
-  handleNotificationToggle('sus', sus)
-  handleNotificationToggle('test', test)
-})
+// Only re-subscribe the topic that actually changed — otherwise flipping one
+// switch fires three token fetches and three callable invocations.
+const TOPICS = ['message', 'sus', 'test'] as const
+
+watch(
+  [messageNotifications, susNotifications, testNotifications],
+  (enabled, previous) => {
+    TOPICS.forEach((topic, index) => {
+      if (enabled[index] !== previous[index])
+        handleNotificationToggle(topic, Boolean(enabled[index]))
+    })
+  },
+)
 
 const { hideMessageTimestamps, colorModeValue } = storeToRefs(settingsStore)
 
@@ -85,7 +93,7 @@ watchEffect(() => {
         <UIcon
           name="heroicons-solid:x-circle"
           class="size-8 cursor-pointer text-blue-500"
-          @click="emit('close', true)"
+          @click="emit('close')"
         />
       </div>
     </div>

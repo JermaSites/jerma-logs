@@ -1,103 +1,58 @@
 <script setup lang="ts">
 const route = useRoute()
-const { dayjs } = useDayjs()
 
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
 
 const { getMessages } = useMessages()
 
-const { parseEmotes } = useEmotes()
-const { parseBadges } = useBadges()
-
-useSeoMeta({
-  title: `${capitalize(route.params.month as string)} | ${route.params.year}`,
-})
-
 definePageMeta({
   validate(route) {
-    if (typeof route.params.month !== 'string')
-      return false
-
-    const month = route.params.month.toLowerCase()
-    const months = [
-      'january',
-      'february',
-      'march',
-      'april',
-      'may',
-      'june',
-      'july',
-      'august',
-      'september',
-      'october',
-      'november',
-      'december',
-    ]
-    return months.includes(month)
+    return typeof route.params.month === 'string' && monthIndex(route.params.month) !== -1
   },
 })
 
-const { year, month } = route.params as { year: string, month: string }
+const year = computed(() => route.params.year as string)
+const month = computed(() => route.params.month as string)
 
-const { data: messages, status } = await useFetch<Message[]>(`/api/messages/${year}/${month}`, {
-  query: {
-    order: sortOrder.value.message,
-  },
-  server: false,
-  lazy: true,
-  default() {
-    return []
-  },
+useSeoMeta({
+  title: () => `${capitalize(month.value)} | ${year.value}`,
+  description: () => `Every message Jerma985 sent in twitch chat during ${capitalize(month.value)} ${year.value}`,
 })
+
+// Reactive URL so navigating between months refetches, whether or not Vue
+// reuses this component instance.
+const { data: messages, status, error } = await useFetch<Message[]>(
+  () => `/api/messages/${year.value}/${month.value}`,
+  {
+    server: false,
+    lazy: true,
+    default: () => [],
+  },
+)
 
 const hasMessages = computed(() => messages.value.length > 0)
 const isLoading = computed(() => status.value === 'idle' || status.value === 'pending')
 
-const parsedMessages = computed(() => {
-  return messages.value.map((msg) => {
-    const rawMessage = msg.reply ? msg.message.replace(/^@\S+\s*/, '') : msg.message
-    return {
-      ...msg,
-      message: parseEmotes(rawMessage),
-      badges: parseBadges(msg.badges),
-      reply: parseEmotes(msg.reply?.parent.msgBody || ''),
-    }
-  })
-})
+const messageOrder = computed(() => sortOrder.value.message)
+const sortedMessages = useParsedMessages(messages, messageOrder)
 
-const sortedMessages = computed(() => {
-  return parsedMessages.value.toSorted((a, b) => {
-    const aTime = Number.parseInt(a.sentAt)
-    const bTime = Number.parseInt(b.sentAt)
+const bounds = computed(() => monthBounds(year.value, month.value))
 
-    return sortOrder.value.message === 'asc'
-      ? aTime - bTime
-      : bTime - aTime
-  })
-})
+// Firestore is only available client-side (its plugin is `.client.ts`), and
+// only an in-progress month can still receive new messages.
+if (import.meta.client) {
+  watch(bounds, (range) => {
+    if (!range || Number.parseInt(range.end) < Date.now())
+      return
 
-onMounted(() => {
-  const date = dayjs.utc(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
-  const currentDate = dayjs.utc()
-  const startTime = date.startOf('month')
-  const endTime = date.endOf('month')
+    const unsubscribe = getMessages(range.start, range.end, (docs) => {
+      messages.value = docs
+    })
 
-  if (endTime.isBefore(currentDate))
-    return
-
-  const start = startTime.valueOf().toString()
-  const end = endTime.valueOf().toString()
-  const order = sortOrder.value.message
-
-  const unsubscribe = getMessages(start, end, order, (docs) => {
-    messages.value = docs
-  })
-
-  onUnmounted(() => {
-    unsubscribe()
-  })
-})
+    onWatcherCleanup(unsubscribe)
+  }, { immediate: true })
+}
 </script>
 
 <template>
@@ -106,20 +61,15 @@ onMounted(() => {
       <SimpleListSkeleton :rows="15" />
     </div>
 
+    <div v-else-if="error" class="p-8 text-center text-3xl md:text-5xl">
+      <h1>Could not load these messages</h1>
+      <p class="mt-4 text-lg text-slate-500 dark:text-slate-400">
+        Please try again in a moment.
+      </p>
+    </div>
+
     <div v-else-if="hasMessages">
-      <SimpleList>
-        <SimpleListItem v-for="message in sortedMessages" :key="message.id">
-          <Message
-            :sent-at="message.sentAt"
-            sent-at-format="MMM DD hh:mm A z"
-            :display-name="message.displayName"
-            :color="message.color"
-            :message="message.message"
-            :badges="message.badges"
-            :reply-message="message.reply"
-          />
-        </SimpleListItem>
-      </SimpleList>
+      <MessageList :messages="sortedMessages" />
     </div>
 
     <div v-else class="p-8 text-center text-5xl md:text-8xl">

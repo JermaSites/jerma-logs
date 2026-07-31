@@ -1,5 +1,5 @@
-export default defineCachedEventHandler(async () => {
-  const { twitchId } = useRuntimeConfig().public
+export default defineCachedEventHandler(async (event) => {
+  const { twitchId } = useRuntimeConfig(event).public
 
   try {
     const userPromise = $fetch<UserBttvResponse>(
@@ -28,7 +28,6 @@ export default defineCachedEventHandler(async () => {
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to fetch bttv emotes',
-      data: error,
     })
   }
 }, {

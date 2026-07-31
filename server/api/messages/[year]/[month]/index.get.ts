@@ -1,32 +1,25 @@
-import dayjs from 'dayjs'
-import { parse } from 'firestore-rest-parser'
-
-const { firebaseApiUrl, twitchUsername } = useRuntimeConfig().public
-
 export default defineCachedEventHandler(async (event) => {
+  const { firebaseApiUrl, twitchUsername } = useRuntimeConfig(event).public
+
+  const { year, month } = getRouterParams(event)
+
+  if (!year || !month) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Year and month required',
+    })
+  }
+
+  const bounds = monthBounds(year, month)
+
+  if (!bounds) {
+    throw createError({
+      statusCode: 400,
+      statusMessage: 'Invalid year or month',
+    })
+  }
+
   try {
-    const { year, month } = getRouterParams(event)
-    const { order = 'desc' } = getQuery(event)
-
-    if (!year || !month) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Year and month required',
-      })
-    }
-
-    const date = dayjs(`${year}-${capitalize(month)}-01`, 'YYYY-MMMM-DD')
-
-    if (!date.isValid()) {
-      throw createError({
-        statusCode: 400,
-        statusMessage: 'Invalid date',
-      })
-    }
-
-    const startTime = date.startOf('month').valueOf().toString()
-    const endTime = date.endOf('month').valueOf().toString()
-
     // https://firebase.google.com/docs/firestore/reference/rest/v1/StructuredQuery
     const messagesQuery = {
       structuredQuery: {
@@ -56,7 +49,7 @@ export default defineCachedEventHandler(async (event) => {
                     fieldPath: 'sentAt',
                   },
                   op: 'GREATER_THAN_OR_EQUAL',
-                  value: { stringValue: startTime },
+                  value: { stringValue: bounds.start },
                 },
               },
               {
@@ -65,7 +58,7 @@ export default defineCachedEventHandler(async (event) => {
                     fieldPath: 'sentAt',
                   },
                   op: 'LESS_THAN_OR_EQUAL',
-                  value: { stringValue: endTime },
+                  value: { stringValue: bounds.end },
                 },
               },
             ],
@@ -76,7 +69,7 @@ export default defineCachedEventHandler(async (event) => {
             field: {
               fieldPath: 'sentAt',
             },
-            direction: order === 'asc' ? 'ASCENDING' : 'DESCENDING',
+            direction: 'ASCENDING',
           },
         ],
       },
@@ -87,17 +80,13 @@ export default defineCachedEventHandler(async (event) => {
       body: messagesQuery,
     })
 
-    if (messagesData.length <= 1)
-      return []
-
-    return messagesData.map(doc => parse(doc.document))
+    return parseMessages(messagesData)
   }
   catch (error) {
     console.error(error)
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to fetch messages',
-      data: error,
     })
   }
 }, {

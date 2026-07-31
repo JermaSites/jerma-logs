@@ -1,14 +1,10 @@
-export default defineCachedEventHandler(async () => {
-  const { twitchId } = useRuntimeConfig().public
+export default defineCachedEventHandler(async (event) => {
+  const { twitchId } = useRuntimeConfig(event).public
 
   try {
-    const globalBadgesPromise = twitchApi<BadgesResponse>('chat/badges/global', {
-      method: 'GET',
-    })
+    const globalBadgesPromise = twitchApi<BadgesResponse>('chat/badges/global')
 
-    const channelBadgesPromise = twitchApi<BadgesResponse>(`chat/badges?broadcaster_id=${twitchId}`, {
-      method: 'GET',
-    })
+    const channelBadgesPromise = twitchApi<BadgesResponse>(`chat/badges?broadcaster_id=${twitchId}`)
 
     const [globalBadges, channelBadges] = await Promise.all([
       globalBadgesPromise,
@@ -22,7 +18,6 @@ export default defineCachedEventHandler(async () => {
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to fetch badges',
-      data: error,
     })
   }
 }, {

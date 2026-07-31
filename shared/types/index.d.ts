@@ -1,3 +1,4 @@
+import type { FirestoreResponseObject } from 'firestore-rest-parser'
 import type { RouteLocationNormalizedLoaded } from '#vue-router'
 
 export type SortOrder = 'asc' | 'desc'
@@ -38,30 +39,28 @@ export interface Badge {
 
 export type BadgeMap = Map<string, Map<string, BadgeVersion>>
 
-export interface BadgeInfo {
-  subscriber: string
-  moments: string
-  broadcaster: string
+/** Badge set id -> version id, as sent by Twitch. Any set may be absent. */
+export type BadgeInfo = Partial<Record<string, string>>
+
+export interface ParsedBadge {
+  name: string
+  url: string
 }
 
 export interface BadgesResponse {
-  data: [
-    {
-      set_id: string
-      versions: [
-        {
-          id: string
-          image_url_1x: string
-          image_url_2x: string
-          image_url_4x: string
-          title: string
-          description: string
-          click_action: string | null
-          click_url: string | null
-        },
-      ]
-    },
-  ]
+  data: {
+    set_id: string
+    versions: {
+      id: string
+      image_url_1x: string
+      image_url_2x: string
+      image_url_4x: string
+      title: string
+      description: string
+      click_action: string | null
+      click_url: string | null
+    }[]
+  }[]
 }
 
 export interface Message {
@@ -78,10 +77,6 @@ export interface Message {
   userID: string
   roomID: string
   badges: BadgeInfo
-  badgesArray?: {
-    name: string
-    url: string
-  }[]
   badgeInfoRaw: string
   messageType: string
   emotes: string | null
@@ -106,6 +101,16 @@ export interface Message {
       userLogin: string
     }
   }
+}
+
+/**
+ * A {@link Message} whose `message`/`reply` have been rendered to HTML and whose
+ * `badges` have been resolved to image URLs. Produced by `useParsedMessages`.
+ */
+export interface ParsedMessage extends Omit<Message, 'badges' | 'reply'> {
+  badges: ParsedBadge[]
+  reply: string
+  unread?: boolean
 }
 
 export interface Breadcrumb {
@@ -133,77 +138,41 @@ export interface UserBttvResponse {
   sharedEmotes: BttvEmote[]
 }
 
+export interface TwitchEmote {
+  id: string
+  name: string
+  images: {
+    url_1x: string
+    url_2x: string
+    url_4x: string
+  }
+  format: string[]
+  scale: string[]
+  theme_mode: string[]
+}
+
 export interface ChannelEmotesResponse {
-  data: [
-    {
-      id: string
-      name: string
-      images: {
-        url_1x: string
-        url_2x: string
-        url_4x: string
-      }
-      tier: string
-      emote_type: 'bitstier' | 'follower' | 'subscriptions'
-      emote_set_id: string
-      format: ['animated' | 'static']
-      scale: ['1.0' | '2.0' | '3.0']
-      theme_mode: ['light' | 'dark']
-    },
-  ]
+  data: (TwitchEmote & {
+    tier: string
+    emote_type: 'bitstier' | 'follower' | 'subscriptions'
+    emote_set_id: string
+  })[]
   template: string
 }
 
 export interface GlobalEmotesResponse {
-  data: [
-    {
-      id: string
-      name: string
-      images: {
-        url_1x: string
-        url_2x: string
-        url_4x: string
-      }
-      format: string[]
-      scale: ['1.0', '2.0', '3.0']
-      theme_mode: ['light', 'dark']
-    },
-  ]
+  data: TwitchEmote[]
   template: string
 }
 
-export type MessagesResponse = [
-  {
-    document: {
-      name: string
-      fields: {
-        mod: { [key: string]: boolean }
-        subscriber: { [key: string]: boolean }
-        badgesRaw: { [key: string]: string }
-        color: { [key: string]: string }
-        displayName: { [key: string]: string }
-        turbo: { [key: string]: boolean }
-        emotesRaw: { [key: string]: string | null }
-        flags: { [key: string]: string | null }
-        sentAt: { [key: string]: string }
-        message: { [key: string]: string }
-        userID: { [key: string]: string }
-        roomID: { [key: string]: string }
-        badges: { [key: string]: any }
-        badgeInfoRaw: { [key: string]: string }
-        messageType: { [key: string]: string }
-        emotes: { [key: string]: string[] }
-        badgeInfo: { [key: string]: string }
-        id: { [key: string]: string }
-        userType: { [key: string]: string | null }
-        username: { [key: string]: string }
-      }
-      createTime: string
-      updateTime: string
-    }
-    readTime: string
-  },
-]
+/**
+ * `runQuery` always responds with at least one element. When nothing matched,
+ * that element carries only a `readTime` — hence the optional `document`.
+ */
+export type MessagesResponse = {
+  document?: FirestoreResponseObject
+  readTime: string
+}[]
 
 export interface AccessToken {
   access_token: string

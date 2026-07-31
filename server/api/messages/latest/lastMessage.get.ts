@@ -1,8 +1,6 @@
-import { parse } from 'firestore-rest-parser'
+export default defineCachedEventHandler(async (event) => {
+  const { firebaseApiUrl, twitchUsername } = useRuntimeConfig(event).public
 
-const { firebaseApiUrl, twitchUsername } = useRuntimeConfig().public
-
-export default defineCachedEventHandler(async () => {
   try {
     const latestMessageQuery = {
       structuredQuery: {
@@ -39,16 +37,13 @@ export default defineCachedEventHandler(async () => {
       body: latestMessageQuery,
     })
 
-    return latestMessageData
-      .map(doc => parse(doc.document))
-      .pop()
+    return parseMessages(latestMessageData).at(0) ?? null
   }
   catch (error) {
     console.error(error)
     throw createError({
       statusCode: 500,
-      statusMessage: 'Failed to fetch last messages',
-      data: error,
+      statusMessage: 'Failed to fetch last message',
     })
   }
 }, {

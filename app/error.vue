@@ -1,15 +1,8 @@
 <script setup lang="ts">
-useHead({
-  bodyAttrs: {
-    class:
-      'min-h-screen bg-slate-50 text-slate-950 dark:bg-slate-700 dark:text-slate-200',
-  },
-})
-
 const error = useError()
 
-const statusCode = error.value?.statusCode
-const message = error.value?.message
+const statusCode = computed(() => error.value?.statusCode)
+const message = computed(() => error.value?.message)
 
 async function handleError() {
   await clearError({ redirect: '/' })
@@ -47,10 +40,6 @@ async function handleError() {
 </template>
 
 <style scoped>
-:root {
-  font-family: "Roboto", sans-serif;
-}
-
 .btn {
   overflow: hidden;
   position: relative;

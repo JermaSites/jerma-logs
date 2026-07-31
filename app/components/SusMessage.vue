@@ -3,9 +3,7 @@ const { dayjs } = useDayjs()
 
 const { parseEmotes } = useEmotes()
 
-const { data, status } = await useFetch<Message>('/api/messages/sus', {
-  lazy: false,
-})
+const { data, status } = await useFetch<Message | null>('/api/messages/sus')
 
 const susMessageTimeFromNow = computed(() => {
   const sentAt = data.value?.sentAt

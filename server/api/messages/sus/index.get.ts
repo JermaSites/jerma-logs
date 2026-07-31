@@ -1,8 +1,6 @@
-import { parse } from 'firestore-rest-parser'
+export default defineCachedEventHandler(async (event) => {
+  const { firebaseApiUrl } = useRuntimeConfig(event).public
 
-const { firebaseApiUrl } = useRuntimeConfig().public
-
-export default defineCachedEventHandler(async () => {
   try {
     const queryData = {
       structuredQuery: {
@@ -28,14 +26,13 @@ export default defineCachedEventHandler(async () => {
       body: queryData,
     })
 
-    return sus.map(doc => parse(doc.document)).pop()
+    return parseMessages(sus).at(0) ?? null
   }
   catch (error) {
     console.error(error)
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to fetch SUS message',
-      data: error,
     })
   }
 }, {

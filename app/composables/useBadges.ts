@@ -1,63 +1,58 @@
-const badgeMap = reactive<BadgeMap>(new Map())
-const isLoading = ref(false)
-const error = ref<string | null>(null)
+const PLACEHOLDER_BADGE = 'https://placehold.co/18x18'
+
+function getBadgeRank(badge: string): number {
+  switch (badge) {
+    case 'broadcaster': return 0
+    case 'subscriber': return 1
+    default: return 2
+  }
+}
 
 export default function () {
-  async function fetchBadges() {
-    if (isLoading.value)
-      return
+  const nuxtApp = useNuxtApp()
 
-    isLoading.value = true
+  // Per-request on the server (nuxtApp is created per request), per-session on
+  // the client. Module-scope state would be shared across every SSR request.
+  const badgeMap = (nuxtApp._badgeMap ??= shallowRef<BadgeMap>(new Map()))
+
+  async function fetchBadges() {
+    if (badgeMap.value.size)
+      return badgeMap.value
 
     try {
       const badges = await $fetch<Badge[]>('/api/badges')
 
-      if (!badges || badges.length === 0) {
+      if (!badges?.length) {
         console.warn('No badges received from API')
-        return
+        return badgeMap.value
       }
 
-      badges.forEach((badge) => {
-        const badgeVersionsMap = new Map(badge.versions.map(v => [v.id, v]))
-        badgeMap.set(badge.set_id, badgeVersionsMap)
-      })
+      badgeMap.value = new Map(badges.map(badge => [
+        badge.set_id,
+        new Map(badge.versions.map(version => [version.id, version])),
+      ]))
     }
-    catch (err) {
-      error.value = 'Failed to fetch badges'
-      console.error('Badge fetch error:', err)
+    catch (error) {
+      console.error('Badge fetch error:', error)
     }
-    finally {
-      isLoading.value = false
-    }
+
+    return badgeMap.value
   }
 
-  function getBadgeRank(badge: string): number {
-    switch (badge) {
-      case 'broadcaster': return 0
-      case 'subscriber': return 1
-      default: return 2
-    }
-  }
-
-  function parseBadges(badgeInfo: BadgeInfo) {
+  function parseBadges(badgeInfo: BadgeInfo): ParsedBadge[] {
     if (!badgeInfo)
       return []
 
     return Object.entries(badgeInfo)
       .sort(([a], [b]) => getBadgeRank(a) - getBadgeRank(b))
-      .map(([name, version]) => {
-        const badgeURL = badgeMap.get(name)?.get(version)?.image_url_1x
-        return {
-          name,
-          url: badgeURL || 'https://placehold.co/18x18',
-        }
-      })
+      .map(([name, version]) => ({
+        name,
+        url: badgeMap.value.get(name)?.get(version ?? '')?.image_url_1x || PLACEHOLDER_BADGE,
+      }))
   }
 
   return {
     fetchBadges,
     parseBadges,
-    isLoading: readonly(isLoading),
-    error: readonly(error),
   }
 }

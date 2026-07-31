@@ -8,44 +8,46 @@ const { y } = useWindowScroll({ behavior: 'smooth' })
 
 const { result, search } = useAlgoliaSearch<AlgoliaIndex>('messages')
 
-const { parseEmotes } = useEmotes()
-const { parseBadges } = useBadges()
-
-const hasResults = computed(() => {
-  return result.value && result.value.hits && result.value.hits.length > 0
+useSeoMeta({
+  title: 'Search',
+  description: 'Search every message Jerma985 has sent in twitch chat',
 })
+
+const hasResults = computed(() => Boolean(result.value?.hits?.length))
 
 const messages = ref<Message[]>([])
 const loading = ref(false)
 
-const parsedMessages = computed(() => {
-  return messages.value.map((msg) => {
-    const rawMessage = msg.reply ? msg.message.replace(/^@\S+\s*/, '') : msg.message
-    return {
-      ...msg,
-      message: parseEmotes(rawMessage),
-      badges: parseBadges(msg.badges),
-      reply: parseEmotes(msg.reply?.parent?.msgBody || ''),
-    }
-  })
-})
+const parsedMessages = useParsedMessages(messages)
+
+// Searches resolve out of order when the user types quickly; only the newest
+// request is allowed to write its results.
+let latestRequestId = 0
 
 watch(result, async (result) => {
+  const requestId = ++latestRequestId
   messages.value = []
 
   if (!hasResults.value)
     return
 
+  loading.value = true
+
   try {
-    loading.value = true
-    messages.value = await searchMessages(result)
+    const found = await searchMessages(result)
+
+    if (requestId !== latestRequestId)
+      return
+
+    messages.value = found
     y.value = 0
   }
   catch (error) {
     console.error(error)
   }
   finally {
-    loading.value = false
+    if (requestId === latestRequestId)
+      loading.value = false
   }
 })
 
@@ -66,10 +68,9 @@ watch(page, (newPage) => {
 })
 
 const algoliaLogo = computed(() => {
-  const darkUrl = '/Algolia-mark-white.png'
-  const lightUrl = '/Algolia-mark-blue.png'
-
-  return colorModeValue.value === 'dark' ? darkUrl : lightUrl
+  return colorModeValue.value === 'dark'
+    ? '/Algolia-mark-white.png'
+    : '/Algolia-mark-blue.png'
 })
 </script>
 
@@ -78,6 +79,8 @@ const algoliaLogo = computed(() => {
     <NuxtImg
       :src="algoliaLogo"
       class="mr-4 size-8"
+      width="32"
+      height="32"
       alt="Algolia logo"
     />
 
@@ -110,19 +113,7 @@ const algoliaLogo = computed(() => {
       <LazySimpleListSkeleton :rows="20" />
     </div>
 
-    <SimpleList v-else-if="hasResults">
-      <SimpleListItem v-for="message in parsedMessages" :key="message.id">
-        <Message
-          :sent-at="message.sentAt"
-          sent-at-format="MMM DD hh:mm A z"
-          :display-name="message.displayName"
-          :color="message.color"
-          :message="message.message"
-          :badges="message.badges"
-          :reply-message="message.reply"
-        />
-      </SimpleListItem>
-    </SimpleList>
+    <MessageList v-else-if="hasResults" :messages="parsedMessages" />
 
     <div v-else-if="result && searchValue && result.query === searchValue" class="flex justify-center items-center p-4 text-6xl">
       <h1>No Messages Found</h1>

@@ -1,7 +1,5 @@
 <script setup lang="ts">
 const { dayjs } = useDayjs()
-const { parseEmotes } = useEmotes()
-const { parseBadges } = useBadges()
 
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
@@ -11,31 +9,31 @@ const { dateOfLastReadMessage, latestMessageIndex } = storeToRefs(unreadStore)
 
 const { getLatestMessages } = useMessages()
 
-const { data: messages, status } = await useFetch<Message[]>('/api/messages/latest', {
+useSeoMeta({
+  title: 'Latest Messages',
+  description: 'The most recent messages Jerma985 has sent in twitch chat',
+})
+
+const { data: messages, status, error } = await useFetch<Message[]>('/api/messages/latest', {
   server: false,
   lazy: true,
-  default() {
-    return []
-  },
+  default: () => [],
 })
 
 const hasMessages = computed(() => messages.value.length > 0)
 const isLoading = computed(() => status.value === 'idle' || status.value === 'pending')
 
+// Snapshot the persisted values before the watcher below overwrites them —
+// they describe what the user had already read on their previous visit.
 const lastReadMessageTimestamp = dateOfLastReadMessage.value
 const latestMessageIndexTimestamp = latestMessageIndex.value
 
 watch(messages, (newMessages) => {
-  const firstMessage = newMessages.at(0)
-  const lastMessage = newMessages.at(-1)
-
-  latestMessageIndex.value = firstMessage?.sentAt || ''
-  dateOfLastReadMessage.value = lastMessage?.sentAt || ''
+  latestMessageIndex.value = newMessages.at(0)?.sentAt || ''
+  dateOfLastReadMessage.value = newMessages.at(-1)?.sentAt || ''
 })
 
-const lastMessageTimestamp = computed(() => {
-  return messages.value.at(-1)?.sentAt || ''
-})
+const lastMessageTimestamp = computed(() => messages.value.at(-1)?.sentAt || '')
 
 watch(lastMessageTimestamp, (timestamp) => {
   if (!timestamp)
@@ -48,41 +46,24 @@ watch(lastMessageTimestamp, (timestamp) => {
   onWatcherCleanup(unsubscribe)
 })
 
-const parsedMessages = computed(() => {
-  return messages.value.map((msg) => {
-    const rawMessage = msg.reply ? msg.message.replace(/^@\S+\s*/, '') : msg.message
-    return {
-      ...msg,
-      message: parseEmotes(rawMessage),
-      badges: parseBadges(msg.badges),
-      reply: parseEmotes(msg.reply?.parent.msgBody || ''),
-    }
-  })
-})
-
-const sortedMessages = computed(() => {
-  return parsedMessages.value.toSorted((a, b) => {
-    const aTime = Number.parseInt(a.sentAt)
-    const bTime = Number.parseInt(b.sentAt)
-
-    return sortOrder.value.latest === 'asc'
-      ? aTime - bTime
-      : bTime - aTime
-  })
-})
-
 function isUnread(sentAt: string) {
   if (!lastReadMessageTimestamp || !latestMessageIndexTimestamp)
     return false
 
-  const messageTimestamp = Number.parseInt(sentAt)
-  const lastReadTimestamp = Number.parseInt(lastReadMessageTimestamp)
-
-  const messageIsUnread = dayjs(messageTimestamp).isAfter(dayjs(lastReadTimestamp))
-  const latestMessagesHasBeenPreviouslyRead = unreadStore.latestMessageIndex === latestMessageIndexTimestamp
+  const messageIsUnread = dayjs(Number.parseInt(sentAt))
+    .isAfter(dayjs(Number.parseInt(lastReadMessageTimestamp)))
+  const latestMessagesHasBeenPreviouslyRead = latestMessageIndex.value === latestMessageIndexTimestamp
 
   return messageIsUnread && latestMessagesHasBeenPreviouslyRead
 }
+
+const latestOrder = computed(() => sortOrder.value.latest)
+const sortedMessages = useParsedMessages(messages, latestOrder)
+
+const displayedMessages = computed(() => sortedMessages.value.map(message => ({
+  ...message,
+  unread: isUnread(message.sentAt),
+})))
 </script>
 
 <template>
@@ -91,21 +72,15 @@ function isUnread(sentAt: string) {
       <LazySimpleListSkeleton :rows="10" />
     </div>
 
+    <div v-else-if="error" class="p-8 text-center text-3xl md:text-5xl">
+      <h1>Could not load the latest messages</h1>
+      <p class="mt-4 text-lg text-slate-500 dark:text-slate-400">
+        Please try again in a moment.
+      </p>
+    </div>
+
     <div v-else-if="hasMessages" class="flex flex-col">
-      <SimpleList>
-        <SimpleListItem v-for="message in sortedMessages" :key="message.id">
-          <Message
-            :sent-at="message.sentAt"
-            sent-at-format="MMM DD hh:mm A z"
-            :display-name="message.displayName"
-            :color="message.color"
-            :message="message.message"
-            :badges="message.badges"
-            :reply-message="message.reply"
-            :unread="isUnread(message.sentAt)"
-          />
-        </SimpleListItem>
-      </SimpleList>
+      <MessageList :messages="displayedMessages" />
     </div>
 
     <div v-else class="p-8 text-center text-5xl md:text-8xl">

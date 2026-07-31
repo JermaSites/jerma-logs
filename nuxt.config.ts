@@ -17,6 +17,8 @@ export default defineNuxtConfig({
   ],
 
   vite: {
+    // Pre-bundling these keeps the dev server from re-optimising (and reloading)
+    // the first time a page pulls in dayjs/firebase.
     optimizeDeps: {
       include: [
         '@vue/devtools-core',
@@ -30,16 +32,6 @@ export default defineNuxtConfig({
         'firebase/firestore',
         'firebase/functions',
       ],
-    },
-    build: {
-      rollupOptions: {
-        output: {
-          manualChunks: {
-            'firebase-core': ['firebase/app'],
-            'firebase-firestore': ['firebase/firestore'],
-          },
-        },
-      },
     },
   },
 
@@ -68,6 +60,9 @@ export default defineNuxtConfig({
     head: {
       htmlAttrs: {
         lang: 'en',
+      },
+      bodyAttrs: {
+        class: 'min-h-screen bg-slate-50 text-slate-950 dark:bg-slate-700 dark:text-slate-200',
       },
       link: [
         { rel: 'icon', type: 'image/png', href: '/logo.png' },

@@ -1,52 +1,14 @@
-import { parse } from 'firestore-rest-parser'
+export default defineCachedEventHandler(async (event) => {
+  const { firebaseApiUrl, twitchUsername } = useRuntimeConfig(event).public
 
-const { firebaseApiUrl, twitchUsername } = useRuntimeConfig().public
-
-export default defineCachedEventHandler(async () => {
   try {
-    const latestMessageQuery = {
-      structuredQuery: {
-        from: [
-          {
-            collectionId: 'messages',
-          },
-        ],
-        where: {
-          fieldFilter: {
-            field: {
-              fieldPath: 'username',
-            },
-            op: 'EQUAL',
-            value: {
-              stringValue: twitchUsername,
-            },
-          },
-        },
-        orderBy: [
-          {
-            field: {
-              fieldPath: 'sentAt',
-            },
-            direction: 'DESCENDING',
-          },
-        ],
-        limit: 1,
-      },
-    }
-
-    const latestMessageData = await $fetch<MessagesResponse>(firebaseApiUrl, {
-      method: 'POST',
-      body: latestMessageQuery,
-    })
-
-    const latestMessage = latestMessageData
-      .map(doc => parse(doc.document))
-      .pop()
+    // Reuses the sibling endpoint's cache entry rather than repeating the query.
+    const latestMessage = await $fetch<Message | null>('/api/messages/latest/lastMessage')
 
     if (!latestMessage)
       return []
 
-    const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(latestMessage.sentAt as string))
+    const dayOfLatestMessage = getDayOfLatestMessage(Number.parseInt(latestMessage.sentAt))
 
     const latestMessagesQuery = {
       structuredQuery: {
@@ -98,14 +60,13 @@ export default defineCachedEventHandler(async () => {
       body: latestMessagesQuery,
     })
 
-    return latestMessagesData.map(doc => parse(doc.document))
+    return parseMessages(latestMessagesData)
   }
   catch (error) {
     console.error(error)
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to fetch latest messages',
-      data: error,
     })
   }
 }, {

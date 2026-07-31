@@ -1,20 +1,12 @@
-export default defineCachedEventHandler(async () => {
-  const { twitchId } = useRuntimeConfig().public
+export default defineCachedEventHandler(async (event) => {
+  const { twitchId } = useRuntimeConfig(event).public
 
   try {
     const channelEmotesPromise = twitchApi<ChannelEmotesResponse>(
       `chat/emotes?broadcaster_id=${twitchId}`,
-      {
-        method: 'GET',
-      },
     )
 
-    const globalEmotesPromise = twitchApi<GlobalEmotesResponse>(
-      'chat/emotes/global',
-      {
-        method: 'GET',
-      },
-    )
+    const globalEmotesPromise = twitchApi<GlobalEmotesResponse>('chat/emotes/global')
 
     const [channelEmotes, globalEmotes] = await Promise.all([
       channelEmotesPromise,
@@ -39,7 +31,6 @@ export default defineCachedEventHandler(async () => {
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to fetch twitch emotes',
-      data: error,
     })
   }
 }, {

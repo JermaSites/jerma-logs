@@ -4,8 +4,11 @@ const route = useRoute()
 const sortStore = useSortStore()
 const { sortOrder } = storeToRefs(sortStore)
 
+const year = computed(() => route.params.year as string)
+
 useSeoMeta({
-  title: `${route.params.year}`,
+  title: () => `${year.value}`,
+  description: () => `Browse Jerma985's twitch chat messages from ${year.value} by month`,
 })
 
 definePageMeta({

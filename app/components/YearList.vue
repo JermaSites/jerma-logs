@@ -3,25 +3,16 @@ const props = defineProps<{
   sortOrder: SortOrder
 }>()
 
-const years = computed(() => {
-  const startYear = 2020
-  const currentYear = new Date().getFullYear()
-
-  const year: number[] = []
-  for (let i = startYear; i <= currentYear; i++) {
-    year.push(i)
-  }
-
-  return year
-})
+const START_YEAR = 2020
 
 const sortedYears = computed(() => {
-  return [...years.value].sort((a, b) => {
-    if (props.sortOrder === 'asc')
-      return a - b
+  const currentYear = new Date().getFullYear()
+  const years = Array.from(
+    { length: currentYear - START_YEAR + 1 },
+    (_, index) => START_YEAR + index,
+  )
 
-    return b - a
-  })
+  return props.sortOrder === 'asc' ? years : years.reverse()
 })
 </script>
 

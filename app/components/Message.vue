@@ -6,10 +6,7 @@ const props = defineProps<{
   color: string
   message: string
   replyMessage?: string
-  badges: {
-    name: string
-    url: string
-  }[]
+  badges: ParsedBadge[]
   unread?: boolean
 }>()
 

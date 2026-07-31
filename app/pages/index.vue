@@ -4,6 +4,10 @@ const { sortOrder } = storeToRefs(sortStore)
 
 const unreadStore = useUnreadStore()
 const { unreadMessages } = storeToRefs(unreadStore)
+
+useSeoMeta({
+  description: 'Browse every message Jerma985 has sent in twitch chat, from May 2020 onwards',
+})
 </script>
 
 <template>

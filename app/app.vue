@@ -1,11 +1,4 @@
 <script setup lang="ts">
-useHead({
-  bodyAttrs: {
-    class:
-      'min-h-screen bg-slate-50 text-slate-950 dark:bg-slate-700 dark:text-slate-200',
-  },
-})
-
 useSeoMeta({
   ogImage: 'https://logs.jerma.io/logo.png',
   twitterCard: 'summary',
@@ -19,16 +12,21 @@ const colorMode = useColorMode()
 const { fetchEmotes } = useEmotes()
 const { fetchBadges } = useBadges()
 
-await Promise.allSettled([fetchEmotes(), fetchBadges()])
+// Kept out of useFetch/useAsyncData on purpose: these two responses are ~500kB
+// combined, and the API caches them for 24h, so letting the browser fetch and
+// cache them beats inlining them into every SSR payload. allSettled so a
+// failing emote/badge API never takes the whole page down.
+const [{ data: lastMessage }] = await Promise.all([
+  useFetch<Message | null>('/api/messages/latest/lastMessage'),
+  Promise.allSettled([fetchEmotes(), fetchBadges()]),
+])
+
+unreadStore.dateOfLatestMessage = lastMessage.value?.sentAt ?? ''
 
 onMounted(() => {
   settingsStore.colorModeValue = colorMode.value
   settingsStore.userTimezone = dayjs.tz.guess()
 })
-
-const { data: lastMessage } = await useFetch<Message>('/api/messages/latest/lastMessage')
-
-unreadStore.dateOfLatestMessage = lastMessage?.value?.sentAt ?? ''
 </script>
 
 <template>

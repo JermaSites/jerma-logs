@@ -1,27 +1,31 @@
-const emoteMap = reactive<EmoteMap>(new Map())
-const isLoading = ref(false)
-const error = ref<string | null>(null)
+const IMG_STYLE = 'display: inline; vertical-align: middle; margin: -0.5rem 0;'
 
 export default function () {
+  const nuxtApp = useNuxtApp()
+
+  // Per-request on the server (nuxtApp is created per request), per-session on
+  // the client. Module-scope state would be shared across every SSR request.
+  const emoteMap = (nuxtApp._emoteMap ??= shallowRef<EmoteMap>(new Map()))
+
   async function fetchEmotes() {
+    if (emoteMap.value.size)
+      return emoteMap.value
+
     try {
       const emotes = await $fetch<Emote[]>('/api/emotes')
 
-      if (!emotes || emotes.length === 0) {
+      if (!emotes?.length) {
         console.warn('No emotes received from API')
-        return
+        return emoteMap.value
       }
 
-      emotes.forEach((emote) => {
-        emoteMap.set(emote.code, emote)
-      })
+      emoteMap.value = new Map(emotes.map(emote => [emote.code, emote]))
+    }
+    catch (error) {
+      console.error('Emote fetch error:', error)
+    }
 
-      return emoteMap
-    }
-    catch (err) {
-      error.value = 'Failed to fetch emotes'
-      console.error('Emote fetch error:', err)
-    }
+    return emoteMap.value
   }
 
   function parseEmotes(msg: string): string {
@@ -31,21 +35,26 @@ export default function () {
       if (/^\s+$/.test(token))
         return token
 
+      const safeToken = escapeHtml(token)
+
       if (/^https?:\/\//i.test(token))
-        return `<a href="${token}" target="_blank" rel="noopener noreferrer">${token}</a>`
+        return `<a href="${safeToken}" target="_blank" rel="noopener noreferrer">${safeToken}</a>`
 
-      const emote = emoteMap.get(token)
-      if (emote?.urls?.[0]?.url)
-        return `<img style="display: inline; vertical-align: middle; margin: -0.5rem 0;" src="${emote.urls[0].url}" width="28" height="28" alt="${emote.code}" title="${emote.code}">`
+      // Look up the raw token — the map is keyed on unescaped emote codes.
+      const emote = emoteMap.value.get(token)
+      const url = emote?.urls?.[0]?.url
 
-      return token
+      if (emote && url) {
+        const code = escapeHtml(emote.code)
+        return `<img style="${IMG_STYLE}" src="${escapeHtml(url)}" width="28" height="28" alt="${code}" title="${code}">`
+      }
+
+      return safeToken
     }).join('')
   }
 
   return {
     fetchEmotes,
     parseEmotes,
-    isLoading: readonly(isLoading),
-    error: readonly(error),
   }
 }
