@@ -17,6 +17,7 @@
     "test:live": "playwright test tests/live.spec.ts"
   },
   "dependencies": {
+    "@iconify-json/heroicons-solid": "^1.2.1",
     "@nuxt/fonts": "^0.14.0",
     "@nuxt/image": "2.1.0",
     "@nuxt/ui": "^4.11.0",
@@ -40,9 +41,8 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^9.3.0",
-    "@iconify-json/heroicons-solid": "^1.2.1",
     "@playwright/test": "^1.62.1",
-    "eslint": "^10.9.0",
+    "eslint": "^10.9.1",
     "typescript": "^7.0.2",
     "vue-tsc": "^3.3.11"
   },

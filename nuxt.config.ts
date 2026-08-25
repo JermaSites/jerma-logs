@@ -52,6 +52,12 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
 
+    icon: {
+    clientBundle: {
+      scan: true
+    }
+  },
+
   gtag: {
     id: 'G-51G4MFGEP0',
   },
