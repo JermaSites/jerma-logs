@@ -14,19 +14,9 @@ export const useSortStore = defineStore(
         : 'asc'
     }
 
-    const updateCookieExpiration = ref(false)
-
-    function refreshCookieExpiration() {
-      updateCookieExpiration.value = !updateCookieExpiration.value
-    }
-
     return {
       sortOrder,
       toggleSortOrder,
-      // Must be returned to count as store state — otherwise mutating it never
-      // triggers persistence and the cookie's expiry is never extended.
-      updateCookieExpiration,
-      refreshCookieExpiration,
     }
   },
   { persist: true },

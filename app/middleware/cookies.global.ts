@@ -1,8 +1,7 @@
 export default defineNuxtRouteMiddleware(() => {
-  // Change meaningless variable to update cookie expiration date
-  const sortStore = useSortStore()
-  const settingsStore = useSettingsStore()
-
-  sortStore.refreshCookieExpiration()
-  settingsStore.refreshCookieExpiration()
+  // Re-write the persisted cookies to extend their expiry. This must run
+  // synchronously here: the plugin's own $subscribe watcher fires on a later
+  // tick, after the Nuxt context is gone on the server.
+  useSortStore().$persist()
+  useSettingsStore().$persist()
 })
